@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Vivaldi",
+    "command": "vivaldi"
+  },
+  {
+    "name": "Sakura",
+	"command": "sakura"
+  },
+  {
+    "name": "Sublime Text",
+	"command": "subl"
+  },
+  {
+	"name": "Thunar",
+	"command": "thunar"
+  },
+  {
+	"name": "Space FM",
+	"command": "spacefm"
+  },
+  {
+	"name": "Obsidian",
+	"command": "obsidian"
+  }
+]

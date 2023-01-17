@@ -1,0 +1,11 @@
+set default-bg "#262626"
+set inputbar-bg "#262626"
+set inputbar-fg "#FFFFFF"
+set statusbar-bg "#262626"
+set statusbar-basename "true"
+set sandbox none
+set font "Segoe UI Regular 9"
+map <Left> navigate previous
+map <Right> navigate next
+map <Up> scroll up
+map <Down> scroll down

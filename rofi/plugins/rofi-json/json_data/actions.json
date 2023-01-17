@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Clear Clipboard History",
+    "command": "greenclip clear"
+  },
+  {
+    "name": "Shutdown",
+	"command": "xfce4-session-logout -i"
+  },
+  {
+    "name": "Restart",
+	"command": "xfce4-session-logout -r"
+  },
+  {
+	"name": "Sleep",
+	"command": "xfce4-session-logout -s"
+  }
+]

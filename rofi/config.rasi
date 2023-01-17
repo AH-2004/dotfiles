@@ -1,0 +1,38 @@
+configuration {
+  font: "Segoe UI Regular 10";
+  modi: "drun,launcher:~/.config/rofi/plugins/rofi-json/rofi-json.sh json_data/launcher.json,clipboard:greenclip print,actions:~/.config/rofi/plugins/rofi-json/rofi-json.sh json_data/actions.json,filebrowser";
+  show-icons: false;
+
+  drun {
+    display-name: "Run";
+  }
+
+  window {
+    display-name: "Windows";
+  }
+
+  filebrowser {
+    display-name: "File";
+  }
+
+  clipboard {
+    display-name: "Clipboard";
+  }
+
+  launcher {
+    display-name: "Launch";
+  }
+
+  actions {
+    display-name: "Action";
+  }
+
+  kb-mode-next: "Alt+Right,Tab";
+  kb-mode-previous: "Alt+Left,ISO_Left_Tab";
+  kb-element-next: "";
+  kb-element-prev: "";
+  kb-row-up: "Up";
+  kb-row-down: "Down";
+}
+
+@theme "style.rasi"
