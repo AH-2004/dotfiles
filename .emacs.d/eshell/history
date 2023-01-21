@@ -1,0 +1,10 @@
+make make_run
+make make_run
+make make_run
+make make_runclear
+clear
+clear
+make
+clear
+clear
+exit
