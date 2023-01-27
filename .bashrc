@@ -22,7 +22,6 @@ alias lite='nope lite-xl'
 alias code='nope vscodium'
 alias fire='nope firefox'
 alias zath='nope zathura'
-alias netmap='sudo nmap -sP 192.168.10.0/24'
 alias xcolor='xcolor -s'
 alias open='xdg-open'
 
