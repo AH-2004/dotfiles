@@ -15,7 +15,8 @@ alias ls='ls -la --color=auto'
 alias clock='tty-clock -t -s -c -C 5 -f "%A %B %d %Y"'
 alias matrix='cmatrix -C magenta'
 alias aur='epiphany aur.archlinux.org'
-alias emacs='emacs -nw'
+alias e='nope emacsclient --create-frame'
+alias emacs='emacsclient -nw'
 alias viv='nope vivaldi-stable'
 alias lite='nope lite-xl'
 alias code='nope vscodium'
@@ -23,6 +24,7 @@ alias fire='nope firefox'
 alias zath='nope zathura'
 alias netmap='sudo nmap -sP 192.168.10.0/24'
 alias xcolor='xcolor -s'
+alias open='xdg-open'
 
 # ADD TO PATH
 PATH=~/.local/bin:~/bin:$PATH
@@ -36,8 +38,8 @@ export CHROME_PATH='/usr/bin/vivaldi-stable'
 # Wine 32bit prefix
 export WINEPREFIX='/home/AH/.wine'
 
-PS1='\e[38;5;141m\u·\h \W > \e[m'
-# PS1='\u·\h \W > '
+# PS1='\e[38;5;141m\u·\h \W > \e[m'
+PS1='\[\e[38;5;141m\]\u·\h \W > \[\e[m\]'
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
