@@ -1,5 +1,8 @@
 # Dotfiles
 ### Xfce4:
-#### GTK Theme: Material-Black-Pistachio
-#### Icon Theme: Vimix-Beryl-dark
+#### Font: Segoe UI Regular
+#### Monospace Font: Consolas Regular
 #### Terminal Font: Monaco
+#### GTK Theme: Material-Black-Pistachio
+#### Xfwm4 Theme: thin-magenta
+#### Icon Theme: Vimix-Beryl-dark
