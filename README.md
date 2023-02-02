@@ -6,3 +6,4 @@
 #### GTK Theme: Material-Black-Pistachio
 #### Xfwm4 Theme: thin-magenta
 #### Icon Theme: Vimix-Beryl-dark
+#### Cursor Theme: macOS-Monterey
