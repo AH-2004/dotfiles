@@ -15,8 +15,8 @@ alias ls='ls -la --color=auto'
 alias clock='tty-clock -t -s -c -C 5 -f "%A %B %d %Y"'
 alias matrix='cmatrix -C magenta'
 alias aur='epiphany aur.archlinux.org'
-alias e='nope emacsclient --create-frame'
-alias emacs='emacsclient -nw'
+alias emacs='nope emacsclient --create-frame'
+alias e='emacsclient -nw' # Might remove this alias in the future.
 alias viv='nope vivaldi-stable'
 alias lite='nope lite-xl'
 alias code='nope vscodium'
@@ -37,7 +37,6 @@ export CHROME_PATH='/usr/bin/vivaldi-stable'
 # Wine 32bit prefix
 export WINEPREFIX='/home/AH/.wine'
 
-# PS1='\e[38;5;141m\u·\h \W > \e[m'
 PS1='\[\e[38;5;141m\]\u·\h \W > \[\e[m\]'
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
