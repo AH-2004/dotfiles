@@ -12,6 +12,7 @@ nope() {
 
 # ALIASES
 alias ls='ls -la --color=auto'
+alias which='which -a'
 alias clock='tty-clock -t -s -c -C 5 -f "%A %B %d %Y"'
 alias matrix='cmatrix -C magenta'
 alias aur='epiphany aur.archlinux.org'
@@ -34,8 +35,9 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'--color=marker:#a56c9e,spinner:#a56c9e
 # Chrome path
 export CHROME_PATH='/usr/bin/vivaldi-stable'
 
-# Wine 32bit prefix
-export WINEPREFIX='/home/AH/.wine'
+# Proton Prefix (For Rocket League)
+export STEAM_COMPAT_DATA_PATH='/home/AH/.local/share/Steam/steamapps/compatdata/3198406695'
+export STEAM_COMPAT_CLIENT_INSTALL_PATH='/home/AH/.local/share/Steam'
 
 PS1='\[\e[38;5;141m\]\u·\h \W > \[\e[m\]'
 
