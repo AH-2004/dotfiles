@@ -64,19 +64,44 @@
   (setq neo-autorefresh t)
 )
 
+;; Completions
 (use-package corfu
-  :config
-  (setq corfu-auto t)
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t)
+  (corfu-quit-no-match nil)
+
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+)
+
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-SPC")
+)
+
+(use-package vertico
+  :custom
+  (vertico-cycle t)
+
+  :init
+  (vertico-mode)
+)
+
+(use-package savehist
+  :init
+  (savehist-mode)
 )
 
 ;; Keybindings
 
 ;; Sidebar toggling
-(global-set-key (kbd "C-K") 'treemacs)
-;; (global-set-key (kbd "C-K") 'neotree-toggle)
+(global-set-key (kbd "C-K") 'neotree-toggle)
+;; (global-set-key (kbd "C-K") 'treemacs)
 
-;;Completions
-(global-unset-key (kbd "C-SPC"))
-(global-set-key (kbd "C-SPC") 'dabbrev-expand)
+;; Completions
+;; (global-unset-key (kbd "C-SPC"))
+;; (global-set-key (kbd "C-SPC") 'dabbrev-expand)
 
 (setq custom-file (concat user-emacs-directory "/custom.el"))
