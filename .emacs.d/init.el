@@ -15,8 +15,6 @@
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 )
 
-;; (defun display-startup-echo-area-message () (message (emacs-init-time)))
-
 ;; Hooks
 (add-hook 'server-after-make-frame-hook 'init)
 (add-hook 'after-init-hook 'init)
@@ -111,8 +109,8 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (add-to-list 'default-frame-alist '(font . "Consolas 10"))
 ;; (load-theme 'tron-legacy t)
-(load-theme 'dracula t)
-;; (load-theme 'exotica t)
+;; (load-theme 'dracula t)
+(load-theme 'exotica t)
 
 ;; Packages
 (require 'package)
@@ -243,6 +241,10 @@
 
 ;; Make new frame
 (bind-key* "C-n" 'make-frame)
+
+;; Change buffer
+(bind-key* "C-<tab>" 'switch-to-next-buffer)
+(bind-key* "C-<iso-lefttab>" 'switch-to-prev-buffer)
 
 ;; Set seperate file for customize commands
 (setq custom-file (concat user-emacs-directory "/custom.el"))
