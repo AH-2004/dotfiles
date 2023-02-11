@@ -197,39 +197,38 @@
 ;; Keybindings
 
 ;; Sidebar toggling
-(global-set-key (kbd "C-S-K") 'neotree-toggle)
-;; (global-set-key (kbd "C-K") 'treemacs)
+(bind-key* "C-S-K" 'neotree-toggle)
+;; (bind-key* "C-S-K" 'treemacs)
 
 ;; Zoom
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
+(bind-key* "C-=" 'text-scale-increase)
+(bind-key* "C--" 'text-scale-decrease)
 
 ;; Toggle line numbers
-(global-set-key (kbd "C-S-g") 'display-line-numbers-mode)
+(bind-key* "C-S-g" 'display-line-numbers-mode)
 
 ;; Move lines
-(global-set-key (kbd "C-S-<up>") 'move-line-up)
-(global-set-key (kbd "C-S-<down>") 'move-line-down)
+(bind-key* "C-S-<up>" 'move-line-up)
+(bind-key* "C-S-<down>" 'move-line-down)
 
 ;; Completions
-(global-set-key (kbd "C-SPC") 'completion-at-point)
+(bind-key* "C-SPC" 'completion-at-point)
 
 ;; Comments
-;; (global-set-key (kbd "C-/") 'comment-line)
-(global-set-key (kbd "C-/") 'comment)
+(bind-key* "C-/" 'comment)
 
 ;; Copy/Paste line
-(global-set-key (kbd "C-c C-c") 'copy-line)
-(global-set-key (kbd "C-c C-v") 'paste-line)
+(bind-key* "C-c C-c" 'copy-line)
+(bind-key* "C-c C-v" 'paste-line)
 
 ;; Delete line
-(global-set-key (kbd "S-<delete>") 'delete-line)
+(bind-key* "S-<delete>" 'delete-line)
 
 ;; Redo
-(global-set-key (kbd "C-y") 'redo)
+(bind-key* "C-y" 'redo)
 
 ;; Make new frame
-(global-set-key (kbd "C-n") 'make-frame)
+(bind-key* "C-n" 'make-frame)
 
 ;; Set seperate file for customize commands
 (setq custom-file (concat user-emacs-directory "/custom.el"))
