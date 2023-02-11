@@ -62,7 +62,6 @@
   (forward-line 1)
   (transpose-lines 1)
   (forward-line -1)
-  (jump-to-register 1)
 )
 
 ;; Copy whole line
@@ -77,7 +76,7 @@
 ;; Paste whole line
 (defun paste-line ()
   (interactive)
-  (open-line 1)
+  ;; (open-line 1)
   (next-line)
   (yank)
 )
@@ -103,7 +102,6 @@
   (undo-redo 1)
   (end-of-line 1)
 )
-
 
 ;; CUA
 (cua-mode t)
@@ -146,7 +144,9 @@
   (treemacs-project-follow-mode t)
   (treemacs-filewatch-mode t)  
 )
-(with-eval-after-load 'treemacs (define-key treemacs-mode-map [mouse-1] 'treemacs-single-click-expand-action))
+(with-eval-after-load 'treemacs
+  (define-key treemacs-mode-map [mouse-1] 'treemacs-single-click-expand-action)
+)
 
 ;; Neotree
 (use-package neotree
@@ -166,9 +166,23 @@
   (corfu-auto t)
   (corfu-auto-delay 0.25)
   (corfu-quit-no-match nil)
-
+  (corfu-min-width 40)
+  (corfu-max-width corfu-min-width)
+  (corfu-scroll-magin 4)
+  
   :init
   (global-corfu-mode)
+)
+
+(use-package kind-icon
+  :after corfu
+  
+  :custom
+  (kind-icon-blend-background nil)
+  (kind-icon-default-face 'corfu-default)
+  
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
 )
 
 (use-package lsp-mode
