@@ -5,6 +5,7 @@
 
 ;; Startup
 (setq inhibit-startup-message t)
+(setq frame-resize-pixelwise t)
 
 (defun init ()
   (message (emacs-init-time))
@@ -18,6 +19,11 @@
 ;; Hooks
 (add-hook 'server-after-make-frame-hook 'init)
 (add-hook 'after-init-hook 'init)
+(add-hook 'dired-mode-hook 'auto-revert-mode)
+
+;; LSP hooks
+(add-hook 'python-mode-hook 'lsp-deferred)
+(add-hook 'js-mode-hook 'lsp-deferred)
 
 ;; UI Tweaks
 (menu-bar-mode -1)
@@ -29,13 +35,20 @@
 (setq user-dialog-box nil)
 (setq frame-title-format '("Emacs " emacs-version))
 (setq ring-bell-function 'ignore)
+
+;; Other tweaks
 (setq python-indent-guess-indent-offset-verbose nil)
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
+(global-auto-revert-mode t)
 
 ;; Editing Tweaks
 (setq-default tab-width 4)
 (electric-pair-mode t)
+
+;; CUA
+(cua-mode t)
+(setq cua-keep-region-after-copy nil)
 
 ;; Functions
 
@@ -62,48 +75,48 @@
   (forward-line -1)
 )
 
-;; Copy whole line
-(defun copy-line ()
-  (interactive)
-  (move-beginning-of-line 1)
-  (kill-line 1)
-  (yank)
-  (open-line 1)
-)
-
-;; Paste whole line
-(defun paste-line ()
-  (interactive)
-  ;; (open-line 1)
-  (next-line)
-  (yank)
-)
-
 ;; Delete whole line
 (defun delete-line ()
   (interactive)
-  (beginning-of-line 1)
-  (delete-region
-   (point)
-   (save-excursion
-	 (move-end-of-line 1)
-	 (point)
-   )
-  )
-  ;; (delete-backward-char 1)
-  ;; ^ Enable if you want to remove \n char
+  (delete-region (line-beginning-position) (line-end-position))
+  (delete-backward-char 1)
 )
 
-;; Undo
+;; Copy and Duplicate line
+(defun duplicate-line ()
+  (interactive)
+  (kill-new (concat "\n" (buffer-substring (line-beginning-position) (line-end-position))))
+  (move-end-of-line 1)
+  (yank)
+)
+
+;; Redo
 (defun redo ()
   (interactive)
   (undo-redo 1)
   (end-of-line 1)
 )
 
-;; CUA
-(cua-mode t)
-(setq cua-keep-region-after-copy nil)
+;; Handle sidebar
+(defun toggle-sidebar ()
+  (interactive)
+  (neotree-toggle)
+  ;; (treemacs)
+  ;; (dired-sidebar-toggle-sidebar)
+)
+
+(defun toggle-terminal ()
+  (interactive)
+  (split-window-below)
+  (windmove-down)
+  (multi-vterm)
+)
+
+;; Set seperate file for customize commands
+(setq custom-file "~/.emacs.d/custom.el")
+
+;; Path
+(add-to-list 'exec-path "~/.local/bin")
 
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
@@ -157,6 +170,17 @@
   (setq neo-autorefresh t)
 )
 
+(use-package dired-sidebar
+  :init
+    (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  
+  :config
+  (setq dired-sidebar-theme 'nerd)
+)
+
 ;; Completions
 (use-package corfu
   :custom
@@ -184,13 +208,14 @@
 )
 
 (use-package lsp-mode
-  :config
-  (setq lsp-auto-guess-root t)
-)
-
-(use-package lsp-ui
   :init
-  (lsp-ui-mode)
+  (setq lsp-auto-guess-root t)
+  (setq lsp-diagnostics-provider :none)
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-lens-enable nil)
+  (setq lsp-ui-doc-show-with-cursor nil)
+  (setq lsp-ui-sideline-enable nil)
+
 )
 
 (use-package vertico
@@ -203,14 +228,15 @@
   (savehist-mode)
 )
 
-;; Path
-(add-to-list 'exec-path "~/.local/bin")
-
+(use-package vterm
+  :config
+  (setq vterm-kill-buffer-on-exit t)
+)
+(use-package multi-vterm)
 ;; Keybindings
 
 ;; Sidebar toggling
-(bind-key* "C-S-K" 'neotree-toggle)
-;; (bind-key* "C-S-K" 'treemacs)
+(bind-key* "C-S-K" 'toggle-sidebar)
 
 ;; Zoom
 (bind-key* "C-=" 'text-scale-increase)
@@ -229,22 +255,31 @@
 ;; Comments
 (bind-key* "C-/" 'comment)
 
-;; Copy/Paste line
-(bind-key* "C-c C-c" 'copy-line)
-(bind-key* "C-c C-v" 'paste-line)
+;; Mark all
+(bind-key* "C-a" 'mark-whole-buffer)
+
+;; Copy/Paste/Cut
+(global-set-key (kbd "C-c C-v") 'duplicate-line)
 
 ;; Delete line
 (bind-key* "S-<delete>" 'delete-line)
 
-;; Redo
+;; Undo/Redo
+(bind-key* "C-z" 'undo)
 (bind-key* "C-y" 'redo)
+
+;; Search stuff
+(bind-key* "C-f" 'isearch-forward)
+(define-key isearch-mode-map "\C-f" 'isearch-repeat-forward)
 
 ;; Make new frame
 (bind-key* "C-n" 'make-frame)
+
+;; Terminal
+(bind-key* "C-S-t" 'toggle-terminal)
 
 ;; Change buffer
 (bind-key* "C-<tab>" 'switch-to-next-buffer)
 (bind-key* "C-<iso-lefttab>" 'switch-to-prev-buffer)
 
-;; Set seperate file for customize commands
-(setq custom-file (concat user-emacs-directory "/custom.el"))
+(bind-key* "C-x k" 'kill-buffer-and-window)
