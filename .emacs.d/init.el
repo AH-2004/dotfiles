@@ -123,7 +123,9 @@
 (add-to-list 'default-frame-alist '(font . "Consolas 10"))
 ;; (load-theme 'tron-legacy t)
 ;; (load-theme 'dracula t)
-(load-theme 'exotica t)
+;; (load-theme 'exotica t)
+
+(if (display-graphic-p) (load-theme 'exotica t) (load-theme 'dracula t))
 
 ;; Packages
 (require 'package)
