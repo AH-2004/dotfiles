@@ -118,14 +118,12 @@
 ;; Path
 (add-to-list 'exec-path "~/.local/bin")
 
-;; Theme
+;; Themes
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (add-to-list 'default-frame-alist '(font . "Consolas 10"))
 ;; (load-theme 'tron-legacy t)
-;; (load-theme 'dracula t)
+(load-theme 'dracula t)
 ;; (load-theme 'exotica t)
-
-(if (display-graphic-p) (load-theme 'exotica t) (load-theme 'dracula t))
 
 ;; Packages
 (require 'package)
