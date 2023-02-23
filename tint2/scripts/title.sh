@@ -2,7 +2,7 @@ NAME=$(xdotool getactivewindow getwindowname)
 PID=$(xdotool getactivewindow getwindowpid)
 
 if [[ $NAME == *"-"* ]]; then
-	NAME="${NAME##* }"
+	NAME="${NAME##*- }"
 fi
 
 if [[ $1 == "--pid" ]]; then
