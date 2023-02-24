@@ -34,6 +34,13 @@ case $1 in
 	--pid | -p)
 		echo $(xdotool getactivewindow getwindowpid)
 		;;
+	--name | -n)
+		NAME=$(xdotool getactivewindow getwindowname)
+		if [[ $NAME == *"-"* ]]; then
+			NAME="${NAME##*- }"
+		fi
+		echo "$NAME"
+		;;
 	*)
 		help
 		;;

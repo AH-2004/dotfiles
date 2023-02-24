@@ -7,10 +7,10 @@ background_color_hover = #008080 100
 # rounded = 0
 
 # Panel
-panel_size = 100% 3%
+panel_size = 100% 30
 panel_position = top center horizontal
 # plank-toggle, rofi, previous, play-pause, next, freespace, clock, freespace, executor, systray, executor
-panel_items = :E:EPPP:FSBPPP
+panel_items = :E:E:PPP:FSBPPP
 
 mouse_effects = 1
 
@@ -98,6 +98,10 @@ separator_size = 4
 separator = new
 separator_style = empty
 separator_size = 8
+
+separator = new
+separator_style = empty
+separator_size = 4
 
 separator = new
 separator_style = empty
