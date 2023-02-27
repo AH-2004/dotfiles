@@ -41,26 +41,17 @@
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
 (global-auto-revert-mode t)
+(add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 
 ;; Editing Tweaks
 (setq-default tab-width 4)
 (electric-pair-mode t)
 
+(defvaralias 'c-basic-offset 'tab-width)
+
 ;; CUA
 (cua-mode t)
 (setq cua-keep-region-after-copy nil)
-
-;; Set seperate file for customize commands
-(setq custom-file "~/.emacs.d/custom.el")
-
-;; Path
-(add-to-list 'exec-path "~/.local/bin")
-
-;; Themes
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(add-to-list 'default-frame-alist '(font . "Consolas 10"))
-(load-theme 'wilmersdorf t)
-;; (load-theme 'dracula t)
 
 ;; Functions
 
@@ -124,6 +115,20 @@
   (multi-vterm)
 )
 
+;; Set seperate file for customize commands
+(setq custom-file "~/.emacs.d/custom.el")
+
+;; Path
+(add-to-list 'exec-path "~/.local/bin")
+
+;; Theme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(add-to-list 'default-frame-alist '(font . "Consolas 10"))
+;; (load-theme 'tron-legacy t)
+;; (load-theme 'dracula t)
+;; (load-theme 'exotica t)
+(load-theme 'wilmersdorf t)
+
 ;; Packages
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -186,7 +191,7 @@
   (corfu-cycle t)
   (corfu-auto t)
   (corfu-auto-delay 0.25)
-  (corfu-quit-no-match nil)
+  ;; (corfu-quit-no-match nil)
   (corfu-min-width 40)
   (corfu-max-width corfu-min-width)
   (corfu-scroll-magin 4)
@@ -227,11 +232,56 @@
   (savehist-mode)
 )
 
+;; Terminal
 (use-package vterm
   :config
   (setq vterm-kill-buffer-on-exit t)
 )
 (use-package multi-vterm)
+
+;; Tabs
+
+(use-package centaur-tabs
+  :init
+  (centaur-tabs-mode)
+  :config
+  (setq centaur-tabs-style "bar")
+  (setq centaur-tabs-set-icons t)
+  ;; (setq centaur-tabs-plain-icons t)
+  (setq centaur-tabs-show-new-tab-button nil)
+  (setq centaur-tabs-cycle-scope 'tabs)
+  (setq centaur-tabs-height 24)
+  (setq centaur-tabs-show-navigation-buttons t)
+  (setq centaur-tabs-set-modified-marker t)
+  (centaur-tabs-change-fonts "Consolas" 100)
+)
+
+(defun tst ()
+  (interactive)
+  (message "Hello from tst")
+)
+
+(defun centaur-tabs-buffer-groups ()
+  (list
+   (cond
+	((or
+	  (string-equal (buffer-name) "*notes*")
+	  (string-equal (buffer-name) "*Messages*")
+	  (and (buffer-file-name) (string-equal (file-name-directory (buffer-file-name)) (string-replace "~" (getenv "HOME") user-emacs-directory)))
+	  )"emacs")
+
+	((or
+	  (string-equal (buffer-name) "*pylsp*")
+	  (string-equal (buffer-name) "*pylsp::stderr*")
+	  )"lsp")
+
+	(t "others") ;; This is where the buffers will go if none of the about conditions are met.
+	
+	(t (centaur-tabs-get-group-name (current-buffer)))
+   )
+  )
+)
+
 ;; Keybindings
 
 ;; Sidebar toggling
@@ -283,3 +333,4 @@
 
 ;; Unbind unwanted keys
 (global-unset-key (kbd "C-x C-z"))
+(bind-key* "C-x C-z" 'tst)
