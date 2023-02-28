@@ -21,6 +21,9 @@
 (add-hook 'after-init-hook 'init)
 (add-hook 'dired-mode-hook 'auto-revert-mode)
 
+;; Tab hooks
+(add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
+
 ;; LSP hooks
 (add-hook 'python-mode-hook 'lsp-deferred)
 (add-hook 'js-mode-hook 'lsp-deferred)
@@ -236,8 +239,10 @@
 (use-package vterm
   :config
   (setq vterm-kill-buffer-on-exit t)
+  (bind-key "C-S-v" 'vterm-yank)
 )
 (use-package multi-vterm)
+(defalias 'term 'multi-vterm)
 
 ;; Tabs
 
@@ -254,6 +259,8 @@
   (setq centaur-tabs-show-navigation-buttons t)
   (setq centaur-tabs-set-modified-marker t)
   (centaur-tabs-change-fonts "Consolas" 100)
+  ;; (centaur-tabs-enable-buffer-reordering)
+  ;; (setq centaur-tabs-adjust-buffer-order 'left)
 )
 
 (defun tst ()
@@ -273,6 +280,8 @@
 	((or
 	  (string-equal (buffer-name) "*pylsp*")
 	  (string-equal (buffer-name) "*pylsp::stderr*")
+	  (string-equal (buffer-name) "*texlab*")
+	  (string-equal (buffer-name) "*texlab::stderr*")
 	  )"lsp")
 
 	(t "others") ;; This is where the buffers will go if none of the about conditions are met.
@@ -328,8 +337,10 @@
 ;; (bind-key* "C-S-t" 'toggle-terminal)
 
 ;; Change buffer
-(bind-key* "C-<tab>" 'switch-to-next-buffer)
-(bind-key* "C-<iso-lefttab>" 'switch-to-prev-buffer)
+(bind-key* "C-<tab>" 'centaur-tabs-forward)
+(bind-key* "C-<iso-lefttab>" 'centaur-tabs-backward)
+(bind-key* "C-x <right>" 'centaur-tabs-forward-group)
+(bind-key* "C-x <left>" 'centaur-tabs-backward-group)
 
 ;; Unbind unwanted keys
 (global-unset-key (kbd "C-x C-z"))
