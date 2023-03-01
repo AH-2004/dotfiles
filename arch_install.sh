@@ -5,7 +5,7 @@
 # Make partitions and mount before running script
 
 # lsblk
-# cfdisk /dev/DISK
+# cfdisk /dev/DISK (PICK GPT)
 
 # 300mib efi
 # 512mib sawp
@@ -20,9 +20,10 @@
 # mount /dev/EFI PARTITION /mnt/boot
 
 pacman -Sy --noconfirm archlinux-keyring
-pacstrap /mnt base linux linux-firmware nano neofetch
+pacstrap /mnt base linux base-devel linux-firmware nano neofetch git
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
+mkdir /boot/efi
 
 echo 'LANG="en_US.UTF-8"' >> /etc/locale.conf
 echo 'LC_COLLATE="C"' >> /etc/locale.conf
@@ -34,6 +35,8 @@ useradd -m --badname -G wheel AH
 # Set password later using passwd
 # Setup sudo yourself /etc/sudoers
 
-pacman -S --noconfirm grub os-prober
-grub-install --recheck --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+pacman -S --noconfirm grub os-prober efibootmgr
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB --removable
 grub-mkconfig -o /boot/grub/grub.cfg
+exit
+echo "DONE"
