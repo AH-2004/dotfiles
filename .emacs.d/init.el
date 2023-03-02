@@ -345,3 +345,8 @@
 ;; Unbind unwanted keys
 (global-unset-key (kbd "C-x C-z"))
 (bind-key* "C-x C-z" 'tst)
+
+
+;; Note:
+;; If setting up on new system we need some dependencies:
+;; base-devel, cmake, make, noto-fonts
