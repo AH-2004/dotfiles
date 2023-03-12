@@ -53,21 +53,21 @@ button_text = 
 button_font = Material Icons 12
 button_font_color = #FFFFFF 100
 button_padding = 8 8
-button_lclick_command = playerctl -p spotify previous
+button_lclick_command = playerctl -i chromium previous
 
 button = new
 button_text = 
 button_font = Material Icons 12
 button_font_color = #FFFFFF 100
 button_padding = 8 8
-button_lclick_command = playerctl -p spotify play-pause
+button_lclick_command = playerctl -i chromium play-pause
 
 button = new
 button_text = 
 button_font = Material Icons 12
 button_font_color = #FFFFFF 100
 button_padding = 8 8
-button_lclick_command = playerctl -p spotify next
+button_lclick_command = playerctl -i chromium next
 
 button = new
 button_text = 
