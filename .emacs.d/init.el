@@ -20,13 +20,21 @@
 (add-hook 'server-after-make-frame-hook 'init)
 (add-hook 'after-init-hook 'init)
 (add-hook 'dired-mode-hook 'auto-revert-mode)
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "RET") #'dired-find-alternate-file)))
+
+;; Writeroom hooks
+(add-hook 'writeroom-mode-enable-hook (lambda ()(setq display-line-numbers nil) (set-fringe-mode 0) (centaur-tabs-mode -1)))
+(add-hook 'writeroom-mode-disable-hook (lambda () (setq display-line-numbers t) (set-fringe-mode nil) (centaur-tabs-mode 1)))
 
 ;; Tab hooks
-(add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
+;; (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
 
 ;; LSP hooks
 (add-hook 'python-mode-hook 'lsp-deferred)
 (add-hook 'js-mode-hook 'lsp-deferred)
+(add-hook 'c++-mode-hook 'lsp-deferred)
+(add-hook 'c-mode-hook 'lsp-deferred)
 
 ;; UI Tweaks
 (menu-bar-mode -1)
@@ -38,23 +46,37 @@
 (setq user-dialog-box nil)
 (setq frame-title-format '("Emacs " emacs-version))
 (setq ring-bell-function 'ignore)
+(add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
+(defadvice split-window (after split-window-after activate) (other-window 1))
+
+(setq-default mode-line-format
+	  (list
+	   mode-line-front-space
+	   "%b"
+	   mode-line-front-space
+	   mode-line-modified
+	   mode-line-front-space
+	   "L%l"
+	   mode-line-front-space
+	   "%I"
+	   mode-line-front-space
+	   mode-line-modes
+	   ))
+
+;; (setq-default mode-line-format (cons (propertize "\u200b" 'display '((raise 0) (height 1.5))) mode-line-format))
 
 ;; Other tweaks
 (setq python-indent-guess-indent-offset-verbose nil)
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
+(setq browse-url-browser-function 'browse-url-xdg-open)
+(put 'dired-find-alternate-file 'disabled nil)
 (global-auto-revert-mode t)
-(add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 
 ;; Editing Tweaks
 (setq-default tab-width 4)
 (electric-pair-mode t)
-
 (defvaralias 'c-basic-offset 'tab-width)
-
-;; CUA
-(cua-mode t)
-(setq cua-keep-region-after-copy nil)
 
 ;; Functions
 
@@ -65,20 +87,6 @@
   (comment-line 1)
   (previous-line 1)
   (jump-to-register 1)
-)
-
-;; Move current line
-(defun move-line-up ()
-  (interactive)
-  (transpose-lines 1)
-  (forward-line -2)
-)
-
-(defun move-line-down ()
-  (interactive)
-  (forward-line 1)
-  (transpose-lines 1)
-  (forward-line -1)
 )
 
 ;; Delete whole line
@@ -109,13 +117,6 @@
   (neotree-toggle)
   ;; (treemacs)
   ;; (dired-sidebar-toggle-sidebar)
-)
-
-(defun toggle-terminal ()
-  (interactive)
-  (split-window-below)
-  (windmove-down)
-  (multi-vterm)
 )
 
 ;; Set seperate file for customize commands
@@ -193,7 +194,8 @@
   :custom
   (corfu-cycle t)
   (corfu-auto t)
-  (corfu-auto-delay 0.25)
+  ;; (corfu-auto-delay 0.25)
+  (corfu-auto-delay 0.05)
   ;; (corfu-quit-no-match nil)
   (corfu-min-width 40)
   (corfu-max-width corfu-min-width)
@@ -222,7 +224,7 @@
   (setq lsp-lens-enable nil)
   (setq lsp-ui-doc-show-with-cursor nil)
   (setq lsp-ui-sideline-enable nil)
-
+  (setq lsp-signature-auto-activate nil)
 )
 
 (use-package vertico
@@ -239,33 +241,34 @@
 (use-package vterm
   :config
   (setq vterm-kill-buffer-on-exit t)
-  (bind-key "C-S-v" 'vterm-yank)
+  (setq vterm-buffer-name-string "vterm")
 )
 (use-package multi-vterm)
 (defalias 'term 'multi-vterm)
 
-;; Tabs
+;; (use-package solaire-mode
+;;   :init
+;;   (solaire-global-mode)
+;; )
 
+;; Tabs
 (use-package centaur-tabs
   :init
   (centaur-tabs-mode)
   :config
   (setq centaur-tabs-style "bar")
   (setq centaur-tabs-set-icons t)
-  ;; (setq centaur-tabs-plain-icons t)
   (setq centaur-tabs-show-new-tab-button nil)
   (setq centaur-tabs-cycle-scope 'tabs)
   (setq centaur-tabs-height 24)
   (setq centaur-tabs-show-navigation-buttons t)
   (setq centaur-tabs-set-modified-marker t)
   (centaur-tabs-change-fonts "Consolas" 100)
-  ;; (centaur-tabs-enable-buffer-reordering)
-  ;; (setq centaur-tabs-adjust-buffer-order 'left)
 )
 
 (defun tst ()
   (interactive)
-  (message "Hello from tst")
+  (message "Test Function")
 )
 
 (defun centaur-tabs-buffer-groups ()
@@ -282,13 +285,40 @@
 	  (string-equal (buffer-name) "*pylsp::stderr*")
 	  (string-equal (buffer-name) "*texlab*")
 	  (string-equal (buffer-name) "*texlab::stderr*")
+	  (string-equal (buffer-name) "*clangd*")
+	  (string-equal (buffer-name) "*clangd::stderr*")
 	  )"lsp")
+
+	;; ((or
+	;;   (string-equal (major-mode) "vterm-mode")
+	;;   )"Vterm")
 
 	(t "others") ;; This is where the buffers will go if none of the about conditions are met.
 	
 	(t (centaur-tabs-get-group-name (current-buffer)))
    )
   )
+)
+
+;; Writeroom
+(use-package writeroom-mode
+  :config
+  (setq writeroom-width 0.9)
+  (setq writeroom-fringes-outside-margins nil)
+)
+(defalias 'zen 'writeroom-mode)
+
+;; Openwith
+(use-package openwith
+  :init
+  (openwith-mode t)
+  :config
+  (setq openwith-associations '(("\\.pdf\\'" "zathura" (file))))
+)
+
+(use-package good-scroll
+  :init
+  (good-scroll-mode)
 )
 
 ;; Keybindings
@@ -304,8 +334,8 @@
 (bind-key* "C-S-g" 'display-line-numbers-mode)
 
 ;; Move lines
-(bind-key* "C-S-<up>" 'move-line-up)
-(bind-key* "C-S-<down>" 'move-line-down)
+(bind-key* "C-S-<up>" 'drag-stuff-up)
+(bind-key* "C-S-<down>" 'drag-stuff-down)
 
 ;; Completions
 (bind-key* "C-SPC" 'completion-at-point)
@@ -317,7 +347,8 @@
 (bind-key* "C-a" 'mark-whole-buffer)
 
 ;; Copy/Paste/Cut
-(global-set-key (kbd "C-c C-v") 'duplicate-line)
+;; (global-set-key (kbd "C-c C-v") 'duplicate-line)
+(bind-key* "C-c C-v" 'duplicate-line)
 
 ;; Delete line
 (bind-key* "S-<delete>" 'delete-line)
@@ -328,25 +359,27 @@
 
 ;; Search stuff
 (bind-key* "C-f" 'isearch-forward)
-(define-key isearch-mode-map "\C-f" 'isearch-repeat-forward)
+(define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)
+(define-key isearch-mode-map (kbd "<backspace>") 'isearch-del-char)
 
-;; Make new frame
-(bind-key* "C-n" 'make-frame)
+;; Dired
+(bind-key* "C-n" 'dired-create-empty-file)
 
 ;; Terminal
-;; (bind-key* "C-S-t" 'toggle-terminal)
+(global-set-key (kbd "C-x t") 'term)
+(bind-key "C-S-v" 'vterm-yank)
 
 ;; Change buffer
+;; (bind-key* "C-<tab>" 'tst)
 (bind-key* "C-<tab>" 'centaur-tabs-forward)
 (bind-key* "C-<iso-lefttab>" 'centaur-tabs-backward)
-(bind-key* "C-x <right>" 'centaur-tabs-forward-group)
-(bind-key* "C-x <left>" 'centaur-tabs-backward-group)
+(global-set-key (kbd "C-x <right>") 'centaur-tabs-forward-group)
+(global-set-key (kbd "C-x <left>") 'centaur-tabs-backward-group)
 
 ;; Unbind unwanted keys
 (global-unset-key (kbd "C-x C-z"))
-(bind-key* "C-x C-z" 'tst)
+;; (bind-key* "C-x C-z" 'tst)
 
-
-;; Note:
-;; If setting up on new system we need some dependencies:
-;; base-devel, cmake, make, noto-fonts
+;; CUA
+(cua-mode t)
+(setq cua-keep-region-after-copy nil)
