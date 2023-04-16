@@ -298,7 +298,6 @@
   `(avy-lead-face-1 ((t (:background ,face3 :foreground ,fullBlack :weight bold))))
   `(avy-lead-face-2 ((t (:background ,face4 :foreground ,fullBlack :weight bold))))
 
-
   ;; indent-guide faces
   `(indent-guide-face ((t (:foreground ,line-highlight))))
   `(highlight-indent-guides-character-face ((t (:foreground ,line-highlight))))

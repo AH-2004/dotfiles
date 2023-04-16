@@ -10,11 +10,14 @@
 (defun init ()
   (message (emacs-init-time))
   (find-file "~/.emacs.d/*notes*")
-  (cd "~")
-  
+  (cd "~")  
   (when (get-buffer "*scratch*") (kill-buffer "*scratch*"))
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 )
+
+;; Require packages
+(require 'package)
+(require 'org)
 
 ;; Hooks
 (add-hook 'server-after-make-frame-hook 'init)
@@ -24,7 +27,7 @@
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "RET") #'dired-find-alternate-file)))
 
 ;; Writeroom hooks
-(add-hook 'writeroom-mode-enable-hook (lambda ()(setq display-line-numbers nil) (set-fringe-mode 0) (centaur-tabs-mode -1)))
+(add-hook 'writeroom-mode-enable-hook (lambda () (setq display-line-numbers nil) (set-fringe-mode 0) (centaur-tabs-mode -1)))
 (add-hook 'writeroom-mode-disable-hook (lambda () (setq display-line-numbers t) (set-fringe-mode nil) (centaur-tabs-mode 1)))
 
 ;; Tab hooks
@@ -36,16 +39,23 @@
 (add-hook 'c++-mode-hook 'lsp-deferred)
 (add-hook 'c-mode-hook 'lsp-deferred)
 
+;; Org mode hooks
+(add-hook 'org-mode-hook 'org-modern-mode)
+(add-hook 'org-mode-hook 'org-autolist-mode)
+
 ;; UI Tweaks
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (tooltip-mode -1)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'text-mode-hook 'display-line-numbers-mode)
+(add-hook 'text-mode-hook (lambda () (setq left-margin-width 5) (setq right-margin-width 5)))
 (setq user-dialog-box nil)
 (setq frame-title-format '("Emacs " emacs-version))
 (setq ring-bell-function 'ignore)
+(setq scroll-conservatively 10000)
+(setq auto-window-vscroll nil)
+(setq org-image-actual-width nil)
 (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 (defadvice split-window (after split-window-after activate) (other-window 1))
 
@@ -63,8 +73,6 @@
 	   mode-line-modes
 	   ))
 
-;; (setq-default mode-line-format (cons (propertize "\u200b" 'display '((raise 0) (height 1.5))) mode-line-format))
-
 ;; Other tweaks
 (setq python-indent-guess-indent-offset-verbose nil)
 (setq gc-cons-threshold 100000000)
@@ -75,8 +83,10 @@
 
 ;; Editing Tweaks
 (setq-default tab-width 4)
+(setq-default c-basic-offset tab-width)
+(setq-default python-indent-offset tab-width)
 (electric-pair-mode t)
-(defvaralias 'c-basic-offset 'tab-width)
+(setq org-support-shift-select t)
 
 ;; Functions
 
@@ -104,6 +114,12 @@
   (yank)
 )
 
+;; insert current date
+(defun today ()
+  (interactive)
+  (insert (shell-command-to-string "echo -n $(date +'%B %d, %Y')"))
+)
+
 ;; Redo
 (defun redo ()
   (interactive)
@@ -119,6 +135,17 @@
   ;; (dired-sidebar-toggle-sidebar)
 )
 
+(defun org-update ()
+  (interactive)
+  (universal-argument)
+  (org-update-statistics-cookies t)
+)
+
+(defun tst ()
+  (interactive)
+  (message "Hello World")
+)
+
 ;; Set seperate file for customize commands
 (setq custom-file "~/.emacs.d/custom.el")
 
@@ -128,13 +155,14 @@
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (add-to-list 'default-frame-alist '(font . "Consolas 10"))
+;; (add-to-list 'default-frame-alist '(font . "Liberation 10"))
 ;; (load-theme 'tron-legacy t)
 ;; (load-theme 'dracula t)
 ;; (load-theme 'exotica t)
+;; (load-theme 'white-sand t)
 (load-theme 'wilmersdorf t)
 
 ;; Packages
-(require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
@@ -148,10 +176,11 @@
   (setq all-the-icons-scale-factor 1.0)  
 )
 
-;; Sidebar
+;; Sidebars
 
 ;; Treemacs
 (use-package treemacs
+  :disabled t
   :config
   (progn
 	(setq treemacs-is-never-other-window t)
@@ -225,17 +254,9 @@
   (setq lsp-ui-doc-show-with-cursor nil)
   (setq lsp-ui-sideline-enable nil)
   (setq lsp-signature-auto-activate nil)
+  (setq lsp-enable-snippet nil)
 )
 
-(use-package vertico
-  :init
-  (vertico-mode)
-)
-
-(use-package savehist
-  :init
-  (savehist-mode)
-)
 
 ;; Terminal
 (use-package vterm
@@ -243,18 +264,12 @@
   (setq vterm-kill-buffer-on-exit t)
   (setq vterm-buffer-name-string "vterm")
 )
-(use-package multi-vterm)
-(defalias 'term 'multi-vterm)
-
-;; (use-package solaire-mode
-;;   :init
-;;   (solaire-global-mode)
-;; )
 
 ;; Tabs
 (use-package centaur-tabs
+  :disabled t
   :init
-  (centaur-tabs-mode)
+  (centaur-tabs-mode t)
   :config
   (setq centaur-tabs-style "bar")
   (setq centaur-tabs-set-icons t)
@@ -265,19 +280,18 @@
   (setq centaur-tabs-set-modified-marker t)
   (centaur-tabs-change-fonts "Consolas" 100)
 )
-
-(defun tst ()
-  (interactive)
-  (message "Test Function")
-)
-
 (defun centaur-tabs-buffer-groups ()
   (list
    (cond
 	((or
 	  (string-equal (buffer-name) "*notes*")
 	  (string-equal (buffer-name) "*Messages*")
-	  (and (buffer-file-name) (string-equal (file-name-directory (buffer-file-name)) (string-replace "~" (getenv "HOME") user-emacs-directory)))
+	  (and (buffer-file-name)
+		   (string-equal
+			(file-name-directory (buffer-file-name))
+			(string-replace "~" (getenv "HOME") user-emacs-directory)
+			)
+		   )
 	  )"emacs")
 
 	((or
@@ -288,10 +302,10 @@
 	  (string-equal (buffer-name) "*clangd*")
 	  (string-equal (buffer-name) "*clangd::stderr*")
 	  )"lsp")
-
-	;; ((or
-	;;   (string-equal (major-mode) "vterm-mode")
-	;;   )"Vterm")
+	
+	((or
+	  (string-equal (major-mode) "vterm-mode")
+	  )"Vterm")
 
 	(t "others") ;; This is where the buffers will go if none of the about conditions are met.
 	
@@ -306,7 +320,6 @@
   (setq writeroom-width 0.9)
   (setq writeroom-fringes-outside-margins nil)
 )
-(defalias 'zen 'writeroom-mode)
 
 ;; Openwith
 (use-package openwith
@@ -316,10 +329,24 @@
   (setq openwith-associations '(("\\.pdf\\'" "zathura" (file))))
 )
 
-(use-package good-scroll
-  :init
-  (good-scroll-mode)
-)
+;; (use-package org-padding
+;;  :config
+;;  (setq org-padding-block-begin-line-padding '(1 . 1))
+;;  (setq org-padding-block-end-line-padding '(1 . 1))
+;;  )
+
+(use-package multi-vterm)
+(use-package vertico :init (vertico-mode))
+(use-package savehist :init (savehist-mode))
+(use-package good-scroll :init (good-scroll-mode))
+(use-package org-autolist)
+(use-package org-modern)
+
+;; Aliases
+(defalias 'zen 'writeroom-mode)
+(defalias 'checkbox 'org-toggle-checkbox)
+(defalias 'save 'save-buffer)
+(defalias 'term 'multi-vterm)
 
 ;; Keybindings
 
@@ -347,7 +374,6 @@
 (bind-key* "C-a" 'mark-whole-buffer)
 
 ;; Copy/Paste/Cut
-;; (global-set-key (kbd "C-c C-v") 'duplicate-line)
 (bind-key* "C-c C-v" 'duplicate-line)
 
 ;; Delete line
@@ -359,25 +385,34 @@
 
 ;; Search stuff
 (bind-key* "C-f" 'isearch-forward)
-(define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)
-(define-key isearch-mode-map (kbd "<backspace>") 'isearch-del-char)
+(bind-key "C-f" 'isearch-repeat-forward isearch-mode-map)
+(bind-key "<tab>" 'isearch-repeat-forward isearch-mode-map)
+(bind-key "<backspace>" 'isearch-del-char isearch-mode-map)
 
 ;; Dired
 (bind-key* "C-n" 'dired-create-empty-file)
+(bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
+(bind-key "<f2>" 'dired-do-rename dired-mode-map)
+;; Org mode
+(bind-key "C-e" 'org-modern-mode org-mode-map)
 
 ;; Terminal
-(global-set-key (kbd "C-x t") 'term)
+(bind-key* "C-x t" 'term)
 (bind-key "C-S-v" 'vterm-yank)
 
-;; Change buffer
-;; (bind-key* "C-<tab>" 'tst)
+;; Tabs
 (bind-key* "C-<tab>" 'centaur-tabs-forward)
 (bind-key* "C-<iso-lefttab>" 'centaur-tabs-backward)
-(global-set-key (kbd "C-x <right>") 'centaur-tabs-forward-group)
-(global-set-key (kbd "C-x <left>") 'centaur-tabs-backward-group)
+(bind-key* "C-x <right>" 'centaur-tabs-forward-group)
+(bind-key* "C-x <left>" 'centaur-tabs-backward-group)
+
+;; Buffers and windows
+(bind-key* "C-x k" 'kill-buffer-and-window)
 
 ;; Unbind unwanted keys
-(global-unset-key (kbd "C-x C-z"))
+(unbind-key "<insert>")
+(unbind-key "<insertchar>")
+(unbind-key "C-x C-z")
 ;; (bind-key* "C-x C-z" 'tst)
 
 ;; CUA
