@@ -11,7 +11,7 @@
   (message (emacs-init-time))
   (find-file "~/.emacs.d/*notes*")
   (cd "~")  
-  (when (get-buffer "*scratch*") (kill-buffer "*scratch*"))
+  ;; (when (get-buffer "*scratch*") (kill-buffer "*scratch*"))
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 )
 
@@ -228,7 +228,7 @@
   ;; (corfu-quit-no-match nil)
   (corfu-min-width 40)
   (corfu-max-width corfu-min-width)
-  (corfu-scroll-magin 4)
+  (corfu-scroll-margin 4)
   
   :init
   (global-corfu-mode)
@@ -391,8 +391,10 @@
 
 ;; Dired
 (bind-key* "C-n" 'dired-create-empty-file)
+(bind-key* "C-d" 'dired-create-directory)
 (bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
 (bind-key "<f2>" 'dired-do-rename dired-mode-map)
+
 ;; Org mode
 (bind-key "C-e" 'org-modern-mode org-mode-map)
 
@@ -407,7 +409,8 @@
 (bind-key* "C-x <left>" 'centaur-tabs-backward-group)
 
 ;; Buffers and windows
-(bind-key* "C-x k" 'kill-buffer-and-window)
+;; (bind-key* "C-x k" 'kill-buffer-and-window)
+(bind-key* "C-x k" 'kill-buffer)
 
 ;; Unbind unwanted keys
 (unbind-key "<insert>")
