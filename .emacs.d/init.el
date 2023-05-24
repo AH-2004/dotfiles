@@ -27,8 +27,8 @@
 (add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "RET") #'dired-find-alternate-file)))
 
 ;; Writeroom hooks
-(add-hook 'writeroom-mode-enable-hook (lambda () (setq display-line-numbers nil) (set-fringe-mode 0) (centaur-tabs-mode -1)))
-(add-hook 'writeroom-mode-disable-hook (lambda () (setq display-line-numbers t) (set-fringe-mode nil) (centaur-tabs-mode 1)))
+(add-hook 'writeroom-mode-enable-hook (lambda () (setq display-line-numbers nil) (set-fringe-mode 0)))
+(add-hook 'writeroom-mode-disable-hook (lambda () (setq display-line-numbers t) (set-fringe-mode nil)))
 
 ;; Tab hooks
 ;; (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
@@ -154,7 +154,8 @@
 
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(add-to-list 'default-frame-alist '(font . "Consolas 10"))
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 9"))
+;; (add-to-list 'default-frame-alist '(font . "Consolas 10"))
 ;; (add-to-list 'default-frame-alist '(font . "Liberation 10"))
 ;; (load-theme 'tron-legacy t)
 ;; (load-theme 'dracula t)
@@ -256,7 +257,6 @@
   (setq lsp-signature-auto-activate nil)
   (setq lsp-enable-snippet nil)
 )
-
 
 ;; Terminal
 (use-package vterm
@@ -412,7 +412,7 @@
 ;; (bind-key* "C-x k" 'kill-buffer-and-window)
 (bind-key* "C-x k" 'kill-buffer)
 
-;; Unbind unwanted keys
+;; Unbind global unwanted keys
 (unbind-key "<insert>")
 (unbind-key "<insertchar>")
 (unbind-key "C-x C-z")
