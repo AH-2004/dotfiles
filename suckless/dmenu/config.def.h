@@ -1,26 +1,24 @@
-/* See LICENSE file for copyright and license details. */
-/* Default settings; can be overriden by command line. */
+// See LICENSE file for copyright and license details.
+// Default settings; can be overriden by command line.
 
-static int topbar = 1;                      /* -b  option; if 0, dmenu appears at bottom     */
-/* -fn option overrides fonts[0]; default X11 font or font set */
-static const char *fonts[] = {
-	"monospace:size=10"
-};
-static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
+static int topbar = 1; // -b option;
+static const char *fonts[] = { "IBM Plex Mono:size=10" }; // -fn option;
+static const char *prompt = NULL; // -p  option;
+static unsigned int lines = 0; // -l option; if nonzero, dmenu uses vertical
+
+// Colors
+static const char col_white[] = "#ffffff";
+static const char col_black[] = "#000000";
+static const char col_gray[] = "#0f1011";
+static const char col_magenta[] = "#bd93f9";
+static const char col_teal[] = "#008080";
+
 static const char *colors[SchemeLast][2] = {
-	/*     fg         bg       */
-	[SchemeNorm] = { "#bbbbbb", "#222222" },
-	[SchemeSel] = { "#eeeeee", "#005577" },
-	[SchemeOut] = { "#000000", "#00ffff" },
+    // fg, bg
+    [SchemeNorm] = { col_white, col_gray },
+    [SchemeSel] = { col_white, col_magenta },
+    [SchemeOut] = { col_black, col_magenta }
 };
-/* -l option; if nonzero, dmenu uses vertical list with given number of lines */
-static unsigned int lines      = 0;
-/* -h option; minimum height of a menu line */
-static unsigned int lineheight = 0;
-static unsigned int min_lineheight = 8;
 
-/*
- * Characters not considered part of a word while deleting words
- * for example: " /?\"&[]"
- */
+// Chars not considered part of a word while deleting words, for example: " /?\"&[]"
 static const char worddelimiters[] = " ";

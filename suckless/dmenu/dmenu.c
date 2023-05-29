@@ -149,7 +149,7 @@ drawmenu(void)
 {
 	unsigned int curpos;
 	struct item *item;
-	int x = 0, y = 0, fh = drw->fonts->h, w;
+	int x = 0, y = 0, w;
 
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
@@ -166,7 +166,7 @@ drawmenu(void)
 	curpos = TEXTW(text) - TEXTW(&text[cursor]);
 	if ((curpos += lrpad / 2 - 1) < w) {
 		drw_setscheme(drw, scheme[SchemeNorm]);
-		drw_rect(drw, x + curpos, 2 + (bh - fh) / 2, 2, fh - 4, 1, 0);
+		drw_rect(drw, x + curpos, 2, 2, bh - 4, 1, 0);
 	}
 
 	if (lines > 0) {
@@ -551,11 +551,11 @@ static void
 readstdin(void)
 {
 	char *line = NULL;
-	size_t i, junk, itemsiz = 0;
+	size_t i, itemsiz = 0, linesiz = 0;
 	ssize_t len;
 
 	/* read each line from stdin and add it to the item list */
-	for (i = 0; (len = getline(&line, &junk, stdin)) != -1; i++) {
+	for (i = 0; (len = getline(&line, &linesiz, stdin)) != -1; i++) {
 		if (i + 1 >= itemsiz) {
 			itemsiz += 256;
 			if (!(items = realloc(items, itemsiz * sizeof(*items))))
@@ -563,9 +563,10 @@ readstdin(void)
 		}
 		if (line[len - 1] == '\n')
 			line[len - 1] = '\0';
-		items[i].text = line;
+		if (!(items[i].text = strdup(line)))
+			die("strdup:");
+
 		items[i].out = 0;
-		line = NULL; /* next call of getline() allocates a new line */
 	}
 	free(line);
 	if (items)
@@ -635,7 +636,6 @@ setup(void)
 
 	/* calculate menu geometry */
 	bh = drw->fonts->h + 2;
-	bh = MAX(bh,lineheight);	/* make a menu line AT LEAST 'lineheight' tall */
 	lines = MAX(lines, 0);
 	mh = (lines + 1) * bh;
 #ifdef XINERAMA
@@ -686,7 +686,7 @@ setup(void)
 	swa.override_redirect = True;
 	swa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
 	swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
-	win = XCreateWindow(dpy, parentwin, x, y, mw, mh, 0,
+	win = XCreateWindow(dpy, root, x, y, mw, mh, 0,
 	                    CopyFromParent, CopyFromParent, CopyFromParent,
 	                    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
 	XSetClassHint(dpy, win, &ch);
@@ -701,6 +701,7 @@ setup(void)
 
 	XMapRaised(dpy, win);
 	if (embed) {
+		XReparentWindow(dpy, win, parentwin, x, y);
 		XSelectInput(dpy, parentwin, FocusChangeMask | SubstructureNotifyMask);
 		if (XQueryTree(dpy, parentwin, &dw, &w, &dws, &du) && dws) {
 			for (i = 0; i < du && dws[i] != win; ++i)
@@ -716,7 +717,7 @@ setup(void)
 static void
 usage(void)
 {
-	die("usage: dmenu [-bfiv] [-l lines] [-h height] [-p prompt] [-fn font] [-m monitor]\n"
+	die("usage: dmenu [-bfiv] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
 	    "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]");
 }
 
@@ -743,10 +744,6 @@ main(int argc, char *argv[])
 		/* these options take one argument */
 		else if (!strcmp(argv[i], "-l"))   /* number of lines in vertical list */
 			lines = atoi(argv[++i]);
-		else if (!strcmp(argv[i], "-h")) { /* minimum height of one menu line */
-			lineheight = atoi(argv[++i]);
-			lineheight = MAX(lineheight, min_lineheight);
-		}
 		else if (!strcmp(argv[i], "-m"))
 			mon = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "-p"))   /* adds prompt to left of input field */
