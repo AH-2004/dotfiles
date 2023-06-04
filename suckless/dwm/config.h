@@ -6,6 +6,8 @@ static const unsigned int snap = 16; // snap pixel
 static const unsigned int gappx = 12; // gap pixel between windows
 static const int showbar = 1; // 0 means no bar
 static const int topbar = 1;  // 0 means bottom bar
+static const int splitstatus = 1; // 1 for split status items
+static const char *splitdelim = ";"; // Character used for separating status 
 static const int refreshrate = 240; // monitor refreshrate
 static const char *fonts[] = { "IBM Plex Mono:size=9" };
 static const char dmenufont[] = "IBM Plex Mono:size=9";
