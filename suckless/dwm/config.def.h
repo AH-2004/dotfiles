@@ -9,7 +9,7 @@ static const int topbar = 1;  // 0 means bottom bar
 static const int splitstatus = 1; // 1 for split status items
 static const char *splitdelim = ";"; // Character used for separating status 
 static const int refreshrate = 240; // monitor refreshrate
-static const char *fonts[] = { "IBM Plex Mono:size=9" };
+static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=10" };
 static const char dmenufont[] = "IBM Plex Mono:size=9";
 static const unsigned int baralpha = OPAQUE;
 static const unsigned int borderalpha = OPAQUE;
