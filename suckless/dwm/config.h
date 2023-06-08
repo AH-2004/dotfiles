@@ -8,10 +8,10 @@ static const int showbar = 1;
 static const int topbar = 1;
 static const int splitstatus = 1;
 static const char *splitdelim = ";"; 
-static const int refreshrate = 240;
+static const int refreshrate = 60;
 
 // Fonts
-static const char *fonts[] = { "IBM Plex Mono:size=9" };
+static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=10" };
 static const char dmenufont[] = "IBM Plex Mono:size=9";
 
 // Colors

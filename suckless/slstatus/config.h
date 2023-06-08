@@ -4,7 +4,7 @@
 const unsigned int interval = 500;
 
 /* text to show if no value can be retrieved */
-static const char unknown_str[] = "n/a";
+static const char unknown_str[] = "";
 
 /* maximum output string length */
 #define MAXLEN 2048
@@ -66,7 +66,7 @@ static const char unknown_str[] = "n/a";
 static const struct arg args[] = {
 	/* function format          argument */
 	{ datetime, "%s", "%A %B %d | %r;" },
-	{ battery_perc, " %s | ", "BAT0" },
+	{ run_command, "%s | ", "/home/AH/code/git/dotfiles/suckless/slstatus/scripts/battery.sh" },
 	{ run_command, " %s | ", "printf '%.0f' $(light -G)"},
 	{ run_command, " %s | ", "pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print $5}'" },
 	{ temp, "%s°C | ", "/sys/class/thermal/thermal_zone0/temp" },
