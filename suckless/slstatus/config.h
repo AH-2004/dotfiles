@@ -71,5 +71,5 @@ static const struct arg args[] = {
 	{ run_command, " %s | ", "pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print $5}'" },
 	{ temp, "%s°C | ", "/sys/class/thermal/thermal_zone0/temp" },
 	{ temp, "%s°C | ", "/sys/class/thermal/thermal_zone1/temp" },
-	{ wifi_essid, " %s ", "wlan0" }
+	{ wifi_essid, " %s |", "wlan0" }
 };

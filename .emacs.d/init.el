@@ -18,38 +18,13 @@
 ;; Require packages
 (require 'package)
 (require 'org)
-
-;; Hooks
-(add-hook 'server-after-make-frame-hook 'init)
-(add-hook 'after-init-hook 'init)
-(add-hook 'dired-mode-hook 'auto-revert-mode)
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-(add-hook 'dired-mode-hook (lambda () (local-set-key (kbd "RET") #'dired-find-alternate-file)))
-
-;; Writeroom hooks
-(add-hook 'writeroom-mode-enable-hook (lambda () (setq display-line-numbers nil) (set-fringe-mode 0)))
-(add-hook 'writeroom-mode-disable-hook (lambda () (setq display-line-numbers t) (set-fringe-mode nil)))
-
-;; Tab hooks
-;; (add-hook 'vterm-mode-hook 'centaur-tabs-local-mode)
-
-;; LSP hooks
-(add-hook 'python-mode-hook 'lsp-deferred)
-(add-hook 'js-mode-hook 'lsp-deferred)
-(add-hook 'c++-mode-hook 'lsp-deferred)
-(add-hook 'c-mode-hook 'lsp-deferred)
-
-;; Org mode hooks
-(add-hook 'org-mode-hook 'org-modern-mode)
-(add-hook 'org-mode-hook 'org-autolist-mode)
+(require 'dired)
 
 ;; UI Tweaks
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (tooltip-mode -1)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'text-mode-hook (lambda () (setq left-margin-width 5) (setq right-margin-width 5)))
 (setq user-dialog-box nil)
 (setq frame-title-format '("Emacs " emacs-version))
 (setq ring-bell-function 'ignore)
@@ -59,26 +34,27 @@
 (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 (defadvice split-window (after split-window-after activate) (other-window 1))
 
-(setq-default mode-line-format
-	  (list
-	   mode-line-front-space
-	   "%b"
-	   mode-line-front-space
-	   mode-line-modified
-	   mode-line-front-space
-	   "L%l"
-	   mode-line-front-space
-	   "%I"
-	   mode-line-front-space
-	   mode-line-modes
-	   ))
+(setq-default
+ mode-line-format
+ (list
+  mode-line-front-space
+  "%b"
+  mode-line-front-space
+  mode-line-modified
+  mode-line-front-space
+  "L%l"
+  mode-line-front-space
+  "%I"
+  mode-line-front-space
+  mode-line-modes
+  ))
 
 ;; Other tweaks
 (setq python-indent-guess-indent-offset-verbose nil)
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
 (setq browse-url-browser-function 'browse-url-xdg-open)
-(put 'dired-find-alternate-file 'disabled nil)
+(setq dired-kill-when-opening-new-dired-buffer t)
 (global-auto-revert-mode t)
 
 ;; Editing Tweaks
@@ -87,6 +63,28 @@
 (setq-default python-indent-offset tab-width)
 (electric-pair-mode t)
 (setq org-support-shift-select t)
+(setq org-replace-disputed-keys t)
+
+;; Hooks
+(add-hook 'server-after-make-frame-hook 'init)
+(add-hook 'after-init-hook 'init)
+(add-hook 'dired-mode-hook (lambda () (auto-revert-mode) (all-the-icons-dired-mode)))
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'text-mode-hook
+		  (lambda ()
+			(setq left-margin-width 5)
+			(setq right-margin-width 5)
+			(setq display-line-numbers nil)
+			(set-fringe-mode 0)
+			(turn-on-visual-line-mode)))
+
+;; LSP hooks
+(add-hook 'eglot-managed-mode-hook (lambda () (flymake-mode -1) (eglot-inlay-hints-mode -1)))
+;; (add-hook 'c++-mode-hook 'eglot-ensure)
+;; (add-hook 'c-mode-hook 'eglot-ensure)
+
+;; Org mode hooks
+(add-hook 'org-mode-hook (lambda () (org-modern-mode) (org-autolist-mode)))
 
 ;; Functions
 
@@ -114,7 +112,7 @@
   (yank)
 )
 
-;; insert current date
+;; Insert current date
 (defun today ()
   (interactive)
   (insert (shell-command-to-string "echo -n $(date +'%B %d, %Y')"))
@@ -125,14 +123,6 @@
   (interactive)
   (undo-redo 1)
   (end-of-line 1)
-)
-
-;; Handle sidebar
-(defun toggle-sidebar ()
-  (interactive)
-  (neotree-toggle)
-  ;; (treemacs)
-  ;; (dired-sidebar-toggle-sidebar)
 )
 
 (defun org-update ()
@@ -155,13 +145,8 @@
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (add-to-list 'default-frame-alist '(font . "IBM Plex Mono 9"))
-;; (add-to-list 'default-frame-alist '(font . "Consolas 10"))
-;; (add-to-list 'default-frame-alist '(font . "Liberation 10"))
-;; (load-theme 'tron-legacy t)
-;; (load-theme 'dracula t)
-;; (load-theme 'exotica t)
-;; (load-theme 'white-sand t)
-(load-theme 'wilmersdorf t)
+;; (load-theme 'wilmersdorf t)
+(load-theme 'base16-chalk t)
 
 ;; Packages
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -208,45 +193,30 @@
   (setq neo-autorefresh t)
 )
 
-(use-package dired-sidebar
-  :init
-    (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
-  
-  :config
-  (setq dired-sidebar-theme 'nerd)
-)
-
 ;; Completions
 (use-package corfu
   :custom
   (corfu-cycle t)
   (corfu-auto t)
-  ;; (corfu-auto-delay 0.25)
-  (corfu-auto-delay 0.05)
-  ;; (corfu-quit-no-match nil)
+  (corfu-auto-delay 0)
   (corfu-min-width 40)
   (corfu-max-width corfu-min-width)
   (corfu-scroll-margin 4)
-  
   :init
   (global-corfu-mode)
 )
 
 (use-package kind-icon
   :after corfu
-  
   :custom
   (kind-icon-blend-background nil)
   (kind-icon-default-face 'corfu-default)
-  
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
 )
 
 (use-package lsp-mode
+  :disabled t
   :init
   (setq lsp-auto-guess-root t)
   (setq lsp-diagnostics-provider :none)
@@ -263,62 +233,6 @@
   :config
   (setq vterm-kill-buffer-on-exit t)
   (setq vterm-buffer-name-string "vterm")
-)
-
-;; Tabs
-(use-package centaur-tabs
-  :disabled t
-  :init
-  (centaur-tabs-mode t)
-  :config
-  (setq centaur-tabs-style "bar")
-  (setq centaur-tabs-set-icons t)
-  (setq centaur-tabs-show-new-tab-button nil)
-  (setq centaur-tabs-cycle-scope 'tabs)
-  (setq centaur-tabs-height 24)
-  (setq centaur-tabs-show-navigation-buttons t)
-  (setq centaur-tabs-set-modified-marker t)
-  (centaur-tabs-change-fonts "Consolas" 100)
-)
-(defun centaur-tabs-buffer-groups ()
-  (list
-   (cond
-	((or
-	  (string-equal (buffer-name) "*notes*")
-	  (string-equal (buffer-name) "*Messages*")
-	  (and (buffer-file-name)
-		   (string-equal
-			(file-name-directory (buffer-file-name))
-			(string-replace "~" (getenv "HOME") user-emacs-directory)
-			)
-		   )
-	  )"emacs")
-
-	((or
-	  (string-equal (buffer-name) "*pylsp*")
-	  (string-equal (buffer-name) "*pylsp::stderr*")
-	  (string-equal (buffer-name) "*texlab*")
-	  (string-equal (buffer-name) "*texlab::stderr*")
-	  (string-equal (buffer-name) "*clangd*")
-	  (string-equal (buffer-name) "*clangd::stderr*")
-	  )"lsp")
-	
-	((or
-	  (string-equal (major-mode) "vterm-mode")
-	  )"Vterm")
-
-	(t "others") ;; This is where the buffers will go if none of the about conditions are met.
-	
-	(t (centaur-tabs-get-group-name (current-buffer)))
-   )
-  )
-)
-
-;; Writeroom
-(use-package writeroom-mode
-  :config
-  (setq writeroom-width 0.9)
-  (setq writeroom-fringes-outside-margins nil)
 )
 
 ;; Openwith
@@ -343,7 +257,6 @@
 (use-package org-modern)
 
 ;; Aliases
-(defalias 'zen 'writeroom-mode)
 (defalias 'checkbox 'org-toggle-checkbox)
 (defalias 'save 'save-buffer)
 (defalias 'term 'multi-vterm)
@@ -351,7 +264,7 @@
 ;; Keybindings
 
 ;; Sidebar toggling
-(bind-key* "C-S-K" 'toggle-sidebar)
+(bind-key* "C-S-K" 'neotree-toggle)
 
 ;; Zoom
 (bind-key* "C-=" 'text-scale-increase)
@@ -394,6 +307,7 @@
 (bind-key* "C-d" 'dired-create-directory)
 (bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
 (bind-key "<f2>" 'dired-do-rename dired-mode-map)
+;; (bind-key "C-c" 'dired-do-copy dired-mode-map)
 
 ;; Org mode
 (bind-key "C-e" 'org-modern-mode org-mode-map)
