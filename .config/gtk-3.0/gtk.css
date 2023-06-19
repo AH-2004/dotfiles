@@ -1,0 +1,7 @@
+.xfce4-panel button {
+	padding: 4px;
+	font-family: "Material Icons";
+	font-size: 1.1em;
+}
+
+#xfce4-power-manager-plugin* { color: #ffffff; }

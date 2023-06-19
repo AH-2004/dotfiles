@@ -110,7 +110,12 @@
   (kill-new (concat "\n" (buffer-substring (line-beginning-position) (line-end-position))))
   (move-end-of-line 1)
   (yank)
-)
+  )
+
+(defun copy-line ()
+  (interactive)
+  (kill-new (buffer-substring (line-beginning-position) (line-end-position)))
+  )
 
 ;; Insert current date
 (defun today ()
@@ -123,7 +128,7 @@
   (interactive)
   (undo-redo 1)
   (end-of-line 1)
-)
+  )
 
 (defun org-update ()
   (interactive)
@@ -186,6 +191,7 @@
 (use-package neotree
   :config
   (setq neo-window-fixed-size nil)
+  (setq neo-window-width 28)
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
   (setq neo-smart-open t)
   (setq neo-show-hidden-files t)
@@ -263,8 +269,10 @@
 
 ;; Keybindings
 
-;; Sidebar toggling
-(bind-key* "C-S-K" 'neotree-toggle)
+;; Sidebar
+(bind-key* "C-S-k" 'neotree-toggle)
+(bind-key "<deletechar>" 'neotree-delete-node neotree-mode-map)
+(bind-key "<f2>" 'neotree-rename-node neotree-mode-map)
 
 ;; Zoom
 (bind-key* "C-=" 'text-scale-increase)
@@ -298,6 +306,7 @@
 
 ;; Search stuff
 (bind-key* "C-f" 'isearch-forward)
+(bind-key* "C-S-f" 'replace-string)
 (bind-key "C-f" 'isearch-repeat-forward isearch-mode-map)
 (bind-key "<tab>" 'isearch-repeat-forward isearch-mode-map)
 (bind-key "<backspace>" 'isearch-del-char isearch-mode-map)
@@ -307,7 +316,6 @@
 (bind-key* "C-d" 'dired-create-directory)
 (bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
 (bind-key "<f2>" 'dired-do-rename dired-mode-map)
-;; (bind-key "C-c" 'dired-do-copy dired-mode-map)
 
 ;; Org mode
 (bind-key "C-e" 'org-modern-mode org-mode-map)
@@ -315,12 +323,6 @@
 ;; Terminal
 (bind-key* "C-x t" 'term)
 (bind-key "C-S-v" 'vterm-yank)
-
-;; Tabs
-(bind-key* "C-<tab>" 'centaur-tabs-forward)
-(bind-key* "C-<iso-lefttab>" 'centaur-tabs-backward)
-(bind-key* "C-x <right>" 'centaur-tabs-forward-group)
-(bind-key* "C-x <left>" 'centaur-tabs-backward-group)
 
 ;; Buffers and windows
 ;; (bind-key* "C-x k" 'kill-buffer-and-window)

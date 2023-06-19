@@ -17,7 +17,9 @@ static const char col_teal[] = "#008080";
 static const char *colors[SchemeLast][2] = {
     // fg, bg
     [SchemeNorm] = { col_gray2, col_gray },
-    [SchemeSel] = { col_white, col_magenta },
+    [SchemeSel] = { col_gray, col_magenta },
+	[SchemeSelHighlight] = { col_white, col_magenta },
+	[SchemeNormHighlight] = { col_white, col_gray },
     [SchemeOut] = { col_black, col_magenta }
 };
 

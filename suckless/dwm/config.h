@@ -50,7 +50,9 @@ static const unsigned int maxHTab = 200;
 static const char *tags[] = { "1", "2", "3", "4" };
 static const Rule rules[] = {
 	// { class, instance, title, tags mask, isfloating, monitor, unmanaged }
-	{ NULL, NULL, NULL, 0, 1, -1, 0 }
+	{ NULL, NULL, NULL, 0, 1, -1, 0 },
+	{ "Vivaldi-stable", NULL,  NULL, 0, 0, -1, 0 },
+	{ "Emacs", NULL, NULL, 0, 0, -1, 0 }
 };
 
 // Layouts
@@ -80,6 +82,7 @@ static char dmenumon[2] = "0"; // Component of dmenucmd, manipulated in spawn()
 
 // Commands
 static const char *dmenucmd[] = { "j4-dmenu-desktop", "--dmenu=dmenu", "--no-generic", NULL };
+static const char *clipmenucmd[] = { "clipmenu", NULL };
 static const char *termcmd[] = { "alacritty", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 
@@ -87,6 +90,7 @@ static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 static const Key keys[] = {
     // { modifier, key, function, argument }
     {Mod1Mask, XK_space, spawn, {.v = dmenucmd}},
+    {Mod1Mask | ShiftMask, XK_space, spawn, {.v = clipmenucmd}},
     {Mod1Mask | ControlMask, XK_t, spawn, {.v = termcmd}},
     {MODKEY, XK_l, spawn, {.v = suspendcmd}},
     {MODKEY, XK_b, togglebar, {0}},
