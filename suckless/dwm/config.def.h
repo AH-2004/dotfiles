@@ -44,7 +44,7 @@ static const unsigned int tabCycleKey = 0x17;
 static const unsigned int tabPosY = 1; // 0: Bottom, 1: Center, 2: top
 static const unsigned int tabPosX = 1; // 0: Left, 1: Center, 2: Right
 static const unsigned int maxWTab = 600;
-static const unsigned int maxHTab = 200;
+static const unsigned int maxHTab = 150;
 
 // Tagging
 static const char *tags[] = { "1", "2", "3", "4" };
@@ -85,6 +85,7 @@ static const char *dmenucmd[] = { "j4-dmenu-desktop", "--dmenu=dmenu", "--no-gen
 static const char *clipmenucmd[] = { "clipmenu", NULL };
 static const char *termcmd[] = { "alacritty", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
+static const char *screenshotcmd[] = { "/home/AH/.config/dwm/scripts/screenshot.sh", NULL };
 
 // Keys and Buttons
 static const Key keys[] = {
@@ -93,6 +94,7 @@ static const Key keys[] = {
     {Mod1Mask | ShiftMask, XK_space, spawn, {.v = clipmenucmd}},
     {Mod1Mask | ControlMask, XK_t, spawn, {.v = termcmd}},
     {MODKEY, XK_l, spawn, {.v = suspendcmd}},
+	{0, XK_Print, spawn, {.v = screenshotcmd}},
     {MODKEY, XK_b, togglebar, {0}},
     {MODKEY, XK_j, focusstack, {.i = +1}},
     {MODKEY, XK_k, focusstack, {.i = -1}},

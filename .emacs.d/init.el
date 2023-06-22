@@ -55,6 +55,7 @@
 (setq read-process-output-max (* 1024 1024))
 (setq browse-url-browser-function 'browse-url-xdg-open)
 (setq dired-kill-when-opening-new-dired-buffer t)
+(setq dired-listing-switches "-lah --group-directories-first")
 (global-auto-revert-mode t)
 
 ;; Editing Tweaks

@@ -1910,7 +1910,7 @@ altTabEnd()
 
 		/* restack clients */
 		for (int i = selmon->nTabs - 1;i >= 0;i--) {
-			focus(selmon->altsnext[i]);
+			/* focus(selmon->altsnext[i]); */
 			restack(selmon);
 		}
 
