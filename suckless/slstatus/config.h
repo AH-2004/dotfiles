@@ -8,6 +8,7 @@ static const char unknown_str[] = "";
 
 /* maximum output string length */
 #define MAXLEN 2048
+#define SCRIPTS_PATH "/home/AH/.config/dwm/scripts"
 
 /*
  * function            description                     argument (example)
@@ -66,10 +67,9 @@ static const char unknown_str[] = "";
 static const struct arg args[] = {
 	/* function format          argument */
 	{ datetime, "%s", "%A %B %d | %r;" },
-	{ run_command, "%s | ", "/home/AH/.config/dwm/scripts/battery.sh" },
-	{ run_command, " %s | ", "printf '%.0f' $(light -G)"},
-	{ run_command, " %s | ", "pactl get-sink-volume @DEFAULT_SINK@ | awk 'NR==1{print $5}'" },
-	{ temp, "%s°C | ", "/sys/class/thermal/thermal_zone0/temp" },
-	{ temp, "%s°C | ", "/sys/class/thermal/thermal_zone1/temp" },
-	{ wifi_essid, " %s |", "wlan0" }
+	{ run_command, "%s", SCRIPTS_PATH"/battery.sh" },
+	{ run_command, "%s", SCRIPTS_PATH"/brightness.sh"},
+	{ run_command, "%s", SCRIPTS_PATH"/volume.sh" },
+	{ run_command, "%s", SCRIPTS_PATH"/temp.sh" },
+	{ run_command, "%s", SCRIPTS_PATH"/ssid.sh" }
 };
