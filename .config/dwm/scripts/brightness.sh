@@ -11,6 +11,6 @@ for f in "/sys/class/backlight"/*; do
 done
 
 if [[ "$backlight" != "" ]]; then
-	echo "  $backlight |"
+	echo "  $backlight |"
 fi
 
