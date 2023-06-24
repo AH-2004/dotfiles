@@ -20,7 +20,7 @@ static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
 static const char col_magenta[] = "#bd93f9";
-// static const char col_teal[] = "#008080";
+/* static const char col_teal[] = "#008080"; */
 
 static const char *colors[][3] = {
 	// { fg, bg, border }
@@ -47,7 +47,7 @@ static const unsigned int maxWTab = 600;
 static const unsigned int maxHTab = 150;
 
 // Tagging
-static const char *tags[] = { "1", "2", "3", "4" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6" };
 static const Rule rules[] = {
 	// { class, instance, title, tags mask, isfloating, monitor, unmanaged }
 	{ NULL, NULL, NULL, 0, 1, -1, 0 },
@@ -90,34 +90,38 @@ static const char *screenshotcmd[] = { "/home/AH/.config/dwm/scripts/screenshot.
 // Keys and Buttons
 static const Key keys[] = {
     // { modifier, key, function, argument }
-    {Mod1Mask, XK_space, spawn, {.v = dmenucmd}},
-    {Mod1Mask | ShiftMask, XK_space, spawn, {.v = clipmenucmd}},
-    {Mod1Mask | ControlMask, XK_t, spawn, {.v = termcmd}},
-    {MODKEY, XK_l, spawn, {.v = suspendcmd}},
-	{0, XK_Print, spawn, {.v = screenshotcmd}},
-    {MODKEY, XK_b, togglebar, {0}},
-    {MODKEY, XK_j, focusstack, {.i = +1}},
-    {MODKEY, XK_k, focusstack, {.i = -1}},
-    {MODKEY, XK_i, incnmaster, {.i = +1}},
-    {MODKEY, XK_d, incnmaster, {.i = -1}},
-    {MODKEY, XK_Left, setmfact, {.f = -0.05}},
-    {MODKEY, XK_Right, setmfact, {.f = +0.05}},
-    {MODKEY, XK_Return, zoom, {0}},
-    {MODKEY, XK_x, killclient, {0}},
-    {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
-    {MODKEY, XK_f, setlayout, {.v = &layouts[1]}},
-    {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
-    {MODKEY, XK_0, view, {.ui = ~0}},
-    {MODKEY | ShiftMask, XK_0, tag, {.ui = ~0}},
-    {MODKEY, XK_comma, focusmon, {.i = -1}},
-    {MODKEY, XK_period, focusmon, {.i = +1}},
-    {MODKEY | ShiftMask, XK_comma, tagmon, {.i = -3}},
-    {MODKEY | ShiftMask, XK_period, tagmon, {.i = +3}},
-    {MODKEY, XK_minus, setgaps, {.i = -3}},
-    {MODKEY, XK_equal, setgaps, {.i = +3}},
-    {Mod1Mask, XK_Tab, altTabStart, {0}},
-    {MODKEY | ShiftMask, XK_q, quit, {0}},
-    TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)};
+    { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
+    { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
+    { Mod1Mask|ControlMask, XK_t, spawn, {.v = termcmd} },
+    { 0, XK_Print, spawn, {.v = screenshotcmd} },
+    { MODKEY, XK_l, spawn, {.v = suspendcmd} },
+    { MODKEY, XK_b, togglebar, {0} },
+    { MODKEY, XK_j, focusstack, {.i = +1} },
+    { MODKEY, XK_k, focusstack, {.i = -1} },
+    { MODKEY, XK_i, incnmaster, {.i = +1} },
+    { MODKEY, XK_d, incnmaster, {.i = -1} },
+    { MODKEY, XK_Left, setmfact, {.f = -0.05} },
+    { MODKEY, XK_Right, setmfact, {.f = +0.05} },
+    { MODKEY, XK_Return, zoom, {0} },
+    { MODKEY, XK_x, killclient, {0} },
+    { MODKEY, XK_t, setlayout, {.v = &layouts[0]} },
+    { MODKEY, XK_f, setlayout, {.v = &layouts[1]} },
+    { MODKEY, XK_0, view, {.ui = ~0} },
+    { MODKEY, XK_comma, focusmon, {.i = -1} },
+    { MODKEY, XK_period, focusmon, {.i = +1} },
+    { MODKEY, XK_minus, setgaps, {.i = -3} },
+    { MODKEY, XK_equal, setgaps, {.i = +3} },
+    { MODKEY|ShiftMask, XK_q, quit, {0} },
+    { MODKEY|ShiftMask, XK_space, togglefloating, {0} },
+    { MODKEY|ShiftMask, XK_0, tag, {.ui = ~0} },
+    { MODKEY|ShiftMask, XK_comma, tagmon, {.i = -3} },
+    { MODKEY|ShiftMask, XK_period, tagmon, {.i = +3} },
+	{ MODKEY|ShiftMask, XK_Left, viewtoleft, {0} },
+	{ MODKEY|ShiftMask, XK_Right, viewtoright, {0} },
+    { Mod1Mask, XK_Tab, altTabStart, {0} },
+    TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2)
+	TAGKEYS(XK_4, 3) TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5)
+};
 
 static const Button buttons[] = {
 	// click:  ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, ClkRootWin
