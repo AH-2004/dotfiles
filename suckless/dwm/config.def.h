@@ -83,7 +83,8 @@ static char dmenumon[2] = "0"; // Component of dmenucmd, manipulated in spawn()
 // Commands
 static const char *dmenucmd[] = { "j4-dmenu-desktop", "--dmenu=dmenu", "--no-generic", NULL };
 static const char *clipmenucmd[] = { "clipmenu", NULL };
-static const char *termcmd[] = { "alacritty", NULL };
+/* static const char *termcmd[] = { "alacritty", NULL }; */
+static const char *termcmd[] = { "st", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 static const char *screenshotcmd[] = { "/home/AH/.config/dwm/scripts/screenshot.sh", NULL };
 
