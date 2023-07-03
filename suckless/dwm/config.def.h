@@ -37,6 +37,7 @@ static const unsigned int systrayiconsize = 14;
 static const int systraypinningfailfirst = 1; // 1: First monitor, 0: Last Monitor
 static const int focusonwheel = 1;
 static const int raiseonfocus = 1;
+static const char backlightIncrement[] = "5";
 
 // Alt Tab
 static const unsigned int tabModKey = 0x40;
@@ -87,6 +88,8 @@ static const char *clipmenucmd[] = { "clipmenu", NULL };
 static const char *termcmd[] = { "st", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 static const char *screenshotcmd[] = { "/home/AH/.config/dwm/scripts/screenshot.sh", NULL };
+static const char *incbacklightcmd[] = { "xbacklight", "-inc", backlightIncrement, NULL };
+static const char *decbacklightcmd[] = { "xbacklight", "-dec", backlightIncrement, NULL };
 
 // Keys and Buttons
 static const Key keys[] = {
@@ -131,6 +134,8 @@ static const Button buttons[] = {
 	{ ClkLtSymbol, 0, Button3, setlayout, {.v = &layouts[2]} },
 	{ ClkWinTitle, 0, Button2, zoom, {0} },
 	{ ClkStatusText, 0, Button2, spawn, {.v = termcmd } },
+	{ ClkStatusText, 0, Button4, spawn, {.v = incbacklightcmd} },
+	{ ClkStatusText, 0, Button5, spawn, {.v = decbacklightcmd} },
 	{ ClkClientWin, Mod1Mask, Button1, movemouse, {0} },
 	{ ClkClientWin, Mod1Mask, Button2, togglefloating, {0} },
 	{ ClkClientWin, Mod1Mask, Button3, resizemouse, {0} },
@@ -138,5 +143,5 @@ static const Button buttons[] = {
 	{ ClkTagBar, 0, Button1, view, {0} },
 	{ ClkTagBar, 0, Button3, toggleview, {0} },
 	{ ClkTagBar, Mod1Mask, Button1, tag, {0} },
-	{ ClkTagBar, Mod1Mask, Button3, toggletag, {0} }
+	{ ClkTagBar, Mod1Mask, Button3, toggletag, {0} },
 };

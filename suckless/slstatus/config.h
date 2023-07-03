@@ -68,7 +68,7 @@ static const struct arg args[] = {
 	/* function format          argument */
 	{ datetime, "%s", "%A %B %d | %r;" },
 	{ run_command, "%s", SCRIPTS_PATH"/battery.sh" },
-	{ run_command, "%s", SCRIPTS_PATH"/brightness.sh"},
+	{ run_command, "%s", SCRIPTS_PATH"/backlight.sh"},
 	{ run_command, "%s", SCRIPTS_PATH"/volume.sh" },
 	{ run_command, "%s", SCRIPTS_PATH"/temp.sh" },
 	{ run_command, "%s", SCRIPTS_PATH"/ssid.sh" }
