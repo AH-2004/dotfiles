@@ -88,8 +88,8 @@ static const char *clipmenucmd[] = { "clipmenu", NULL };
 static const char *termcmd[] = { "st", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 static const char *screenshotcmd[] = { "/home/AH/.config/dwm/scripts/screenshot.sh", NULL };
-static const char *incbacklightcmd[] = { "xbacklight", "-inc", backlightIncrement, NULL };
-static const char *decbacklightcmd[] = { "xbacklight", "-dec", backlightIncrement, NULL };
+static const char *incbacklightcmd[] = { "light", "-A", backlightIncrement, NULL };
+static const char *decbacklightcmd[] = { "light", "-U", backlightIncrement, NULL };
 
 // Keys and Buttons
 static const Key keys[] = {
