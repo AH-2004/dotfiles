@@ -59,6 +59,10 @@
 ;; (bind-key* "C-x k" 'kill-buffer-and-window)
 (bind-key* "C-x k" 'kill-buffer)
 (bind-key* "C-x r" 'rename-buffer)
+(bind-key* "C-x <up>" 'buf-move-up)
+(bind-key* "C-x <down>" 'buf-move-down)
+(bind-key* "C-x <left>" 'buf-move-left)
+(bind-key* "C-x <right>" 'buf-move-right)
 
 ;; Unbind global unwanted keys
 (unbind-key "<insert>")

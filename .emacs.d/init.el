@@ -11,6 +11,7 @@
 (require 'dired)
 (require 'use-package)
 (require 'use-package-ensure)
+(require 'windmove)
 
 (load "~/.emacs.d/packages.el")
 
@@ -45,7 +46,7 @@
 
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 9"))
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
 (load-theme 'base16-chalk t)
 
 ;; Other tweaks
