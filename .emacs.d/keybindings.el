@@ -1,5 +1,6 @@
 ;; Sidebar
 (bind-key* "C-S-k" 'neotree-toggle)
+(bind-key "S-<return>" 'neotree-change-root neotree-mode-map)
 (bind-key "<deletechar>" 'neotree-delete-node neotree-mode-map)
 (bind-key "<f2>" 'neotree-rename-node neotree-mode-map)
 
@@ -48,6 +49,7 @@
 
 ;; Org mode
 (bind-key "C-e" 'org-modern-mode org-mode-map)
+(bind-key "<backtab>" 'org-src-block org-mode-map)
 
 ;; Terminal
 (bind-key* "C-x t" 'term)

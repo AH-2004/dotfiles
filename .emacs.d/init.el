@@ -13,13 +13,12 @@
 (require 'use-package-ensure)
 (require 'windmove)
 
-(load "~/.emacs.d/packages.el")
-
 ;; UI Tweaks
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (tooltip-mode -1)
+(set-fringe-mode 0)
 (setq user-dialog-box nil)
 (setq frame-title-format '("Emacs " emacs-version))
 (setq ring-bell-function 'ignore)
@@ -44,14 +43,10 @@
   mode-line-modes
   ))
 
-;; Theme
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
-(load-theme 'base16-chalk t)
-
 ;; Other tweaks
 (add-to-list 'exec-path "~/.local/bin")
 (setq custom-file "~/.emacs.d/custom.el")
+(setq custom-theme-directory "~/.emacs.d/themes/")
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq create-lockfiles nil)
@@ -75,11 +70,17 @@
 (setq org-replace-disputed-keys t)
 (setq org-return-follows-link t)
 
+(load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/hooks.el")
 (load "~/.emacs.d/functions.el")
 (load "~/.emacs.d/keybindings.el")
+
+;; Theme
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
+(load-theme 'base16-chalk t)
 
 ;; Aliases
 (defalias 'checkbox 'org-toggle-checkbox)
 (defalias 'save 'save-buffer)
 (defalias 'term 'multi-vterm)
+

@@ -43,6 +43,12 @@
   (undo-redo 1)
   (end-of-line 1))
 
+;; Insert src block
+(defun org-src-block ()
+  (interactive)
+  (org-insert-structure-template "src")
+  )
+
 ;; Update org file
 (defun org-update ()
   (interactive)
