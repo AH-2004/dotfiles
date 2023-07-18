@@ -8,7 +8,7 @@ static const int showbar = 1;
 static const int topbar = 1;
 static const int splitstatus = 1;
 static const char *splitdelim = ";"; 
-static const int refreshrate = 240;
+static const int refreshrate = 60;
 
 // Fonts
 static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=10" };
@@ -37,7 +37,6 @@ static const unsigned int systrayiconsize = 14;
 static const int systraypinningfailfirst = 1; // 1: First monitor, 0: Last Monitor
 static const int focusonwheel = 1;
 static const int raiseonfocus = 1;
-static const char backlightIncrement[] = "5";
 
 // Alt Tab
 static const unsigned int tabModKey = 0x40;
@@ -85,19 +84,25 @@ static char dmenumon[2] = "0"; // Component of dmenucmd, manipulated in spawn()
 static const char *dmenucmd[] = { "j4-dmenu-desktop", "--dmenu=dmenu", "--no-generic", NULL };
 static const char *clipmenucmd[] = { "clipmenu", NULL };
 /* static const char *termcmd[] = { "alacritty", NULL }; */
-static const char *termcmd[] = { "st", NULL };
+static const char *terminalcmd[] = { "st", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 static const char *screenshotcmd[] = { "/home/AH/.config/dwm/scripts/screenshot.sh", NULL };
-static const char *incbacklightcmd[] = { "light", "-A", backlightIncrement, NULL };
-static const char *decbacklightcmd[] = { "light", "-U", backlightIncrement, NULL };
+static const char *incbacklightcmd[] = { "light", "-A", "5", NULL };
+static const char *decbacklightcmd[] = { "light", "-U", "5", NULL };
+static const char *incvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
+static const char *decvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
+static const char *mutevolumecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
 
 // Keys and Buttons
 static const Key keys[] = {
     // { modifier, key, function, argument }
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
-    { Mod1Mask|ControlMask, XK_t, spawn, {.v = termcmd} },
+    { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },
     { 0, XK_Print, spawn, {.v = screenshotcmd} },
+	{ 0, XF86XK_AudioRaiseVolume, spawn, {.v = incvolumecmd} },
+	{ 0, XF86XK_AudioLowerVolume, spawn, {.v = decvolumecmd} },
+	{ 0, XF86XK_AudioMute, spawn, {.v = mutevolumecmd} },
     { MODKEY, XK_l, spawn, {.v = suspendcmd} },
     { MODKEY, XK_b, togglebar, {0} },
     { MODKEY, XK_j, focusstack, {.i = +1} },
@@ -133,7 +138,7 @@ static const Button buttons[] = {
 	{ ClkLtSymbol, 0, Button1, setlayout, {0} },
 	{ ClkLtSymbol, 0, Button3, setlayout, {.v = &layouts[2]} },
 	{ ClkWinTitle, 0, Button2, zoom, {0} },
-	{ ClkStatusText, 0, Button2, spawn, {.v = termcmd } },
+	{ ClkStatusText, 0, Button2, spawn, {.v = terminalcmd} },
 	{ ClkStatusText, 0, Button4, spawn, {.v = incbacklightcmd} },
 	{ ClkStatusText, 0, Button5, spawn, {.v = decbacklightcmd} },
 	{ ClkClientWin, Mod1Mask, Button1, movemouse, {0} },
