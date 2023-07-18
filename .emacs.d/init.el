@@ -59,6 +59,8 @@
 (setq browse-url-browser-function 'browse-url-xdg-open)
 (setq dired-kill-when-opening-new-dired-buffer t)
 (setq dired-listing-switches "-lah --group-directories-first")
+(setq read-file-name-completion-ignore-case t)
+(setq read-buffer-completion-ignore-case t)
 (global-auto-revert-mode t)
 
 ;; Editing Tweaks
@@ -76,7 +78,7 @@
 (load "~/.emacs.d/keybindings.el")
 
 ;; Theme
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 9"))
 (load-theme 'base16-chalk t)
 
 ;; Aliases
