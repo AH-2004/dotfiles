@@ -153,7 +153,7 @@ static Rune stcursor = 0x2603; /* snowman ("☃") */
  * Default columns and rows numbers
  */
 
-static unsigned int cols = 100;
+static unsigned int cols = 120;
 static unsigned int rows = 28;
 
 /*
@@ -212,7 +212,7 @@ static Shortcut shortcuts[] = {
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ TERMMOD,              XK_T,           newterm,        {.i =  0} },
-	{ TERMMOD,              XK_L,           ttysend,        {.s = "tput reset\r"} }
+	{ TERMMOD,              XK_L,           ttysend,        {.s = "tput reset && history -d -1\r"} }
 };
 
 /*
