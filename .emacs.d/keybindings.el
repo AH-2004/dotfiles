@@ -53,9 +53,9 @@
 
 ;; Terminal
 (bind-key* "C-x t" 'term)
-(bind-key "C-S-v" 'vterm-yank)
-(bind-key "C-l" 'vterm-clear)
-(bind-key "C-S-l" 'vterm-clear-scrollback)
+(bind-key "C-S-v" 'vterm-yank vterm-mode-map)
+(bind-key "C-l" 'vterm-clear vterm-mode-map)
+(bind-key "C-S-l" 'vterm-clear-scrollback vterm-mode-map)
 
 ;; Buffers and windows
 ;; (bind-key* "C-x k" 'kill-buffer-and-window)

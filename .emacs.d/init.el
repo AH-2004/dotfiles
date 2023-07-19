@@ -78,7 +78,7 @@
 (load "~/.emacs.d/keybindings.el")
 
 ;; Theme
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 9"))
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
 (load-theme 'base16-chalk t)
 
 ;; Aliases
