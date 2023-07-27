@@ -8,7 +8,7 @@ static const int showbar = 1;
 static const int topbar = 1;
 static const int splitstatus = 1;
 static const char *splitdelim = ";"; 
-static const int refreshrate = 2424;
+static const int refreshrate = 240;
 
 // Fonts
 static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=10" };
@@ -83,10 +83,12 @@ static char dmenumon[2] = "0"; // Component of dmenucmd, manipulated in spawn()
 // Commands
 static const char *dmenucmd[] = { "j4-dmenu-desktop", "--dmenu=dmenu", "--no-generic", NULL };
 static const char *clipmenucmd[] = { "clipmenu", NULL };
-/* static const char *termcmd[] = { "alacritty", NULL }; */
+
 static const char *terminalcmd[] = { "st", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 static const char *screenshotcmd[] = { "/home/AH/.config/dwm/scripts/screenshot.sh", NULL };
+static const char *emacscmd[] = { "emacsclient", "-c", "-n", NULL };
+
 static const char *incbacklightcmd[] = { "light", "-A", "5", NULL };
 static const char *decbacklightcmd[] = { "light", "-U", "5", NULL };
 static const char *incvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
@@ -104,6 +106,7 @@ static const Key keys[] = {
 	{ 0, XF86XK_AudioLowerVolume, spawn, {.v = decvolumecmd} },
 	{ 0, XF86XK_AudioMute, spawn, {.v = mutevolumecmd} },
     { MODKEY, XK_l, spawn, {.v = suspendcmd} },
+	{ MODKEY, XK_e, spawn, {.v = emacscmd} },
     { MODKEY, XK_b, togglebar, {0} },
     { MODKEY, XK_j, focusstack, {.i = +1} },
     { MODKEY, XK_k, focusstack, {.i = -1} },
