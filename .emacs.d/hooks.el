@@ -2,6 +2,7 @@
 (add-hook 'after-init-hook 'init)
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
 (add-hook 'text-mode-hook
 		  (lambda ()
 			(setq left-margin-width 5)

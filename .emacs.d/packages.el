@@ -80,6 +80,16 @@
   :init
   (openwith-mode t))
 
+(use-package emms
+  :config
+  (setq emms-player-list '(emms-player-mpv))
+  (setq emms-info-functions '(emms-info-native))
+  (setq emms-playlist-buffer-name "*Audio*")
+  :init
+  (emms-all))
+
+(use-package lua-mode)
+
 ;; Others
 (use-package buffer-move)
 (use-package adaptive-wrap)

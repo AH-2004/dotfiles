@@ -54,17 +54,21 @@
 ;; Terminal
 (bind-key* "C-x t" 'term)
 (bind-key "C-S-v" 'vterm-yank vterm-mode-map)
+;; (bind-key "C-S-l" 'vterm-clear-scrollback vterm-mode-map)
 (bind-key "C-l" 'vterm-clear vterm-mode-map)
-(bind-key "C-S-l" 'vterm-clear-scrollback vterm-mode-map)
 
 ;; Buffers and windows
 ;; (bind-key* "C-x k" 'kill-buffer-and-window)
 (bind-key* "C-x k" 'kill-buffer)
 (bind-key* "C-x r" 'rename-buffer)
+(bind-key* "C-x C-b" 'switch-to-buffer)
 (bind-key* "C-x <up>" 'buf-move-up)
 (bind-key* "C-x <down>" 'buf-move-down)
 (bind-key* "C-x <left>" 'buf-move-left)
 (bind-key* "C-x <right>" 'buf-move-right)
+(bind-key* "C-<tab>" 'other-window)
+(bind-key* "C-<iso-lefttab>" 'other-window-back)
+(bind-key* "C-x 4" 'clone-indirect-buffer-other-window)
 
 ;; Unbind global unwanted keys
 (unbind-key "<insert>")

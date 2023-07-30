@@ -32,16 +32,24 @@
 			 (line-beginning-position)
 			 (line-end-position))))
 
-;; Insert current date
-(defun today ()
-  (interactive)
-  (insert (shell-command-to-string "echo -n $(date +'%B %d, %Y')")))
-
 ;; Redo
 (defun redo ()
   (interactive)
   (undo-redo 1)
   (end-of-line 1))
+
+(defun other-window-back ()
+  (interactive)
+  (other-window -1))
+
+;; Insert current date
+(defun today ()
+  (interactive)
+  (insert (shell-command-to-string "echo -n $(date +'%B %d, %Y')")))
+
+(defun st ()
+  (interactive)
+  (call-process-shell-command "st" nil 0))
 
 ;; Insert src block
 (defun org-src-block ()

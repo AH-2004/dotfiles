@@ -12,6 +12,7 @@
 (require 'use-package)
 (require 'use-package-ensure)
 (require 'windmove)
+(require 'emms-setup)
 
 ;; UI Tweaks
 (menu-bar-mode -1)
@@ -24,24 +25,12 @@
 (setq ring-bell-function 'ignore)
 (setq scroll-conservatively 10000)
 (setq auto-window-vscroll nil)
+(setq display-time-format "%r")
+(setq display-time-default-load-average nil)
+(setq display-time-interval 1)
 (setq org-image-actual-width nil)
 (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 (defadvice split-window (after split-window-after activate) (other-window 1))
-
-(setq-default
- mode-line-format
- (list
-  mode-line-front-space
-  "%b"
-  mode-line-front-space
-  mode-line-modified
-  mode-line-front-space
-  "L%l"
-  mode-line-front-space
-  "%I"
-  mode-line-front-space
-  mode-line-modes
-  ))
 
 ;; Other tweaks
 (add-to-list 'exec-path "~/.local/bin")
@@ -81,8 +70,24 @@
 (add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
 (load-theme 'base16-chalk t)
 
+;; Modeline
+(setq mode-line-left-format
+	  (list
+	   mode-line-front-space
+	   "%b"
+	   mode-line-front-space
+	   mode-line-modified
+	   mode-line-front-space
+	   "L%l"
+	   mode-line-front-space
+	   "%I"
+	   mode-line-front-space
+	   mode-line-modes
+	   mode-line-misc-info))
+
+(setq-default mode-line-format mode-line-left-format)
+
 ;; Aliases
 (defalias 'checkbox 'org-toggle-checkbox)
 (defalias 'save 'save-buffer)
 (defalias 'term 'multi-vterm)
-
