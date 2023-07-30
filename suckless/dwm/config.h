@@ -11,8 +11,8 @@ static const char *splitdelim = ";";
 static const int refreshrate = 60;
 
 // Fonts
-static const char *fonts[] = { "IBM Plex Sans:size=9", "Material Icons:size=10" };
-static const char dmenufont[] = "IBM Plex Sans:size=9";
+static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=10" };
+static const char dmenufont[] = "IBM Plex Mono:size=9";
 
 // Colors
 static const char col_gray1[] = "#222222";
