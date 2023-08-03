@@ -47,15 +47,40 @@
   (interactive)
   (insert (shell-command-to-string "echo -n $(date +'%B %d, %Y')")))
 
+(setq mode-line-time
+	  '(:eval
+		(string-trim-right
+		 (shell-command-to-string
+		  "date +'%r'"))))
+
+;; Terminal
 (defun st ()
   (interactive)
   (call-process-shell-command "st" nil 0))
 
+;; playerctl
+(setq mode-line-playerctl
+	  '(:eval
+		(string-trim-right
+		 (shell-command-to-string
+		  "playerctl -s -i chromium metadata --format '[{{artist}} - {{title}}]'"))))
+
+(defun playerctl-play-pause ()
+  (interactive)
+  (call-process-shell-command "playerctl -s -i chromium play-pause"))
+
+(defun playerctl-next ()
+  (interactive)
+  (call-process-shell-command "playerctl -s -i chromium next"))
+
+(defun playerctl-previous ()
+  (interactive)
+  (call-process-shell-command "playerctl -s -i chromium previous"))
+
 ;; Insert src block
 (defun org-src-block ()
   (interactive)
-  (org-insert-structure-template "src")
-  )
+  (org-insert-structure-template "src"))
 
 ;; Update org file
 (defun org-update ()
@@ -65,8 +90,4 @@
 
 (defun tst ()
   (interactive)
-  (message "%s" (file-name-nondirectory
-				 (directory-file-name
-				  (file-name-directory buffer-file-name))))
-  ;; (message "%s" (file-name-nondirectory (directory-file-name default-directory)))
-  )
+  (message "%s" "Test"))

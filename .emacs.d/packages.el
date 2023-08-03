@@ -67,6 +67,10 @@
   (setq lsp-signature-auto-activate nil)
   (setq lsp-enable-snippet nil))
 
+(use-package eglot
+  :config
+  (add-to-list 'eglot-stay-out-of 'flymake))
+
 ;; Terminal
 (use-package vterm
   :config
@@ -84,7 +88,9 @@
   :config
   (setq emms-player-list '(emms-player-mpv))
   (setq emms-info-functions '(emms-info-native))
-  (setq emms-playlist-buffer-name "*Audio*")
+  (setq emms-playlist-buffer-name "*Emms*")
+  (emms-mode-line -1)
+  (emms-playing-time -1)
   :init
   (emms-all))
 
@@ -96,7 +102,6 @@
 (use-package all-the-icons-dired)
 (use-package base16-theme)
 (use-package drag-stuff)
-(use-package eglot)
 (use-package good-scroll :init (good-scroll-mode))
 (use-package lorem-ipsum)
 (use-package multi-vterm)

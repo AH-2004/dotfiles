@@ -24,7 +24,6 @@
 
 (add-hook 'eglot-managed-mode-hook
 		  (lambda ()
-			(flymake-mode -1)
 			(eglot-inlay-hints-mode -1)))
 
 ;; (add-hook 'c++-mode-hook 'eglot-ensure)

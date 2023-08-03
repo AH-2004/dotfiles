@@ -25,9 +25,7 @@
 (setq ring-bell-function 'ignore)
 (setq scroll-conservatively 10000)
 (setq auto-window-vscroll nil)
-(setq display-time-format "%r")
-(setq display-time-default-load-average nil)
-(setq display-time-interval 1)
+(setq autho-hscroll-mode nil)
 (setq org-image-actual-width nil)
 (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 (defadvice split-window (after split-window-after activate) (other-window 1))
@@ -53,10 +51,11 @@
 (global-auto-revert-mode t)
 
 ;; Editing Tweaks
+(electric-pair-mode t)
 (setq-default tab-width 4)
 (setq-default c-basic-offset tab-width)
 (setq-default python-indent-offset tab-width)
-(electric-pair-mode t)
+(setq backward-delete-char-untabify-method 'hungry)
 (setq org-support-shift-select t)
 (setq org-replace-disputed-keys t)
 (setq org-return-follows-link t)
@@ -83,7 +82,9 @@
 	   "%I"
 	   mode-line-front-space
 	   mode-line-modes
-	   mode-line-misc-info))
+	   mode-line-playerctl
+	   mode-line-front-space
+	   mode-line-time))
 
 (setq-default mode-line-format mode-line-left-format)
 
