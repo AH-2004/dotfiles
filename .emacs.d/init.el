@@ -66,7 +66,7 @@
 (load "~/.emacs.d/keybindings.el")
 
 ;; Theme
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 9"))
 (load-theme 'base16-chalk t)
 
 ;; Modeline
@@ -82,9 +82,7 @@
 	   "%I"
 	   mode-line-front-space
 	   mode-line-modes
-	   mode-line-playerctl
-	   mode-line-front-space
-	   mode-line-time))
+	   mode-line-playerctl))
 
 (setq-default mode-line-format mode-line-left-format)
 

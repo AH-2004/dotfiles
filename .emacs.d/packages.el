@@ -75,7 +75,8 @@
 (use-package vterm
   :config
   (setq vterm-kill-buffer-on-exit t)
-  (setq vterm-buffer-name-string "vterm"))
+  (setq vterm-buffer-name-string "vterm")
+  (setq vterm-tramp-shells '(("docker" "/usr/bin/bash") ("ssh" "/usr/bin/bash"))))
 
 ;; Openwith
 (use-package openwith
@@ -94,9 +95,9 @@
   :init
   (emms-all))
 
-(use-package lua-mode)
-
 ;; Others
+(use-package format-all)
+(use-package lua-mode)
 (use-package buffer-move)
 (use-package adaptive-wrap)
 (use-package all-the-icons-dired)

@@ -26,5 +26,6 @@
 		  (lambda ()
 			(eglot-inlay-hints-mode -1)))
 
-;; (add-hook 'c++-mode-hook 'eglot-ensure)
-;; (add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'js-mode-hook 'eglot-ensure)

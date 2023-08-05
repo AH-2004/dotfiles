@@ -63,7 +63,7 @@
 	  '(:eval
 		(string-trim-right
 		 (shell-command-to-string
-		  "playerctl -s -i chromium metadata --format '[{{artist}} - {{title}}]'"))))
+		  "playerctl -s -i chromium metadata --format ' [{{artist}} - {{title}}]'"))))
 
 (defun playerctl-play-pause ()
   (interactive)
