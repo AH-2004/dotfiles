@@ -8,7 +8,7 @@ static const int showbar = 1;
 static const int topbar = 1;
 static const int splitstatus = 1;
 static const char *splitdelim = ";"; 
-static const int refreshrate = 60;
+static const int refreshrate = 240;
 
 // Fonts
 static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=10" };
@@ -53,6 +53,7 @@ static const Rule rules[] = {
 	{ NULL, NULL, NULL, 0, 1, -1, 0 },
 	{ "Vivaldi-stable", NULL,  NULL, 0, 0, -1, 0 },
 	{ "Emacs", NULL, NULL, 0, 0, -1, 0 }
+	/* { "Audacious", NULL, NULL, 0, 1, -1, 3 } */
 };
 
 // Layouts

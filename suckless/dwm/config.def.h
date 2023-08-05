@@ -53,6 +53,7 @@ static const Rule rules[] = {
 	{ NULL, NULL, NULL, 0, 1, -1, 0 },
 	{ "Vivaldi-stable", NULL,  NULL, 0, 0, -1, 0 },
 	{ "Emacs", NULL, NULL, 0, 0, -1, 0 }
+	/* { "Audacious", NULL, NULL, 0, 1, -1, 3 } */
 };
 
 // Layouts
