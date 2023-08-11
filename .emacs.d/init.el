@@ -12,7 +12,6 @@
 (require 'use-package)
 (require 'use-package-ensure)
 (require 'windmove)
-(require 'emms-setup)
 
 ;; UI Tweaks
 (menu-bar-mode -1)
@@ -46,6 +45,7 @@
 (setq browse-url-browser-function 'browse-url-xdg-open)
 (setq dired-kill-when-opening-new-dired-buffer t)
 (setq dired-listing-switches "-lah --group-directories-first")
+(setq completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
 (global-auto-revert-mode t)
@@ -70,7 +70,7 @@
 (load-theme 'base16-chalk t)
 
 ;; Modeline
-(setq mode-line-left-format
+(setq-default mode-line-format
 	  (list
 	   mode-line-front-space
 	   "%b"
@@ -81,10 +81,7 @@
 	   mode-line-front-space
 	   "%I"
 	   mode-line-front-space
-	   mode-line-modes
-	   mode-line-playerctl))
-
-(setq-default mode-line-format mode-line-left-format)
+	   mode-line-modes))
 
 ;; Aliases
 (defalias 'checkbox 'org-toggle-checkbox)

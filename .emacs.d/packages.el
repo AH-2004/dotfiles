@@ -37,23 +37,23 @@
 
 ;; Completions
 (use-package corfu
-  :custom
-  (corfu-cycle t)
-  (corfu-auto t)
-  (corfu-auto-delay 0)
-  (corfu-min-width 40)
-  (corfu-max-width corfu-min-width)
-  (corfu-scroll-margin 4)
+  :config
+  (setq corfu-auto t)
+  (setq corfu-cycle t)
+  (setq corfu-auto-delay 0)
+  (setq corfu-min-width 40)
+  (setq corfu-max-width corfu-min-width)
+  (setq corfu-scroll-margin 4)
   :init
   (global-corfu-mode))
 
-(use-package kind-icon
-  :after corfu
-  :custom
-  (kind-icon-blend-background nil)
-  (kind-icon-default-face 'corfu-default)
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+;; (use-package kind-icon
+;;   :after corfu
+;;   :custom
+;;   (kind-icon-blend-background nil)
+;;   (kind-icon-default-face 'corfu-default)
+;;   :config
+;;   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package lsp-mode
   :disabled t
@@ -69,6 +69,7 @@
 
 (use-package eglot
   :config
+  (setq eglot-autoshutdown t)
   (add-to-list 'eglot-stay-out-of 'flymake))
 
 ;; Terminal
