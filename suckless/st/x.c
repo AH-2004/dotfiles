@@ -61,6 +61,7 @@ static void zoom(const Arg *);
 static void zoomabs(const Arg *);
 static void zoomreset(const Arg *);
 static void ttysend(const Arg *);
+static void ttyreset(const Arg *);
 
 /* config.h for applying patches and the configuration. */
 #include "config.h"
@@ -346,6 +347,15 @@ void
 ttysend(const Arg *arg)
 {
 	ttywrite(arg->s, strlen(arg->s), 1);
+}
+
+void
+ttyreset(const Arg *arg)
+{
+	Arg eot = {.s = "\003\r"};
+	Arg reset = {.s = "tput reset && history -d -1 2>/dev/null\r"};
+	ttysend(&eot);
+	ttysend(&reset);
 }
 
 int

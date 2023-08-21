@@ -212,7 +212,7 @@ static Shortcut shortcuts[] = {
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ TERMMOD,              XK_T,           newterm,        {.i =  0} },
-	{ TERMMOD,              XK_L,           ttysend,        {.s = "tput reset\r"} }
+	{ TERMMOD,              XK_L,           ttyreset,       {.i =  0} }
 };
 
 /*

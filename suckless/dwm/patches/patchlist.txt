@@ -1,0 +1,26 @@
+systray - Done
+systrayiconsize - Done
+splitstatus - Done
+focusonclick - Done
+fixborders - Done
+alwayscenter - Done
+alttab - Done
+refreshrate - Done
+unmanaged - Done
+gaps - Done
+pertag - Done
+adjacenttag - Done
+zoomswap - Done
+attachaside - Done
+
+Patches to consider:
+cfacts
+focusonnetactive
+focusurgent
+alwaysontop
+bartabgroups
+taggrid
+bartoggle -> If using bartabgroups
+fakefullscreen
+fibonacci
+stackmfact
