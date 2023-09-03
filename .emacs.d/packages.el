@@ -73,7 +73,10 @@
 (use-package eglot
   :config
   (setq eglot-autoshutdown t)
-  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+  (add-to-list 'eglot-server-programs
+			   '((c++-mode c-mode)
+				 "clangd"
+				 "--header-insertion=never"))
   (add-to-list 'eglot-stay-out-of 'flymake))
 
 ;; Terminal
