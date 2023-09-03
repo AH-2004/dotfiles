@@ -17,6 +17,7 @@
 
 ;; Completions
 (bind-key* "C-SPC" 'completion-at-point)
+(bind-key* "M-h" 'eldoc-box-help-at-point)
 
 ;; Comments
 (bind-key* "C-/" 'comment)

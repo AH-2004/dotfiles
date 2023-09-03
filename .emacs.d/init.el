@@ -22,9 +22,9 @@
 (setq user-dialog-box nil)
 (setq frame-title-format '("Emacs " emacs-version))
 (setq ring-bell-function 'ignore)
-(setq scroll-conservatively 10000)
+(setq scroll-conservatively 1)
 (setq auto-window-vscroll nil)
-(setq autho-hscroll-mode nil)
+(setq auto-hscroll-mode nil)
 (setq org-image-actual-width nil)
 (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 (defadvice split-window (after split-window-after activate) (other-window 1))
@@ -48,25 +48,28 @@
 (setq completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
-(global-auto-revert-mode t)
+(setq initial-major-mode 'fundamental-mode)
+(setq initial-scratch-message "")
+(setq global-auto-revert-mode t)
 
 ;; Editing Tweaks
 (electric-pair-mode t)
 (setq-default tab-width 4)
 (setq-default c-basic-offset tab-width)
 (setq-default python-indent-offset tab-width)
-(setq backward-delete-char-untabify-method 'hungry)
-(setq org-support-shift-select t)
+(setq-default org-edit-src-content-indentation tab-width)
+(setq backward-delete-char-untabify-method nil)
+(setq org-support-shift-select 'always)
 (setq org-replace-disputed-keys t)
 (setq org-return-follows-link t)
 
 (load "~/.emacs.d/packages.el")
-(load "~/.emacs.d/hooks.el")
 (load "~/.emacs.d/functions.el")
+(load "~/.emacs.d/hooks.el")
 (load "~/.emacs.d/keybindings.el")
 
 ;; Theme
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 9"))
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
 (load-theme 'base16-chalk t)
 
 ;; Modeline

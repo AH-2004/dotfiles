@@ -36,7 +36,7 @@ static const char *colors[][3] = {
 static const int focusonwheel = 1;
 static const int raiseonfocus = 1;
 static const int startwithgaps[] = { 1 }; // 1: gaps by default, can be customized per tag
-static const unsigned int gappx[] = { 12 }; // default gap in px, can be customized per tag */
+static const unsigned int gappx[] = { 12 }; // default gap in px, can be customized per tag
 
 // Alt Tab
 static const unsigned int tabModKey = 0x40;
@@ -53,7 +53,9 @@ static const Rule rules[] = {
 	// { class, instance, title, tags mask, isfloating, monitor, unmanaged }
 	{ NULL, NULL, NULL, 0, 1, -1, 0 },
 	{ "Vivaldi-stable", NULL,  NULL, 0, 0, -1, 0 },
-	{ "Emacs", NULL, NULL, 0, 0, -1, 0 }
+	{ "Emacs", NULL, NULL, 0, 0, -1, 0 },
+	{ "Zathura", NULL, NULL, 0, 0, -1, 0 },
+	{ "Plank", NULL, NULL, 0, 0, -1, 1 }
 };
 
 // Layouts

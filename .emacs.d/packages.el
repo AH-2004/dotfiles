@@ -40,20 +40,23 @@
   :config
   (setq corfu-auto t)
   (setq corfu-cycle t)
-  (setq corfu-auto-delay 0)
-  (setq corfu-min-width 40)
+  (setq corfu-preview-current nil)
+  (setq corfu-auto-prefix 2)
+  (setq corfu-auto-delay 0.0)
+  (setq corfu-min-width 50)
   (setq corfu-max-width corfu-min-width)
   (setq corfu-scroll-margin 4)
   :init
-  (global-corfu-mode))
+  (global-corfu-mode)
+  (corfu-history-mode))
 
-;; (use-package kind-icon
-;;   :after corfu
-;;   :custom
-;;   (kind-icon-blend-background nil)
-;;   (kind-icon-default-face 'corfu-default)
-;;   :config
-;;   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+(use-package kind-icon
+  :after corfu
+  :config
+  (setq kind-icon-use-icons nil)
+  (setq kind-icon-blend-background nil)
+  (setq kind-icon-default-face 'corfu-default)
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package lsp-mode
   :disabled t
@@ -70,6 +73,7 @@
 (use-package eglot
   :config
   (setq eglot-autoshutdown t)
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
   (add-to-list 'eglot-stay-out-of 'flymake))
 
 ;; Terminal
@@ -97,6 +101,7 @@
   (emms-all))
 
 ;; Others
+(use-package eldoc-box)
 (use-package format-all)
 (use-package lua-mode)
 (use-package buffer-move)
