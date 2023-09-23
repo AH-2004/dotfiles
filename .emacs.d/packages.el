@@ -79,6 +79,11 @@
 				 "--header-insertion=never"))
   (add-to-list 'eglot-stay-out-of 'flymake))
 
+(use-package eldoc
+  :config
+  (setq eldoc-echo-area-use-multiline-p nil)
+  )
+
 ;; Terminal
 (use-package vterm
   :config
@@ -103,6 +108,10 @@
   :init
   (emms-all))
 
+(use-package org-autolist
+  :config
+  (setq org-autolist-enable-delete nil))
+
 ;; Others
 (use-package eldoc-box)
 (use-package format-all)
@@ -115,6 +124,7 @@
 (use-package good-scroll :init (good-scroll-mode))
 (use-package lorem-ipsum)
 (use-package multi-vterm)
+(use-package org-download)
 (use-package org-autolist)
 (use-package org-modern)
 (use-package rainbow-mode)

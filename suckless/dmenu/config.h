@@ -2,7 +2,7 @@
 // Default settings; can be overriden by command line.
 
 static int topbar = 1; // -b option;
-static const char *fonts[] = { "IBM Plex Mono:size=10" }; // -fn option;
+static const char *fonts[] = { "IBM Plex Mono:size=9" }; // -fn option;
 static const char *prompt = NULL; // -p  option;
 static unsigned int lines = 0; // -l option; if nonzero, dmenu uses vertical
 

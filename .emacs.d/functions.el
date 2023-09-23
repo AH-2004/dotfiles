@@ -6,6 +6,10 @@
   (previous-line 1)
   (jump-to-register 1))
 
+(defun align-comments (begin end)
+  (interactive "r")
+  (align-regexp begin end "\\(\\s-*\\)//" 1 1 t))
+
 ;; Delete whole line
 (defun delete-line ()
   (interactive)
@@ -13,6 +17,17 @@
    (line-beginning-position)
    (line-end-position))
   (delete-backward-char 1))
+
+;; Delete word
+(defun delete-word (arg)
+  (interactive "p")
+  (if (use-region-p)
+      (delete-region (region-beginning) (region-end))
+    (delete-region (point) (progn (forward-word arg) (point)))))
+
+(defun backward-delete-word (arg)
+  (interactive "p")
+  (delete-word (- arg)))
 
 ;; Duplicate line
 (defun duplicate-line ()

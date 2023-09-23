@@ -31,6 +31,12 @@
 ;; Delete line
 (bind-key* "S-<delete>" 'delete-line)
 
+;; Delete word
+(bind-key* "M-DEL" 'backward-delete-word)
+(bind-key* "C-<backspace>" 'backward-delete-word)
+(bind-key* "M-d" 'delete-word)
+(bind-key* "C-<delete>" 'delete-word)
+
 ;; Undo/Redo
 (bind-key* "C-z" 'undo)
 (bind-key* "C-y" 'redo)
@@ -41,6 +47,9 @@
 (bind-key "C-f" 'isearch-repeat-forward isearch-mode-map)
 (bind-key "<tab>" 'isearch-repeat-forward isearch-mode-map)
 (bind-key "<backspace>" 'isearch-del-char isearch-mode-map)
+
+;; Ispell
+(bind-key* "C-S-s" 'ispell-region)
 
 ;; Dired
 (bind-key* "C-n" 'dired-create-empty-file)
@@ -79,4 +88,3 @@
 
 ;; CUA
 (cua-mode t)
-(setq cua-keep-region-after-copy nil)

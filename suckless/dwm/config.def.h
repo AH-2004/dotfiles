@@ -15,7 +15,7 @@ static const unsigned int systrayiconsize = 14;
 static const int systraypinningfailfirst = 1; // 1: First monitor, 0: Last Monitor
 
 // Fonts
-static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=10" };
+static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=9" };
 static const char dmenufont[] = "IBM Plex Mono:size=9";
 
 // Colors
@@ -23,7 +23,7 @@ static const char col_gray1[] = "#222222";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
-static const char col_magenta[] = "#6b69d6";
+static const char col_magenta[] = "#bd93f9";
 /* static const char col_teal[] = "#008080"; */
 
 static const char *colors[][3] = {
@@ -100,15 +100,17 @@ static const char *mutevolumecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@
 static const Key keys[] = {
     // { modifier, key, function, argument }
     { 0, XK_Print, spawn, {.v = screenshotcmd} },
-	{ 0, XF86XK_AudioRaiseVolume, spawn, {.v = incvolumecmd} },
-	{ 0, XF86XK_AudioLowerVolume, spawn, {.v = decvolumecmd} },
-	{ 0, XF86XK_AudioMute, spawn, {.v = mutevolumecmd} },
+    { 0, XF86XK_MonBrightnessUp, spawn, {.v = incbacklightcmd} },
+    { 0, XF86XK_MonBrightnessDown, spawn, {.v = decbacklightcmd} },
+    { 0, XF86XK_AudioRaiseVolume, spawn, {.v = incvolumecmd} },
+    { 0, XF86XK_AudioLowerVolume, spawn, {.v = decvolumecmd} },
+    { 0, XF86XK_AudioMute, spawn, {.v = mutevolumecmd} },
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
     { Mod1Mask, XK_Tab, altTabStart, {0} },
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
     { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },
     { MODKEY, XK_l, spawn, {.v = suspendcmd} },
-	{ MODKEY, XK_e, spawn, {.v = emacscmd} },
+    { MODKEY, XK_e, spawn, {.v = emacscmd} },
     { MODKEY, XK_b, togglebar, {0} },
     { MODKEY, XK_Left, setmfact, {.f = -0.05} },
     { MODKEY, XK_Right, setmfact, {.f = +0.05} },
@@ -118,17 +120,17 @@ static const Key keys[] = {
     { MODKEY, XK_f, setlayout, {.v = &layouts[1]} },
     { MODKEY, XK_comma, focusmon, {.i = -1} },
     { MODKEY, XK_period, focusmon, {.i = +1} },
-	{ MODKEY, XK_0, setgaps, {.i = GAP_RESET } },
+    { MODKEY, XK_0, setgaps, {.i = GAP_RESET } },
     { MODKEY, XK_minus, setgaps, {.i = -3} },
     { MODKEY, XK_equal, setgaps, {.i = +3} },
     { MODKEY|ShiftMask, XK_equal, incnmaster, {.i = +1} },
     { MODKEY|ShiftMask, XK_minus, incnmaster, {.i = -1} },
     { MODKEY|ShiftMask, XK_space, togglefloating, {0} },
-	{ MODKEY|ShiftMask, XK_Left, viewprev, {0} },
-	{ MODKEY|ShiftMask, XK_Right, viewnext, {0} },
+    { MODKEY|ShiftMask, XK_Left, viewprev, {0} },
+    { MODKEY|ShiftMask, XK_Right, viewnext, {0} },
     { MODKEY|ShiftMask, XK_q, quit, {0} },
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2)
-	TAGKEYS(XK_4, 3) TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5)
+    TAGKEYS(XK_4, 3) TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5)
 };
 
 static const Button buttons[] = {
