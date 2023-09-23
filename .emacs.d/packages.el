@@ -112,6 +112,10 @@
   :config
   (setq org-autolist-enable-delete nil))
 
+(use-package org-download
+  :config
+  (setq org-download-annotate-function #'org-download-annotate-custom))
+
 ;; Others
 (use-package eldoc-box)
 (use-package format-all)

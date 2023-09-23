@@ -103,6 +103,10 @@
   (universal-argument)
   (org-update-statistics-cookies t))
 
+;; Org Download markup
+(defun org-download-annotate-custom (link)
+  "#+ATTR_HTML: :width 300px\n")
+
 (defun tst ()
   (interactive)
   (message "%s" "Test"))

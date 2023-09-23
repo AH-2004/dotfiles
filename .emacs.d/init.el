@@ -25,7 +25,7 @@
 (setq-default scroll-conservatively 1)
 (setq-default auto-window-vscroll nil)
 (setq-default auto-hscroll-mode nil)
-(setq-default org-image-actual-width nil)
+(setq-default org-image-actual-width (list 300))
 (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 (defadvice split-window (after split-window-after activate) (other-window 1))
 
