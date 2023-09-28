@@ -100,39 +100,35 @@ float alpha = 1;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"#51576D",
-	"#E78284",
-	"#A6D189",
-	"#E5C890",
-	"#8CAAEE",
-	"#F4B8E4",
-	"#81C8BE",
-	"#B5BFE2",
-
-	/* 8 bright colors */
-	"#626880",
-	"#E78284",
-	"#A6D189",
-	"#E5C890",
-	"#8CAAEE",
-	"#F4B8E4",
-	"#81C8BE",
-	"#A5ADCE",
-
-[256] = "#C6D0F5", /* default foreground colour */
-[257] = "#303446", /* default background colour */
-[258] = "#F2D5CF", /*575268*/
-
+	[0] = "#1d1f21", /* black   */
+	[1] = "#cc6666", /* red     */
+	[2] = "#b5bd68", /* green   */
+	[3] = "#f0c674", /* yellow  */
+	[4] = "#81a2be", /* blue    */
+	[5] = "#b294bb", /* magenta */
+	[6] = "#8abeb7", /* cyan    */
+	[7] = "#c5c8c6", /* white   */
+ 
+ 	/* 8 bright colors */
+	[8]  = "#969896", /* black   */
+	[9]  = "#cc6666", /* red     */
+	[10] = "#b5bd68", /* green   */
+	[11] = "#f0c674", /* yellow  */
+	[12] = "#81a2be", /* blue    */
+	[13] = "#b294bb", /* magenta */
+	[14] = "#8abeb7", /* cyan    */
+	[15] = "#ffffff", /* white   */
+ 
+ 	[255] = 0,
 };
-
 
 /*
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 256;
-unsigned int defaultbg = 257;
-unsigned int defaultcs = 258;
-static unsigned int defaultrcs = 258;
+unsigned int defaultfg = 7;
+unsigned int defaultbg = 0;
+unsigned int defaultcs = 7;
+static unsigned int defaultrcs = 0;
 
 /*
  * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h4-Functions-using-CSI-_-ordered-by-the-final-character-lparen-s-rparen:CSI-Ps-SP-q.1D81

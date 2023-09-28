@@ -23,13 +23,13 @@ static const char col_gray1[] = "#222222";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
-static const char col_magenta[] = "#bd93f9";
+static const char col_purple[] = "#b294bb";
 /* static const char col_teal[] = "#008080"; */
 
 static const char *colors[][3] = {
 	// { fg, bg, border }
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_magenta, col_magenta }
+	[SchemeSel]  = { col_gray4, col_purple, col_purple }
 };
 
 // Others
