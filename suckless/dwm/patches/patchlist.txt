@@ -11,7 +11,7 @@ gaps - Done
 pertag - Done
 adjacenttag - Done
 zoomswap - Done
-attachaside - Done
+attachbottom - Done
 
 Patches to consider:
 cfacts
