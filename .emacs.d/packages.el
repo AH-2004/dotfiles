@@ -35,6 +35,8 @@
   (setq neo-hide-cursor t)
   (setq neo-mode-line-type 'none))
 
+;; Terminal
+
 ;; Completions
 (use-package corfu
   :config
@@ -81,15 +83,8 @@
 
 (use-package eldoc
   :config
-  (setq eldoc-echo-area-use-multiline-p nil)
-  )
+  (setq eldoc-echo-area-use-multiline-p nil))
 
-;; Terminal
-(use-package vterm
-  :config
-  (setq vterm-kill-buffer-on-exit t)
-  (setq vterm-buffer-name-string "vterm")
-  (setq vterm-tramp-shells '(("docker" "/usr/bin/bash") ("ssh" "/usr/bin/bash"))))
 
 ;; Openwith
 (use-package openwith
@@ -127,7 +122,6 @@
 (use-package drag-stuff)
 (use-package good-scroll :init (good-scroll-mode))
 (use-package lorem-ipsum)
-(use-package multi-vterm)
 (use-package org-download)
 (use-package org-autolist)
 (use-package org-modern)

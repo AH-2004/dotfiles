@@ -1,3 +1,10 @@
+(defun init ()
+  (message (emacs-init-time))
+  (find-file "~/.emacs.d/*notes*")
+  (cd "~")
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+)
+
 ;; Comment line or region
 (defun comment ()
   (interactive)
@@ -56,6 +63,13 @@
 (defun other-window-back ()
   (interactive)
   (other-window -1))
+
+;; Toggle Line number type
+(defun display-line-numbers-relative ()
+  (interactive)
+   (if (eq display-line-numbers 'relative)
+      (setq display-line-numbers t)
+    (setq display-line-numbers 'relative)))
 
 ;; Insert current date
 (defun today ()

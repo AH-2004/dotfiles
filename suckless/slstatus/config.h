@@ -67,6 +67,7 @@ static const char unknown_str[] = "";
 static const struct arg args[] = {
 	/* function format          argument */
 	{ datetime, "%s", "%A %B %d | %r;" },
+	{ run_command, "%s", SCRIPTS_PATH"/custom.sh" },
 	{ run_command, "%s", SCRIPTS_PATH"/battery.sh" },
 	{ run_command, "%s", SCRIPTS_PATH"/backlight.sh"},
 	{ run_command, "%s", SCRIPTS_PATH"/volume.sh" },

@@ -63,9 +63,6 @@
 
 ;; Terminal
 (bind-key* "C-x t" 'term)
-(bind-key "C-S-v" 'vterm-yank vterm-mode-map)
-;; (bind-key "C-S-l" 'vterm-clear-scrollback vterm-mode-map)
-(bind-key "C-l" 'vterm-clear vterm-mode-map)
 
 ;; Buffers and windows
 ;; (bind-key* "C-x k" 'kill-buffer-and-window)
@@ -79,10 +76,15 @@
 (bind-key* "C-<tab>" 'other-window)
 (bind-key* "C-<iso-lefttab>" 'other-window-back)
 (bind-key* "C-x 4" 'clone-indirect-buffer-other-window)
+(bind-key* "M-<prior>" 'beginning-of-buffer)
+(bind-key* "M-<next>" 'end-of-buffer)
 
 ;; Unbind global unwanted keys
 (unbind-key "<insert>")
 (unbind-key "<insertchar>")
+(unbind-key "S-<down-mouse-1>")
+(unbind-key "C-<down-mouse-1>")
+(unbind-key "C-<down-mouse-3>")
 (unbind-key "C-x C-z")
 ;; (bind-key* "C-x C-z" 'tst)
 

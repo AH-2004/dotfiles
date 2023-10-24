@@ -12,6 +12,7 @@ pertag - Done
 adjacenttag - Done
 zoomswap - Done
 attachbottom - Done
+ewmhtags - Done
 
 Patches to consider:
 cfacts

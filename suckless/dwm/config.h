@@ -4,7 +4,7 @@
 static const unsigned int borderpx = 3;
 static const unsigned int snap = 16;
 static const int showbar = 1;
-static const int topbar = 1;
+static const int topbar = 0;
 static const int splitstatus = 1;
 static const char *splitdelim = ";"; 
 static const int showsystray = 1; 
@@ -19,12 +19,11 @@ static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=9" }
 static const char dmenufont[] = "IBM Plex Mono:size=9";
 
 // Colors
-static const char col_gray1[] = "#222222";
+static const char col_gray1[] = "#1d1f21";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
 static const char col_purple[] = "#b294bb";
-/* static const char col_teal[] = "#008080"; */
 
 static const char *colors[][3] = {
 	// { fg, bg, border }
@@ -35,6 +34,7 @@ static const char *colors[][3] = {
 // Others
 static const int focusonwheel = 1;
 static const int raiseonfocus = 1;
+static const int tagonswap = 0;
 static const int startwithgaps[] = { 1 }; // 1: gaps by default, can be customized per tag
 static const unsigned int gappx[] = { 12 }; // default gap in px, can be customized per tag
 
@@ -55,6 +55,7 @@ static const Rule rules[] = {
 	{ "Vivaldi-stable", NULL,  NULL, 0, 0, -1, 0 },
 	{ "Emacs", NULL, NULL, 0, 0, -1, 0 },
 	{ "Zathura", NULL, NULL, 0, 0, -1, 0 },
+	{ "Com.github.xournalpp.xournalpp", NULL, NULL, 0, 0, -1, 0 },
 	{ "Plank", NULL, NULL, 0, 0, -1, 1 }
 };
 
@@ -63,6 +64,7 @@ static const float mfact = 0.55; // Factor of master area size [0.05..0.95]
 static const int nmaster = 1;// Number of clients in master area
 static const int resizehints = 0; // 1 means respect size hints in tiled resizals
 static const int lockfullscreen = 1; // Force lock fullscreen
+static const int statuspinning = 0;
 static const Layout layouts[] = {
 	// { symbol, arrange function }
 	// First index is default, NULL means floating
@@ -74,8 +76,9 @@ static const Layout layouts[] = {
 // Definitions
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+	{ MODKEY, KEY, view, {.ui = 1 << TAG} }, \
+	{ MODKEY|ShiftMask|Mod1Mask, KEY, swaptags, {.ui = 1 << TAG} },	\
+	{ MODKEY|ShiftMask, KEY, tag, {.ui = 1 << TAG} }, \
 
 // Helper for spawning shell commands in the pre dwm-5.0 fashion
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -89,12 +92,12 @@ static const char *terminalcmd[] = { "st", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 static const char *screenshotcmd[] = { "/home/AH/.config/dwm/scripts/screenshot.sh", NULL };
 static const char *emacscmd[] = { "emacsclient", "-c", "-n", NULL };
-
 static const char *incbacklightcmd[] = { "light", "-A", "5", NULL };
 static const char *decbacklightcmd[] = { "light", "-U", "5", NULL };
 static const char *incvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
 static const char *decvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
 static const char *mutevolumecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
+static const char *playpausecmd[] = { "playerctl", "play-pause", NULL };
 
 // Keys and Buttons
 static const Key keys[] = {
@@ -105,29 +108,33 @@ static const Key keys[] = {
     { 0, XF86XK_AudioRaiseVolume, spawn, {.v = incvolumecmd} },
     { 0, XF86XK_AudioLowerVolume, spawn, {.v = decvolumecmd} },
     { 0, XF86XK_AudioMute, spawn, {.v = mutevolumecmd} },
+	{ 0, XF86XK_Favorites, spawn, {.v = playpausecmd} },
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
-    { Mod1Mask, XK_Tab, altTabStart, {0} },
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
     { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },
+    { Mod1Mask, XK_Tab, altTabStart, {0} },
     { MODKEY, XK_l, spawn, {.v = suspendcmd} },
     { MODKEY, XK_e, spawn, {.v = emacscmd} },
     { MODKEY, XK_b, togglebar, {0} },
     { MODKEY, XK_Left, setmfact, {.f = -0.05} },
     { MODKEY, XK_Right, setmfact, {.f = +0.05} },
     { MODKEY, XK_Return, zoom, {0} },
+    { MODKEY, XK_space, zoom, {0} },
     { MODKEY, XK_x, killclient, {0} },
     { MODKEY, XK_t, setlayout, {.v = &layouts[0]} },
     { MODKEY, XK_f, setlayout, {.v = &layouts[1]} },
-    { MODKEY, XK_comma, focusmon, {.i = -1} },
-    { MODKEY, XK_period, focusmon, {.i = +1} },
+    { MODKEY, XK_Up, focusmon, {.i = -1} },
+    { MODKEY, XK_Down, focusmon, {.i = +1} },
     { MODKEY, XK_0, setgaps, {.i = GAP_RESET } },
     { MODKEY, XK_minus, setgaps, {.i = -3} },
     { MODKEY, XK_equal, setgaps, {.i = +3} },
     { MODKEY|ShiftMask, XK_equal, incnmaster, {.i = +1} },
     { MODKEY|ShiftMask, XK_minus, incnmaster, {.i = -1} },
     { MODKEY|ShiftMask, XK_space, togglefloating, {0} },
-    { MODKEY|ShiftMask, XK_Left, viewprev, {0} },
-    { MODKEY|ShiftMask, XK_Right, viewnext, {0} },
+    { MODKEY|ShiftMask, XK_Prior, shiftview, {.i = +1} },
+    { MODKEY|ShiftMask, XK_Next, shiftview, {.i = -1} },
+	{ MODKEY|ShiftMask, XK_Up,  tagmon, {.i = -1 } },
+	{ MODKEY|ShiftMask, XK_Down, tagmon, {.i = +1 } },
     { MODKEY|ShiftMask, XK_q, quit, {0} },
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2)
     TAGKEYS(XK_4, 3) TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5)

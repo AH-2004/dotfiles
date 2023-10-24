@@ -1,10 +1,3 @@
-(defun init ()
-  (message (emacs-init-time))
-  (find-file "~/.emacs.d/*notes*")
-  (cd "~")
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-)
-
 ;; Require packages
 (require 'package)
 (require 'org)
@@ -12,6 +5,7 @@
 (require 'use-package)
 (require 'use-package-ensure)
 (require 'windmove)
+(require 'align)
 
 ;; UI Tweaks
 (menu-bar-mode -1)
@@ -67,14 +61,20 @@
 (setq-default backward-delete-char-untabify-method nil)
 (setq-default cua-keep-region-after-copy nil)
 
+(add-to-list 'align-rules-list
+             '(c++-align
+               (regexp . "[=;]\\(\\s-*\\)")
+               (mode   . '(c++-mode))
+               (repeat . t)))
+
+;; Theme
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
+(load-theme 'base16-tomorrow-night t)
+
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/functions.el")
 (load "~/.emacs.d/hooks.el")
 (load "~/.emacs.d/keybindings.el")
-
-;; Theme
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 9"))
-(load-theme 'base16-chalk t)
 
 ;; Modeline
 (setq-default mode-line-format
@@ -93,4 +93,4 @@
 ;; Aliases
 (defalias 'checkbox 'org-toggle-checkbox)
 (defalias 'save 'save-buffer)
-(defalias 'term 'multi-vterm)
+(defalias 'term 'st)

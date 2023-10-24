@@ -10,7 +10,7 @@ nope () {
 	local cmd="setsid $1"
 	shift
 	for x in "$@"; do
-		if [[ $x == *' '* ]]; then
+		if [[ $x == *" "* ]]; then
 			cmd+=" \"$x\""
 			continue
 		fi
@@ -20,67 +20,48 @@ nope () {
 	eval $cmd
 }
 
-# Commands to compress, decompress, list archives
-zip_tar () {
-	TARNAME="${!#}"
-	set -- "${@:1:$#-1}"
-	bsdtar -cf $TARNAME "$@"
-}
-
-unzip_tar () {
-	BASENAME="${2:-$(cut -d . -f 1 <<< "$1")}"
-	mkdir -p $BASENAME
-	bsdtar -xf $1 -C $BASENAME
-}
-
-ls_tar () { bsdtar -tf $1; }
-
-# init C++ program
-init_cpp() { mkdir -p "./$1" && cp -r "/home/AH/code/cpp/makefile_template"/* "./$1"; }
-
-# init C program
-init_c() { mkdir -p "./$1" && cp -r "/home/AH/code/c/makefile_template"/* "./$1"; }
-
-emacs_run() {
-	emacsclient -n -e "(> (length (frame-list)) 1)" | grep -q t
-	if [ "$?" == "1" ]; then
-    	emacsclient -c -n -a "" "$@"
-	else
-    	emacsclient -n -a "" "$@"
-	fi
-}
+source "/home/AH/.bash_functions"
 
 # ALIASES
-alias ls='ls -la --color=auto'
-alias which='which -a'
-alias startx='startx ~/.xinitrc'
-alias clock='tty-clock -t -s -c -C 5 -f "%A %B %d %Y"'
-alias matrix='cmatrix -C magenta'
-alias e='emacs_run'
-alias viv='nope vivaldi-stable'
-alias lite='nope lite-xl'
-alias code='nope vscodium'
-alias fire='nope firefox'
-alias zath='nope zathura'
-alias xcolor='xcolor -s'
-alias open='xdg-open'
-alias clip='xclip -selection clipboard -rmlastnl'
-alias emacs_restart='systemctl --user restart emacs.service'
+alias ls="ls -lah --color=auto --group-directories-first"
+alias du="du -sh"
+alias which="which -a"
+alias startx="startx ~/.xinitrc"
+alias tar="tar --auto-compress"
+alias clock="tty-clock -t -s -c -C 5 -f '%A %B %d %Y'"
+alias matrix="cmatrix -C magenta"
+alias e="emacs_run"
+alias code="nope vscodium"
+alias viv="nope vivaldi-stable"
+alias chromium="nope chromium"
+alias fire="nope firefox"
+alias tor_browser="nope chromium --incognito --proxy-server=socks://localhost:9050"
+alias zath="nope zathura"
+alias feh="feh -g 683x384 -q --scale-down -B black"
+alias sxiv="sxiv -b"
+alias xcolor="xcolor -s"
+alias open="xdg-open"
+alias clip="xclip -selection clipboard -rmlastnl"
+alias xelatex="xelatex -interaction=nonstopmode"
+alias toggle_nightmode="xsct --toggle"
 
 # ADD TO PATH
 PATH=~/.local/bin:$PATH
 
+# Qt
+export QT_QPA_PLATFORMTHEME=gtk2
+
 # FZF Colors
-export FZF_DEFAULT_OPTS='--color=marker:#a56c9e,spinner:#a56c9e,header:#a56c9e,pointer:#a56c9e,prompt:#a56c9e'
+export FZF_DEFAULT_OPTS="--color=marker:#a56c9e,spinner:#a56c9e,header:#a56c9e,pointer:#a56c9e,prompt:#a56c9e"
 
 # Chrome path
-export CHROME_PATH='/usr/bin/vivaldi-stable'
+export CHROME_PATH="/usr/bin/vivaldi-stable"
 
 # initalizing ANDROID_HOME
-export ANDROID_HOME='/opt/android-sdk'
+export ANDROID_HOME="/opt/android-sdk"
 
 # Wine 32bit prefix
-export WINEPREFIX='/home/AH/.wine'
+export WINEPREFIX="~/.wine"
 
 # clipmenu
 export CM_SELECTIONS="clipboard"
@@ -91,10 +72,13 @@ export XSECURELOCK_NO_COMPOSITE=1
 export XSECURELOCK_DISCARD_FIRST_KEYPRESS=1
 export XSECURELOCK_PASSWORD_PROMPT="asterisks"
 export XSECURELOCK_FONT="IBM Plex Mono:style=Regular"
-export XSECURELOCK_SHOW_DATETIME=1
+export XSECURELOCK_SHOW_DATETIME=0
 export XSECURELOCK_SHOW_KEYBOARD_LAYOUT=0
 export XSECURELOCK_SHOW_DATETIME=0
 export XSECURELOCK_SHOW_HOSTNAME=0
 export XSECURELOCK_SHOW_USERNAME=0
 
-PS1='\[\e[38;5;141m\]\u·\h \W > \[\e[m\]'
+export SUDO_PROMPT="sudo > "
+figlet "AH"
+# PS1="\[\e[38;5;140m\]\u·\h \W > \[\e[m\]"
+PS1="\[\e[38;5;139m\]\u·\h \W > \[\e[m\]"

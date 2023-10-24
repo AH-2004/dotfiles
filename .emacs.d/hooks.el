@@ -1,7 +1,10 @@
 (add-hook 'server-after-make-frame-hook 'init)
 (add-hook 'after-init-hook 'init)
 
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook
+		  (lambda ()
+			(display-line-numbers-mode 1)))
 
 (add-hook 'text-mode-hook
 		  (lambda ()
