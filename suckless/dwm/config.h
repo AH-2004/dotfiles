@@ -97,7 +97,7 @@ static const char *decbacklightcmd[] = { "light", "-U", "5", NULL };
 static const char *incvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
 static const char *decvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
 static const char *mutevolumecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
-static const char *playpausecmd[] = { "playerctl", "play-pause", NULL };
+static const char *customcmd[] = { "/home/AH/.config/dwm/scripts/custom_key.sh", NULL };
 
 // Keys and Buttons
 static const Key keys[] = {
@@ -108,7 +108,7 @@ static const Key keys[] = {
     { 0, XF86XK_AudioRaiseVolume, spawn, {.v = incvolumecmd} },
     { 0, XF86XK_AudioLowerVolume, spawn, {.v = decvolumecmd} },
     { 0, XF86XK_AudioMute, spawn, {.v = mutevolumecmd} },
-	{ 0, XF86XK_Favorites, spawn, {.v = playpausecmd} },
+	{ 0, XF86XK_Favorites, spawn, {.v = customcmd} },
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
     { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },
