@@ -8,7 +8,7 @@ static const char unknown_str[] = "";
 
 /* maximum output string length */
 #define MAXLEN 2048
-#define SCRIPTS_PATH "/home/AH/.config/dwm/scripts"
+#define SCRIPTS_PATH "/home/AH/.config/scripts"
 
 /*
  * function            description                     argument (example)

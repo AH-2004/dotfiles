@@ -82,6 +82,7 @@ static const Layout layouts[] = {
 
 // Helper for spawning shell commands in the pre dwm-5.0 fashion
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define SCRIPTS_PATH "/home/AH/.config/scripts"
 static char dmenumon[2] = "0"; // Component of dmenucmd, manipulated in spawn()
 
 // Commands
@@ -90,14 +91,14 @@ static const char *clipmenucmd[] = { "clipmenu", NULL };
 
 static const char *terminalcmd[] = { "st", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
-static const char *screenshotcmd[] = { "/home/AH/.config/dwm/scripts/screenshot.sh", NULL };
+static const char *screenshotcmd[] = { SCRIPTS_PATH"/screenshot.sh", NULL };
 static const char *emacscmd[] = { "emacsclient", "-c", "-n", NULL };
 static const char *incbacklightcmd[] = { "light", "-A", "5", NULL };
 static const char *decbacklightcmd[] = { "light", "-U", "5", NULL };
 static const char *incvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
 static const char *decvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
 static const char *mutevolumecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
-static const char *customcmd[] = { "/home/AH/.config/dwm/scripts/custom_key.sh", NULL };
+static const char *customcmd[] = { SCRIPTS_PATH"/custom_key.sh", NULL };
 
 // Keys and Buttons
 static const Key keys[] = {

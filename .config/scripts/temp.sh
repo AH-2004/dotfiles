@@ -1,13 +1,10 @@
 #!/usr/bin/sh
 
+sensors=('."thinkpad-isa-0000"."CPU"."temp1_input"')
 thermal=""
 
-for f in "/sys/class/thermal"/*; do
-	if [[ -d "$f" && "$f" == *"thermal_zone"* ]]; then
-		temp=$(cat "$f/temp")
-		round_temp=$(printf "%.0f" "$(echo "scale=2; $temp/1000" | bc)")
-		thermal+=" $round_temp°C" 
-	fi
+for sensor in "${sensors[@]}"; do
+	thermal+=$(printf " %.0f°C" $(sensors -j 2> /dev/null | jq "$sensor"))
 done
 
 if [[ "$thermal" != "" ]]; then

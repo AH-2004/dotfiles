@@ -1,31 +1,32 @@
 #!/usr/bin/sh
 
-BAT="BAT0"
+icons=("" "" "" "" "" "" "" "" "")
+icon=4
+capacity=""
+status=""
 
-INFO=$(upower -i $(upower -e | grep $BAT))
+for f in "/sys/class/power_supply"/*; do
+	if [[ -d "$f" && "$f" == *"BAT"* ]]; then
+		capacity=$(cat "$f/capacity")
+		status=$(cat "$f/status")
+	fi
+done
 
-if [[ "$INFO" == "" ]]; then
-	echo "";
+if [[ "$capacity" == "" ]]; then
 	exit
 fi
 
-PERCENTAGE=$(awk '/percentage/ { sub(/%/, "", $2); print $2 }' <<< $INFO)
-STATE=$(awk '/state/ { print $2 }' <<< $INFO)
-
-ICONS=("" "" "" "" "" "" "" "" "")
-ICON_IDX=4
-
-if [[ "$STATE" != "discharging" ]]; then
-	ICON_IDX=8
+if [[ "$status" != "Discharging" ]]; then
+	icon=8
 else
-	[[ $PERCENTAGE -le 14 ]] && ICON_IDX=0
-	[[ $PERCENTAGE -ge 28 ]] && ICON_IDX=1
-	[[ $PERCENTAGE -ge 42 ]] && ICON_IDX=2
-	[[ $PERCENTAGE -ge 56 ]] && ICON_IDX=3
-	[[ $PERCENTAGE -ge 70 ]] && ICON_IDX=4
-	[[ $PERCENTAGE -ge 84 ]] && ICON_IDX=5
-	[[ $PERCENTAGE -ge 98 ]] && ICON_IDX=6
-	[[ $PERCENTAGE -eq 100 ]] && ICON_IDX=7
+	[[ $capacity -le 14 ]] && icon=0
+	[[ $capacity -ge 28 ]] && icon=1
+	[[ $capacity -ge 42 ]] && icon=2
+	[[ $capacity -ge 56 ]] && icon=3
+	[[ $capacity -ge 70 ]] && icon=4
+	[[ $capacity -ge 84 ]] && icon=5
+	[[ $capacity -ge 98 ]] && icon=6
+	[[ $capacity -eq 100 ]] && icon=7
 fi
 
-echo " ${ICONS[$ICON_IDX]}" "$PERCENTAGE |"
+echo " ${icons[$icon]}" "$capacity |"
