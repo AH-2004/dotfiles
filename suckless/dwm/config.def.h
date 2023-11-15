@@ -83,6 +83,7 @@ static const Layout layouts[] = {
 // Helper for spawning shell commands in the pre dwm-5.0 fashion
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 #define SCRIPTS_PATH "/home/AH/.config/scripts"
+#define BASH_FUNCTIONS "/home/AH/.bash_functions"
 static char dmenumon[2] = "0"; // Component of dmenucmd, manipulated in spawn()
 
 // Commands
@@ -98,6 +99,7 @@ static const char *decbacklightcmd[] = { "light", "-U", "5", NULL };
 static const char *incvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%", NULL };
 static const char *decvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
 static const char *mutevolumecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
+static const char *togglerotatecmd[] = { BASH_FUNCTIONS, "toggle_rotate", NULL };
 static const char *customcmd[] = { SCRIPTS_PATH"/custom_key.sh", NULL };
 
 // Keys and Buttons
@@ -110,6 +112,7 @@ static const Key keys[] = {
     { 0, XF86XK_AudioLowerVolume, spawn, {.v = decvolumecmd} },
     { 0, XF86XK_AudioMute, spawn, {.v = mutevolumecmd} },
 	{ 0, XF86XK_Favorites, spawn, {.v = customcmd} },
+	{ 0, XF86XK_Display, spawn, {.v = togglerotatecmd} },
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
     { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },
@@ -136,7 +139,6 @@ static const Key keys[] = {
     { MODKEY|ShiftMask, XK_Next, shiftview, {.i = -1} },
 	{ MODKEY|ShiftMask, XK_Up,  tagmon, {.i = -1 } },
 	{ MODKEY|ShiftMask, XK_Down, tagmon, {.i = +1 } },
-    { MODKEY|ShiftMask, XK_q, quit, {0} },
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2)
     TAGKEYS(XK_4, 3) TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5)
 };
