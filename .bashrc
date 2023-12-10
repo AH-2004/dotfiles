@@ -25,7 +25,9 @@ source "/home/AH/.bash_functions"
 # ALIASES
 alias ls="ls -lah --color=auto --group-directories-first"
 alias du="du -sh"
+alias su="sudo su -l"
 alias which="which -a"
+alias please='sudo $(fc -ln -1)'
 alias startx="startx ~/.xinitrc"
 alias tar="tar --auto-compress"
 alias clock="tty-clock -t -s -c -C 5 -f '%A %B %d %Y'"
@@ -43,7 +45,6 @@ alias xcolor="xcolor -s"
 alias open="xdg-open"
 alias clip="xclip -selection clipboard -rmlastnl"
 alias xelatex="xelatex -interaction=nonstopmode"
-alias toggle_nightmode="xsct --toggle"
 
 # ADD TO PATH
 PATH=~/.local/bin:$PATH
@@ -79,6 +80,5 @@ export XSECURELOCK_SHOW_HOSTNAME=0
 export XSECURELOCK_SHOW_USERNAME=0
 
 export SUDO_PROMPT="sudo > "
-figlet "AH"
-# PS1="\[\e[38;5;140m\]\u·\h \W > \[\e[m\]"
 PS1="\[\e[38;5;139m\]\u·\h \W > \[\e[m\]"
+figlet "$(whoami)"

@@ -43,14 +43,74 @@ toggle_touch() {
 }
 
 # Toggle scroll method
-toggle_scrolling() {
+toggle_scroll() {
 	id=$(xinput list --id-only "Synaptics TM3381-002")
-	method=$(xinput list-props $id | grep 332 | awk '{ print $6 $7 $8 }')
+	method=$(xinput list-props $id | grep 382 | awk '{ print $6 $7 $8 }')
 	if [[ "$method" == "0,1,0" ]]; then
-		xinput set-prop $id 332 1 0 0
-		xinput set-prop $id 327 1
+		xinput set-prop $id 382 1 0 0
+		xinput set-prop $id 377 1
 	else
-		xinput set-prop $id 332 0 1 0
-		xinput set-prop $id 327 0
+		xinput set-prop $id 382 0 1 0
+		xinput set-prop $id 377 0
 	fi
 }
+
+# Toggle screen rotation
+toggle_rotate() {
+	defaultMatrix="1.000000,0.000000,0.000000,0.000000,1.000000,0.000000,0.000000,0.000000,1.000000"
+	orientation=$(xrandr --query --verbose | grep eDP1 | awk '{ print $6 }')
+	touchscreenId=$(xinput list --id-only "ELAN Touchscreen")
+	touchscreenMatrix=$(xinput list-props $touchscreenId | grep 188 | awk '{ print $5 $6 $7 $8 $9 $10 $11 $12 $13 }')
+	touchpadId=$(xinput list --id-only "Synaptics TM3381-002")
+	touchpadMatrix=$(xinput list-props $touchpadId | grep 188 | awk '{ print $5 $6 $7 $8 $9 $10 $11 $12 $13 }')
+
+	if [[ "$orientation" == "normal" ]]; then
+		xrandr --orientation right
+	else
+		xrandr --orientation normal
+	fi
+
+	if [[ "$touchscreenMatrix" == "$defaultMatrix" ]]; then
+		xinput set-prop $touchscreenId 188 0 1 0 -1 0 1 0 0 1
+	else
+		xinput set-prop $touchscreenId 188 1 0 0 0 1 0 0 0 1
+	fi
+
+	if [[ "$touchpadMatrix" == "$defaultMatrix" ]]; then
+		xinput set-prop $touchpadId 188 0 1 0 -1 0 1 0 0 1
+	else
+		xinput set-prop $touchpadId 188 1 0 0 0 1 0 0 0 1
+	fi
+}
+
+toggle_nightmode() { xsct --toggle; }
+
+case $1 in
+	emacs_run)
+		emacs_run
+		;;
+	init_c)
+		init_c
+		;;
+	init_cpp)
+		init_cpp
+		;;
+	map_drawpad)
+		map_drawpad
+		;;
+	rotate_drawpad)
+		rotate_drawpad
+		;;
+	toggle_touch)
+		toggle_touch
+		;;
+	toggle_scroll)
+		map_drawpad
+		;;
+	toggle_rotate)
+		toggle_rotate
+		;;
+	toggle_nightmode)
+		toggle_nightmode
+		;;
+esac

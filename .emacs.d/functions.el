@@ -1,7 +1,7 @@
 (defun init ()
   (message (emacs-init-time))
   (find-file "~/.emacs.d/*notes*")
-  (cd "~")
+  (setq default-directory "~/")
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 )
 
@@ -64,6 +64,11 @@
   (interactive)
   (other-window -1))
 
+;; Reset text scale
+(defun text-scale-reset ()
+  (interactive)
+  (text-scale-set 0))
+
 ;; Toggle Line number type
 (defun display-line-numbers-relative ()
   (interactive)
@@ -117,9 +122,35 @@
   (universal-argument)
   (org-update-statistics-cookies t))
 
+(defun org-toggle-intermediate ()
+  (interactive)
+  (org-toggle-checkbox))
+
 ;; Org Download markup
 (defun org-download-annotate-custom (link)
   "#+ATTR_HTML: :width 300px\n")
+
+;; increase/decrease alpha
+(defun alpha-increase ()
+  (interactive)
+  (if (eq (frame-parameter nil 'alpha-background) nil)
+	  (set-frame-parameter nil 'alpha-background 100))
+  (if (< (frame-parameter nil 'alpha-background) 100)
+	(set-frame-parameter nil 'alpha-background
+						 (+ (frame-parameter nil 'alpha-background) 5))))
+
+(defun alpha-decrease ()
+  (interactive)
+  (if (eq (frame-parameter nil 'alpha-background) nil)
+	  (set-frame-parameter nil 'alpha-background 100))
+  (if (> (frame-parameter nil 'alpha-background) 0)
+	(set-frame-parameter nil 'alpha-background
+						 (- (frame-parameter nil 'alpha-background) 5))))
+
+(defun alpha-reset ()
+  (interactive)
+  (set-frame-parameter nil 'alpha-background 100))
+
 
 (defun tst ()
   (interactive)

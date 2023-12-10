@@ -1,7 +1,7 @@
 // See LICENSE file for copyright and license details.
 
 // Appearance
-static const unsigned int borderpx = 3;
+static const unsigned int borderpx = 1;
 static const unsigned int snap = 16;
 static const int showbar = 1;
 static const int topbar = 0;
@@ -23,12 +23,13 @@ static const char col_gray1[] = "#1d1f21";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
-static const char col_purple[] = "#b294bb";
+/* static const char col_accent[] = "#b294bb"; */
+static const char col_accent[] = "#005254";
 
 static const char *colors[][3] = {
 	// { fg, bg, border }
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_purple, col_purple }
+	[SchemeSel]  = { col_gray4, col_accent, col_gray3 }
 };
 
 // Others
@@ -77,7 +78,7 @@ static const Layout layouts[] = {
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY, KEY, view, {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask|Mod1Mask, KEY, swaptags, {.ui = 1 << TAG} },	\
+	{ MODKEY|Mod1Mask|ShiftMask, KEY, swaptags, {.ui = 1 << TAG} },	\
 	{ MODKEY|ShiftMask, KEY, tag, {.ui = 1 << TAG} }, \
 
 // Helper for spawning shell commands in the pre dwm-5.0 fashion
@@ -89,7 +90,6 @@ static char dmenumon[2] = "0"; // Component of dmenucmd, manipulated in spawn()
 // Commands
 static const char *dmenucmd[] = { "j4-dmenu-desktop", "--dmenu=dmenu", "--no-generic", NULL };
 static const char *clipmenucmd[] = { "clipmenu", NULL };
-
 static const char *terminalcmd[] = { "st", NULL };
 static const char *suspendcmd[] = { "systemctl", "suspend", NULL };
 static const char *screenshotcmd[] = { SCRIPTS_PATH"/screenshot.sh", NULL };
@@ -100,6 +100,8 @@ static const char *incvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK
 static const char *decvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%", NULL };
 static const char *mutevolumecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
 static const char *togglerotatecmd[] = { BASH_FUNCTIONS, "toggle_rotate", NULL };
+static const char *togglenightmodecmd[] = { BASH_FUNCTIONS, "toggle_nightmode", NULL };
+static const char *toggleonscreenkey[] = { BASH_FUNCTIONS, "toggle_nightmode", NULL };
 static const char *customcmd[] = { SCRIPTS_PATH"/custom_key.sh", NULL };
 
 // Keys and Buttons
@@ -112,14 +114,17 @@ static const Key keys[] = {
     { 0, XF86XK_AudioLowerVolume, spawn, {.v = decvolumecmd} },
     { 0, XF86XK_AudioMute, spawn, {.v = mutevolumecmd} },
 	{ 0, XF86XK_Favorites, spawn, {.v = customcmd} },
+	{ 0, XF86XK_Launch1, spawn, {.v = toggleonscreenkey} },
 	{ 0, XF86XK_Display, spawn, {.v = togglerotatecmd} },
+	{ 0, XF86XK_Tools, spawn, {.v = togglenightmodecmd} },
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
     { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },
+    { Mod1Mask|ControlMask, XK_e, spawn, {.v = emacscmd} },
     { Mod1Mask, XK_Tab, altTabStart, {0} },
     { MODKEY, XK_l, spawn, {.v = suspendcmd} },
-    { MODKEY, XK_e, spawn, {.v = emacscmd} },
     { MODKEY, XK_b, togglebar, {0} },
+	{ MODKEY, XK_w, toggleborder, {0} },
     { MODKEY, XK_Left, setmfact, {.f = -0.05} },
     { MODKEY, XK_Right, setmfact, {.f = +0.05} },
     { MODKEY, XK_Return, zoom, {0} },

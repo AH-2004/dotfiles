@@ -263,6 +263,7 @@ static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
 static void togglebar(const Arg *arg);
+static void toggleborder(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
@@ -1372,7 +1373,7 @@ movemouse(const Arg *arg)
 	Monitor *m;
 	XEvent ev;
 	Time lasttime = 0;
-
+	
 	if (!(c = selmon->sel))
 		return;
 	if (c->isfullscreen) /* no support moving fullscreen windows by mouse */
@@ -2299,6 +2300,21 @@ togglebar(const Arg *arg)
 		}
 		XConfigureWindow(dpy, systray->win, CWY, &wc);
 	}
+	arrange(selmon);
+}
+
+void
+toggleborder(const Arg *arg)
+{
+	XWindowChanges wc;
+	if (!selmon->sel)
+		return;
+	if (selmon->sel->bw == borderpx)
+		selmon->sel->bw = 0;
+	else
+		selmon->sel->bw = borderpx;
+	wc.border_width = selmon->sel->bw;
+	XConfigureWindow(dpy, selmon->sel->win, CWBorderWidth, &wc);
 	arrange(selmon);
 }
 

@@ -7,6 +7,12 @@
 ;; Zoom
 (bind-key* "C-=" 'text-scale-increase)
 (bind-key* "C--" 'text-scale-decrease)
+(bind-key* "C-0" 'text-scale-reset)
+
+;; Alpha
+(bind-key* "C-+" 'alpha-increase)
+(bind-key* "C-_" 'alpha-decrease)
+(bind-key* "C-)" 'alpha-reset)
 
 ;; Toggle line numbers
 (bind-key* "C-S-g" 'display-line-numbers-mode)
@@ -17,7 +23,7 @@
 
 ;; Completions
 (bind-key* "C-SPC" 'completion-at-point)
-(bind-key* "M-h" 'eldoc-box-help-at-point)
+(bind-key* "C-S-SPC" 'eldoc-box-help-at-point)
 
 ;; Comments
 (bind-key* "C-/" 'comment)
@@ -56,6 +62,8 @@
 (bind-key* "C-d" 'dired-create-directory)
 (bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
 (bind-key "<f2>" 'dired-do-rename dired-mode-map)
+(bind-key "<mouse-2>" 'dired-find-file dired-mode-map)
+(bind-key "C-x C-s" 'wdired-finish-edit wdired-mode-map)
 
 ;; Org mode
 (bind-key "C-e" 'org-modern-mode org-mode-map)
@@ -64,8 +72,11 @@
 ;; Terminal
 (bind-key* "C-x t" 'term)
 
+;; Bookmarks
+(bind-key* "C-x v" 'bookmark-bmenu-list)
+(bind-key "<deletechar>" 'bookmark-delete bookmark-bmenu-mode-map)
+
 ;; Buffers and windows
-;; (bind-key* "C-x k" 'kill-buffer-and-window)
 (bind-key* "C-x k" 'kill-buffer)
 (bind-key* "C-x r" 'rename-buffer)
 (bind-key* "C-x C-b" 'switch-to-buffer)
@@ -76,8 +87,12 @@
 (bind-key* "C-<tab>" 'other-window)
 (bind-key* "C-<iso-lefttab>" 'other-window-back)
 (bind-key* "C-x 4" 'clone-indirect-buffer-other-window)
-(bind-key* "M-<prior>" 'beginning-of-buffer)
-(bind-key* "M-<next>" 'end-of-buffer)
+(bind-key* "M-<home>" 'beginning-of-buffer)
+(bind-key* "M-<end>" 'end-of-buffer)
+(bind-key* "<escape>" 'keyboard-escape-quit)
+
+;; Miscellaneous
+;; (bind-key* "C-x C-z" 'tst)
 
 ;; Unbind global unwanted keys
 (unbind-key "<insert>")
@@ -85,8 +100,8 @@
 (unbind-key "S-<down-mouse-1>")
 (unbind-key "C-<down-mouse-1>")
 (unbind-key "C-<down-mouse-3>")
+(unbind-key "<mouse-2>")
 (unbind-key "C-x C-z")
-;; (bind-key* "C-x C-z" 'tst)
 
 ;; CUA
 (cua-mode t)

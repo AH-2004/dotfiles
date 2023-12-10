@@ -2,25 +2,30 @@
 (require 'package)
 (require 'org)
 (require 'dired)
+(require 'bookmark)
+(require 'wdired)
 (require 'use-package)
 (require 'use-package-ensure)
 (require 'windmove)
 (require 'align)
+(require 'cc-mode)
 
 ;; UI Tweaks
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (tooltip-mode -1)
-(set-fringe-mode 0)
-(setq-default user-dialog-box nil)
+(fringe-mode -1)
+(setq-default use-dialog-box nil)
+(setq-default use-file-dialog nil)
 (setq-default frame-title-format '("Emacs " emacs-version))
 (setq-default ring-bell-function 'ignore)
 (setq-default scroll-conservatively 1)
 (setq-default auto-window-vscroll nil)
 (setq-default auto-hscroll-mode nil)
 (setq-default org-image-actual-width (list 300))
-(add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
+(setq-default text-scale-mode-step 1.1)
+;; (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 (defadvice split-window (after split-window-after activate) (other-window 1))
 
 ;; Other tweaks
@@ -46,6 +51,9 @@
 (setq-default read-file-name-completion-ignore-case t)
 (setq-default read-buffer-completion-ignore-case t)
 (setq-default initial-major-mode 'fundamental-mode)
+(setq-default large-file-warning-threshold nil)
+(setq-default ediff-ignore-similar-regions t)
+(setq-default ediff-highlight-all-diffs nil)
 
 ;; Editing Tweaks
 (electric-pair-mode t)
@@ -58,6 +66,7 @@
 (setq-default org-replace-disputed-keys t)
 (setq-default org-return-follows-link t)
 (setq-default org-adapt-indentation t)
+(setq-default org-indent-mode-turns-on-hiding-stars nil)
 (setq-default backward-delete-char-untabify-method nil)
 (setq-default cua-keep-region-after-copy nil)
 
@@ -67,14 +76,16 @@
                (mode   . '(c++-mode))
                (repeat . t)))
 
-;; Theme
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
-(load-theme 'base16-tomorrow-night t)
 
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/functions.el")
 (load "~/.emacs.d/hooks.el")
 (load "~/.emacs.d/keybindings.el")
+
+;; Theme
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
+(load-theme 'base16-tomorrow-night t)
+;; (load-theme 'base16-ocean t)
 
 ;; Modeline
 (setq-default mode-line-format
@@ -84,13 +95,15 @@
 	   mode-line-front-space
 	   mode-line-modified
 	   mode-line-front-space
-	   "L%l"
+	   "(%l,%c)"
 	   mode-line-front-space
 	   "%I"
 	   mode-line-front-space
 	   mode-line-modes))
 
 ;; Aliases
+;; (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'checkbox 'org-toggle-checkbox)
 (defalias 'save 'save-buffer)
 (defalias 'term 'st)
+(defalias 'wdired 'wdired-change-to-wdired-mode)

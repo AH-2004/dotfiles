@@ -52,6 +52,15 @@
   (global-corfu-mode)
   (corfu-history-mode))
 
+(use-package cape
+  :init
+  (setq completion-at-point-functions
+		(list
+		 (cape-capf-super
+		  ;; #'cape-dabbrev
+		  #'cape-dict
+		  #'cape-keyword))))
+
 (use-package kind-icon
   :after corfu
   :config
@@ -78,13 +87,13 @@
   (add-to-list 'eglot-server-programs
 			   '((c++-mode c-mode)
 				 "clangd"
-				 "--header-insertion=never"))
+				 "--header-insertion=never"
+				 "--all-scopes-completion=false"))
   (add-to-list 'eglot-stay-out-of 'flymake))
 
 (use-package eldoc
   :config
   (setq eldoc-echo-area-use-multiline-p nil))
-
 
 ;; Openwith
 (use-package openwith
@@ -111,6 +120,14 @@
   :config
   (setq org-download-annotate-function #'org-download-annotate-custom))
 
+(use-package base16-theme
+  :ensure nil
+  :load-path "packages/base16-theme")
+
+(use-package sql-indent
+  :config
+  (setq-default sqlind-basic-offset tab-width))
+
 ;; Others
 (use-package eldoc-box)
 (use-package format-all)
@@ -118,13 +135,12 @@
 (use-package buffer-move)
 (use-package adaptive-wrap)
 (use-package all-the-icons-dired)
-(use-package base16-theme)
 (use-package drag-stuff)
 (use-package good-scroll :init (good-scroll-mode))
 (use-package lorem-ipsum)
 (use-package org-download)
 (use-package org-autolist)
-(use-package org-modern)
+;; (use-package org-modren)
 (use-package rainbow-mode)
 (use-package sudo-edit)
 (use-package vertico :init (vertico-mode))
