@@ -101,7 +101,6 @@ static const char *decvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK
 static const char *mutevolumecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
 static const char *togglerotatecmd[] = { BASH_FUNCTIONS, "toggle_rotate", NULL };
 static const char *togglenightmodecmd[] = { BASH_FUNCTIONS, "toggle_nightmode", NULL };
-static const char *toggleonscreenkey[] = { BASH_FUNCTIONS, "toggle_nightmode", NULL };
 static const char *customcmd[] = { SCRIPTS_PATH"/custom_key.sh", NULL };
 
 // Keys and Buttons
@@ -114,7 +113,7 @@ static const Key keys[] = {
     { 0, XF86XK_AudioLowerVolume, spawn, {.v = decvolumecmd} },
     { 0, XF86XK_AudioMute, spawn, {.v = mutevolumecmd} },
 	{ 0, XF86XK_Favorites, spawn, {.v = customcmd} },
-	{ 0, XF86XK_Launch1, spawn, {.v = toggleonscreenkey} },
+	/* { 0, XF86XK_Launch1, spawn, {.v = toggleonscreenkey} }, */
 	{ 0, XF86XK_Display, spawn, {.v = togglerotatecmd} },
 	{ 0, XF86XK_Tools, spawn, {.v = togglenightmodecmd} },
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
@@ -156,7 +155,6 @@ static const Button buttons[] = {
 	{ ClkStatusText, 0, Button4, spawn, {.v = incbacklightcmd} },
 	{ ClkStatusText, 0, Button5, spawn, {.v = decbacklightcmd} },
 	{ ClkClientWin, Mod1Mask, Button1, movemouse, {0} },
-	{ ClkClientWin, Mod1Mask, Button2, togglefloating, {0} },
 	{ ClkClientWin, MODKEY|Mod1Mask, Button1, resizemouse, {0} },
 	{ ClkClientWin, Mod1Mask, Button3, resizemouse, {0} },
 	{ ClkTagBar, 0, Button1, view, {0} },
