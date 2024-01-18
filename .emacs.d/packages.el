@@ -30,7 +30,7 @@
   (setq neo-smart-open t)
   (setq neo-autorefresh t)
   (setq neo-show-hidden-files t)
-  (setq neo-show-updir-line nil)
+  ;; (setq neo-show-updir-line nil)
   (setq neo-show-slash-for-folder nil)
   (setq neo-hide-cursor t)
   (setq neo-mode-line-type 'none))
@@ -52,6 +52,8 @@
   (global-corfu-mode)
   (corfu-history-mode))
 
+(use-package yasnippet-capf)
+
 (use-package cape
   :init
   (setq completion-at-point-functions
@@ -59,7 +61,8 @@
 		 (cape-capf-super
 		  ;; #'cape-dabbrev
 		  #'cape-dict
-		  #'cape-keyword))))
+		  #'cape-keyword
+		  #'yasnippet-capf))))
 
 (use-package kind-icon
   :after corfu
@@ -98,7 +101,11 @@
 ;; Openwith
 (use-package openwith
   :config
-  (setq openwith-associations '(("\\.pdf\\'" "zathura" (file))))
+  (setq openwith-associations
+		'(("\\.pdf\\'" "zathura" (file))
+		  ("\\.docx\\'" "libreoffice" (file))
+		  ("\\.pptx\\'" "libreoffice" (file))
+		  ("\\.xopp\\'" "xournalpp" (file))))
   :init
   (openwith-mode t))
 
@@ -126,7 +133,32 @@
 
 (use-package sql-indent
   :config
-  (setq-default sqlind-basic-offset tab-width))
+  (setq-default sqlind-basic-offset tab-width)
+  (setq sqlind-indentation-offsets-alist
+		`((select-clause 0)
+		  (insert-clause 0)
+		  (delete-clause 0)
+		  (update-clause 0)
+		  ,@sqlind-default-indentation-offsets-alist)))
+
+;; Yasnippet
+(use-package yasnippet
+  :config
+  (yas-global-mode))
+(use-package yasnippet-snippets)
+
+(use-package mu4e
+  :ensure nil
+  :config
+  (setq mu4e-change-filenames-when-moving t)
+  (setq mu4e-compose-format-flowed t)
+  (setq mu4e-completing-read-function 'completing-read)
+  (setq mu4e-get-mail-command "mbsync -a")
+  (setq mu4e-maildir "~/.mail/gmail")
+  (setq mu4e-drafts-folder "/[Gmail]/Drafts")
+  (setq mu4e-sent-folder "/[Gmail]/Sent Mail")
+  (setq mu4e-refile-folder "/[Gmail]/All Mail")
+  (setq mu4e-trash-folder "/[Gmail]/Trash"))
 
 ;; Others
 (use-package eldoc-box)

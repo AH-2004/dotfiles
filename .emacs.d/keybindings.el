@@ -59,7 +59,7 @@
 
 ;; Dired
 (bind-key* "C-n" 'dired-create-empty-file)
-(bind-key* "C-d" 'dired-create-directory)
+(bind-key* "C-S-n" 'dired-create-directory)
 (bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
 (bind-key "<f2>" 'dired-do-rename dired-mode-map)
 (bind-key "<mouse-2>" 'dired-find-file dired-mode-map)
@@ -76,10 +76,13 @@
 (bind-key* "C-x v" 'bookmark-bmenu-list)
 (bind-key "<deletechar>" 'bookmark-delete bookmark-bmenu-mode-map)
 
+;; Ibuffer
+(bind-key "<deletechar>" 'ibuffer-do-delete ibuffer-mode-map)
+
 ;; Buffers and windows
 (bind-key* "C-x k" 'kill-buffer)
 (bind-key* "C-x r" 'rename-buffer)
-(bind-key* "C-x C-b" 'switch-to-buffer)
+(bind-key* "C-x C-b" 'ibuffer)
 (bind-key* "C-x <up>" 'buf-move-up)
 (bind-key* "C-x <down>" 'buf-move-down)
 (bind-key* "C-x <left>" 'buf-move-left)
@@ -89,6 +92,8 @@
 (bind-key* "C-x 4" 'clone-indirect-buffer-other-window)
 (bind-key* "M-<home>" 'beginning-of-buffer)
 (bind-key* "M-<end>" 'end-of-buffer)
+(bind-key* "M-<prior>" 'beginning-of-buffer)
+(bind-key* "M-<next>" 'end-of-buffer)
 (bind-key* "<escape>" 'keyboard-escape-quit)
 
 ;; Miscellaneous

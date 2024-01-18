@@ -3,6 +3,7 @@
 (require 'org)
 (require 'dired)
 (require 'bookmark)
+(require 'ibuffer)
 (require 'wdired)
 (require 'use-package)
 (require 'use-package-ensure)
@@ -25,6 +26,7 @@
 (setq-default auto-hscroll-mode nil)
 (setq-default org-image-actual-width (list 300))
 (setq-default text-scale-mode-step 1.1)
+(setq-default epg-pinentry-mode 'loopback)
 ;; (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 (defadvice split-window (after split-window-after activate) (other-window 1))
 
@@ -69,6 +71,16 @@
 (setq-default org-indent-mode-turns-on-hiding-stars nil)
 (setq-default backward-delete-char-untabify-method nil)
 (setq-default cua-keep-region-after-copy nil)
+(put 'c-electric-paren 'delete-selection nil)
+(put 'c-electric-brace 'delete-selection nil)
+
+;; Mail
+(setq-default user-mail-address "ahmedshuaib2004@gmail.com")
+(setq-default user-full-name "Ahmed Shuaib")
+(setq-default message-send-mail-function 'smtpmail-send-it)
+(setq-default smtpmail-smtp-server "smtp.gmail.com")
+(setq-default smtpmail-smtp-service 587)
+(setq-default smtpmail-stream-type 'ssl)
 
 (add-to-list 'align-rules-list
              '(c++-align

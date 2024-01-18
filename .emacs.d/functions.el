@@ -111,6 +111,11 @@
   (interactive)
   (call-process-shell-command "playerctl -s -i chromium previous"))
 
+;; File Manager
+(defun pcmanfm ()
+  (interactive)
+  (call-process-shell-command "pcmanfm ." nil 0))
+
 ;; Insert src block
 (defun org-src-block ()
   (interactive)
@@ -150,7 +155,6 @@
 (defun alpha-reset ()
   (interactive)
   (set-frame-parameter nil 'alpha-background 100))
-
 
 (defun tst ()
   (interactive)
