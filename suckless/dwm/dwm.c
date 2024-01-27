@@ -1641,13 +1641,13 @@ restack(Monitor *m)
 	drawbar(m);
 	if (!m->sel)
 		return;
-	if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
+	if (!m->lt[m->sellt]->arrange)
 		XRaiseWindow(dpy, m->sel->win);
 	if (m->lt[m->sellt]->arrange) {
 		wc.stack_mode = Below;
 		wc.sibling = m->barwin;
 		for (c = m->stack; c; c = c->snext)
-			if (!c->isfloating && ISVISIBLE(c)) {
+			if (ISVISIBLE(c)) {
 				XConfigureWindow(dpy, c->win, CWSibling|CWStackMode, &wc);
 				wc.sibling = c->win;
 			}
@@ -2306,15 +2306,12 @@ togglebar(const Arg *arg)
 void
 toggleborder(const Arg *arg)
 {
-	XWindowChanges wc;
 	if (!selmon->sel)
 		return;
 	if (selmon->sel->bw == borderpx)
 		selmon->sel->bw = 0;
 	else
 		selmon->sel->bw = borderpx;
-	wc.border_width = selmon->sel->bw;
-	XConfigureWindow(dpy, selmon->sel->win, CWBorderWidth, &wc);
 	arrange(selmon);
 }
 
@@ -2323,7 +2320,7 @@ togglefloating(const Arg *arg)
 {
 	if (!selmon->sel)
 		return;
-	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
+	if (selmon->sel->isfullscreen)
 		return;
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
 	if (selmon->sel->isfloating)
