@@ -23,10 +23,15 @@
 
 ;; Completions
 (bind-key* "C-SPC" 'completion-at-point)
+(bind-key* "C-SPC" 'lsp-bridge-popup-complete-menu)
 (bind-key* "C-S-SPC" 'eldoc-box-help-at-point)
 
 ;; Comments
 (bind-key* "C-/" 'comment)
+(bind-key "C-c /" 'comment-other c-mode-map)
+(bind-key "C-c /" 'comment-other c++-mode-map)
+(bind-key "C-c C-/" 'comment-other c-mode-map)
+(bind-key "C-c C-/" 'comment-other c++-mode-map)
 
 ;; Mark all
 (bind-key* "C-a" 'mark-whole-buffer)
@@ -60,6 +65,7 @@
 ;; Dired
 (bind-key* "C-n" 'dired-create-empty-file)
 (bind-key* "C-S-n" 'dired-create-directory)
+(bind-key* "C-d" 'dired-create-directory)
 (bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
 (bind-key "<f2>" 'dired-do-rename dired-mode-map)
 (bind-key "<mouse-2>" 'dired-find-file dired-mode-map)
@@ -98,6 +104,9 @@
 
 ;; Miscellaneous
 ;; (bind-key* "C-x C-z" 'tst)
+
+;; Unbind from mode-map
+(local-unset-key (vector asm-comment-char))
 
 ;; Unbind global unwanted keys
 (unbind-key "<insert>")

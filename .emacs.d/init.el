@@ -10,6 +10,7 @@
 (require 'windmove)
 (require 'align)
 (require 'cc-mode)
+(require 'asm-mode)
 
 ;; UI Tweaks
 (menu-bar-mode -1)
@@ -46,10 +47,11 @@
 (setq-default gc-cons-threshold 100000000)
 (setq-default read-process-output-max (* 1024 1024))
 (setq-default browse-url-browser-function 'browse-url-xdg-open)
+(setq-default browse-url-generic-program 'browse-url-xdg-open)
 (setq-default dired-kill-when-opening-new-dired-buffer t)
 (setq-default dired-listing-switches "-lah --group-directories-first")
 (setq-default completion-ignore-case t)
-(setq-default global-auto-revert-mode t)
+;; (setq-default global-auto-revert-mode t)
 (setq-default read-file-name-completion-ignore-case t)
 (setq-default read-buffer-completion-ignore-case t)
 (setq-default initial-major-mode 'fundamental-mode)
@@ -59,9 +61,11 @@
 
 ;; Editing Tweaks
 (electric-pair-mode t)
+(global-auto-revert-mode t)
 (setq-default tab-width 4)
 (setq-default c-basic-offset tab-width)
 (setq-default python-indent-offset tab-width)
+(setq-default vhdl-basic-offset tab-width)
 (setq-default org-indent-indentation-per-level tab-width)
 (setq-default org-edit-src-content-indentation tab-width)
 (setq-default org-support-shift-select 'always)
@@ -74,20 +78,18 @@
 (put 'c-electric-paren 'delete-selection nil)
 (put 'c-electric-brace 'delete-selection nil)
 
+(add-to-list 'align-rules-list
+             '(c++-align
+               (regexp . "[=;]\\(\\s-*\\)")
+               (mode   . '(c++-mode))
+               (repeat . t)))
 ;; Mail
 (setq-default user-mail-address "ahmedshuaib2004@gmail.com")
 (setq-default user-full-name "Ahmed Shuaib")
 (setq-default message-send-mail-function 'smtpmail-send-it)
 (setq-default smtpmail-smtp-server "smtp.gmail.com")
 (setq-default smtpmail-smtp-service 587)
-(setq-default smtpmail-stream-type 'ssl)
-
-(add-to-list 'align-rules-list
-             '(c++-align
-               (regexp . "[=;]\\(\\s-*\\)")
-               (mode   . '(c++-mode))
-               (repeat . t)))
-
+(setq-default smtpmail-stream-type 'starttls)
 
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/functions.el")
@@ -96,8 +98,8 @@
 
 ;; Theme
 (add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
-(load-theme 'base16-tomorrow-night t)
-;; (load-theme 'base16-ocean t)
+;; (load-theme 'base16-tomorrow-night t)
+(load-theme 'base16-ocean t)
 
 ;; Modeline
 (setq-default mode-line-format
@@ -119,3 +121,4 @@
 (defalias 'save 'save-buffer)
 (defalias 'term 'st)
 (defalias 'wdired 'wdired-change-to-wdired-mode)
+(defalias 'mu 'mu4e-search-maildir)

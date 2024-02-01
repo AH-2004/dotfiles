@@ -5,6 +5,7 @@ set shiftwidth=4
 set nobackup
 set relativenumber
 
+
 " Plugins
 call plug#begin()
 Plug 'tmsvg/pear-tree'

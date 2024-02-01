@@ -16,19 +16,24 @@ init_cpp() { mkdir -p "./$1" && cp -r "$HOME/code/cpp/makefile_template"/* "./$1
 
 # Drawpad
 map_drawpad() {
-	id=$(xsetwacom --list devices | grep "STYLUS" | awk '{ print $5 }')
+	id=$(xsetwacom --list devices | grep "stylus" | awk '{ print $5 }')
 	area=$(xwininfo | grep "geometry" | awk '{ print $2 }')
 	xsetwacom --set $id MapToOutput "$area"
 }
 
 rotate_drawpad() {
-	id=$(xsetwacom --list devices | grep "STYLUS" | awk '{ print $5 }')
+	id=$(xsetwacom --list devices | grep "stylus" | awk '{ print $5 }')
 	rotate=$(xsetwacom --get $id "Rotate")
 	if [[ "$rotate" == "none" ]]; then
-		xsetwacom --set $id "Rotate" "ccw"
+		xsetwacom --set $id Rotate ccw
 	else
-		 xsetwacom --set $id "Rotate" "none"
+		 xsetwacom --set $id Rotate none
 	fi
+}
+
+remap_drawpad() {
+	id=$(xsetwacom --list devices | grep "Pad pad" | awk '{ print $6 }')
+	xsetwacom --set $id Button 15 "key del"
 }
 
 # Toggle touchscreen
@@ -45,13 +50,13 @@ toggle_touch() {
 # Toggle scroll method
 toggle_scroll() {
 	id=$(xinput list --id-only "Synaptics TM3381-002")
-	method=$(xinput list-props $id | grep 382 | awk '{ print $6 $7 $8 }')
+	method=$(xinput list-props $id | grep 332 | awk '{ print $6 $7 $8 }')
 	if [[ "$method" == "0,1,0" ]]; then
-		xinput set-prop $id 382 1 0 0
-		xinput set-prop $id 377 1
+		xinput set-prop $id 332 1 0 0
+		xinput set-prop $id 327 1
 	else
-		xinput set-prop $id 382 0 1 0
-		xinput set-prop $id 377 0
+		xinput set-prop $id 332 0 1 0
+		xinput set-prop $id 327 0
 	fi
 }
 
@@ -81,10 +86,37 @@ toggle_rotate() {
 	else
 		xinput set-prop $touchpadId 188 1 0 0 0 1 0 0 0 1
 	fi
+
+	rotate_drawpad
 }
 
-toggle_nightmode() { xsct --toggle; }
+toggle_nightmode() {
+	temp=4500
+	currentTemp=$(xsct | awk '{ print $5 }')
 
+	if [[ "$currentTemp" != "6500" ]]; then
+		xsct 6500
+	else
+		xsct $temp	
+	fi	
+}
+
+toggle_midnightmode() {
+	backlight=$(light -G)
+	minimumBacklight=$(light -P)
+	
+	if [[ "$backlight" != "$minimumBacklight" ]]; then
+		light -O
+		light -S $minimumBacklight
+	else
+		light -I
+	fi
+	
+	toggle_nightmode
+}
+
+# The following case block is to allow these functions
+# to be accessable from the shell.
 case $1 in
 	emacs_run)
 		emacs_run
@@ -101,6 +133,9 @@ case $1 in
 	rotate_drawpad)
 		rotate_drawpad
 		;;
+	remap_drawpad)
+		remap_drawpad
+		;;
 	toggle_touch)
 		toggle_touch
 		;;
@@ -112,5 +147,8 @@ case $1 in
 		;;
 	toggle_nightmode)
 		toggle_nightmode
+		;;
+	toggle_midnightmode)
+		toggle_midnightmode
 		;;
 esac

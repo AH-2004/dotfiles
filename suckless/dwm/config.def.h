@@ -61,7 +61,8 @@ static const Rule rules[] = {
 };
 
 // Layouts
-static const float mfact = 0.55; // Factor of master area size [0.05..0.95]
+static const float mfact = 0.55; // Factor of master area size
+static const float mfactmargin = 0.05; // Margin of master area size
 static const int nmaster = 1;// Number of clients in master area
 static const int resizehints = 0; // 1 means respect size hints in tiled resizals
 static const int lockfullscreen = 1; // Force lock fullscreen
@@ -101,6 +102,7 @@ static const char *decvolumecmd[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK
 static const char *mutevolumecmd[] = { "pactl", "set-sink-mute", "@DEFAULT_SINK@", "toggle", NULL };
 static const char *togglerotatecmd[] = { BASH_FUNCTIONS, "toggle_rotate", NULL };
 static const char *togglenightmodecmd[] = { BASH_FUNCTIONS, "toggle_nightmode", NULL };
+static const char *togglemidnightmodecmd[] = { BASH_FUNCTIONS, "toggle_midnightmode", NULL };
 static const char *customcmd[] = { SCRIPTS_PATH"/custom_key.sh", NULL };
 
 // Keys and Buttons
@@ -116,6 +118,7 @@ static const Key keys[] = {
 	/* { 0, XF86XK_Launch1, spawn, {.v = } }, */
 	{ 0, XF86XK_Display, spawn, {.v = togglerotatecmd} },
 	{ 0, XF86XK_Tools, spawn, {.v = togglenightmodecmd} },
+	{ MODKEY, XF86XK_Tools, spawn, {.v = togglemidnightmodecmd} },
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
     { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },

@@ -2,8 +2,15 @@
   (message (emacs-init-time))
   (find-file "~/.emacs.d/*notes*")
   (setq default-directory "~/")
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+
+;; Predicates
+(defun current-line-empty-p ()
+  (string-match-p
+   "\\`\\s-*$"
+   (buffer-substring
+	(line-beginning-position)
+	(line-end-position))))
 
 ;; Comment line or region
 (defun comment ()
@@ -12,6 +19,12 @@
   (comment-line 1)
   (previous-line 1)
   (jump-to-register 1))
+
+(defun comment-other ()
+  (interactive)
+  (if (current-line-empty-p)
+	  (progn (insert "/*\n  \n*/") (previous-line) (end-of-line))
+	(progn (end-of-line) (insert " // "))))
 
 (defun align-comments (begin end)
   (interactive "r")

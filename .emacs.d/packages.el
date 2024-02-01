@@ -1,6 +1,9 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
+(add-to-list 'load-path "~/.emacs.d/packages/lsp-bridge")
+(require 'lsp-bridge)
+
 ;; Icons
 (use-package all-the-icons
   :config
@@ -30,7 +33,6 @@
   (setq neo-smart-open t)
   (setq neo-autorefresh t)
   (setq neo-show-hidden-files t)
-  ;; (setq neo-show-updir-line nil)
   (setq neo-show-slash-for-folder nil)
   (setq neo-hide-cursor t)
   (setq neo-mode-line-type 'none))
@@ -39,6 +41,7 @@
 
 ;; Completions
 (use-package corfu
+  :disabled t
   :config
   (setq corfu-auto t)
   (setq corfu-cycle t)
@@ -52,9 +55,8 @@
   (global-corfu-mode)
   (corfu-history-mode))
 
-(use-package yasnippet-capf)
-
 (use-package cape
+  :disabled t
   :init
   (setq completion-at-point-functions
 		(list
@@ -93,6 +95,16 @@
 				 "--header-insertion=never"
 				 "--all-scopes-completion=false"))
   (add-to-list 'eglot-stay-out-of 'flymake))
+
+(use-package lsp-bridge
+  :ensure nil
+  :config
+  (setq lsp-bridge-python-lsp-server "pylsp")
+  (setq lsp-bridge-enable-diagnostics nil)
+  (setq lsp-bridge-enable-inlay-hint nil)
+  (setq acm-enable-search-file-words nil)
+  (setq acm-backend-lsp-enable-auto-import nil)
+  (setq acm-enable-doc nil))
 
 (use-package eldoc
   :config
@@ -145,8 +157,8 @@
 (use-package yasnippet
   :config
   (yas-global-mode))
-(use-package yasnippet-snippets)
 
+;; Mu4e
 (use-package mu4e
   :ensure nil
   :config
@@ -155,24 +167,28 @@
   (setq mu4e-completing-read-function 'completing-read)
   (setq mu4e-get-mail-command "mbsync -a")
   (setq mu4e-maildir "~/.mail/gmail")
-  (setq mu4e-drafts-folder "/[Gmail]/Drafts")
-  (setq mu4e-sent-folder "/[Gmail]/Sent Mail")
-  (setq mu4e-refile-folder "/[Gmail]/All Mail")
-  (setq mu4e-trash-folder "/[Gmail]/Trash"))
+  (setq mu4e-drafts-folder "/Drafts")
+  (setq mu4e-sent-folder "/Sent Mail")
+  (setq mu4e-refile-folder "All Mail")
+  (setq mu4e-trash-folder "/Trash"))
 
 ;; Others
+(use-package tree-sitter)
+(use-package tree-sitter-langs)
+(use-package yasnippet-snippets)
+(use-package yasnippet-capf)
 (use-package eldoc-box)
 (use-package format-all)
 (use-package lua-mode)
 (use-package buffer-move)
 (use-package adaptive-wrap)
+(use-package markdown-mode)
 (use-package all-the-icons-dired)
 (use-package drag-stuff)
 (use-package good-scroll :init (good-scroll-mode))
 (use-package lorem-ipsum)
 (use-package org-download)
 (use-package org-autolist)
-;; (use-package org-modren)
 (use-package rainbow-mode)
 (use-package sudo-edit)
 (use-package vertico :init (vertico-mode))
