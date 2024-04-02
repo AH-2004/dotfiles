@@ -20,6 +20,7 @@ nope () {
 	eval $cmd
 }
 
+export BACKGROUND="background_black.png"
 source "/home/AH/.bash_functions"
 
 # ALIASES
@@ -64,7 +65,7 @@ export CHROME_PATH="/usr/bin/vivaldi-stable"
 export ANDROID_HOME="/opt/android-sdk"
 
 # Wine 32bit prefix
-export WINEPREFIX="~/.wine"
+export WINEPREFIX="/home/AH/.wine"
 
 # clipmenu
 export CM_SELECTIONS="clipboard"

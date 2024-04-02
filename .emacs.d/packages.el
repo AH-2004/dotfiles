@@ -41,7 +41,6 @@
 
 ;; Completions
 (use-package corfu
-  :disabled t
   :config
   (setq corfu-auto t)
   (setq corfu-cycle t)
@@ -56,7 +55,6 @@
   (corfu-history-mode))
 
 (use-package cape
-  :disabled t
   :init
   (setq completion-at-point-functions
 		(list
@@ -98,6 +96,7 @@
 
 (use-package lsp-bridge
   :ensure nil
+  :disabled t
   :config
   (setq lsp-bridge-python-lsp-server "pylsp")
   (setq lsp-bridge-enable-diagnostics nil)

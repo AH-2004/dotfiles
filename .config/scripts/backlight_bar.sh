@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/bash
 
 backlight=""
 
@@ -10,7 +10,4 @@ for f in "/sys/class/backlight"/*; do
 	fi
 done
 
-if [[ "$backlight" != "" ]]; then
-	echo "  $backlight |"
-fi
-
+dunstify -a "Brightness" "progress_bar" -h int:value:$backlight -r 2 -t 1000

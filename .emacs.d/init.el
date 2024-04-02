@@ -28,6 +28,7 @@
 (setq-default org-image-actual-width (list 300))
 (setq-default text-scale-mode-step 1.1)
 (setq-default epg-pinentry-mode 'loopback)
+(setq-default switch-to-buffer-obey-display-actions t)
 ;; (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
 (defadvice split-window (after split-window-after activate) (other-window 1))
 
@@ -51,7 +52,6 @@
 (setq-default dired-kill-when-opening-new-dired-buffer t)
 (setq-default dired-listing-switches "-lah --group-directories-first")
 (setq-default completion-ignore-case t)
-;; (setq-default global-auto-revert-mode t)
 (setq-default read-file-name-completion-ignore-case t)
 (setq-default read-buffer-completion-ignore-case t)
 (setq-default initial-major-mode 'fundamental-mode)
@@ -68,6 +68,7 @@
 (setq-default vhdl-basic-offset tab-width)
 (setq-default org-indent-indentation-per-level tab-width)
 (setq-default org-edit-src-content-indentation tab-width)
+(setq-default org-startup-shrink-all-tables t)
 (setq-default org-support-shift-select 'always)
 (setq-default org-replace-disputed-keys t)
 (setq-default org-return-follows-link t)
@@ -75,6 +76,7 @@
 (setq-default org-indent-mode-turns-on-hiding-stars nil)
 (setq-default backward-delete-char-untabify-method nil)
 (setq-default cua-keep-region-after-copy nil)
+(setq-default comment-style 'extra-line)
 (put 'c-electric-paren 'delete-selection nil)
 (put 'c-electric-brace 'delete-selection nil)
 
@@ -98,8 +100,8 @@
 
 ;; Theme
 (add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
-;; (load-theme 'base16-tomorrow-night t)
-(load-theme 'base16-ocean t)
+(load-theme 'base16-tomorrow-night t)
+;; (load-theme 'base16-ocean t)
 
 ;; Modeline
 (setq-default mode-line-format

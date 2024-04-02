@@ -1,10 +1,15 @@
 filetype on
 syntax on
 set tabstop=4
+set smartindent
+set autoindent
 set shiftwidth=4
 set nobackup
+set noswapfile
+set viminfo="NONE"
 set relativenumber
-
+set clipboard=unnamed
+set nocompatible
 
 " Plugins
 call plug#begin()

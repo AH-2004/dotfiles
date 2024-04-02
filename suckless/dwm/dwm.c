@@ -177,7 +177,7 @@ typedef struct {
 	int unmanaged;
 } Rule;
 
-typedef struct Systray   Systray;
+typedef struct Systray Systray;
 struct Systray {
 	Window win;
 	Client *icons;
@@ -981,12 +981,12 @@ focus(Client *c)
 		attachstack(c);
 		grabbuttons(c, 1);
 		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
-                if (!selmon->pertag->drawwithgaps[selmon->pertag->curtag] && !c->isfloating) {
+		if (!selmon->pertag->drawwithgaps[selmon->pertag->curtag] && !c->isfloating) {
 			XWindowChanges wc;
-                        wc.sibling = selmon->barwin;
-                        wc.stack_mode = Below;
-                        XConfigureWindow(dpy, c->win, CWSibling | CWStackMode, &wc);
-                }
+			wc.sibling = selmon->barwin;
+			wc.stack_mode = Below;
+			XConfigureWindow(dpy, c->win, CWSibling | CWStackMode, &wc);
+		}
 		setfocus(c);
 	} else {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
@@ -2111,13 +2111,12 @@ drawTab(int nwins, int first, Monitor *m)
 			posY += 0;
 
 		/* XCreateWindow(display, parent, x, y, width, height, border_width, depth, class, visual, valuemask, attributes); just reference */
-		m->tabwin = XCreateWindow(dpy, root, posX, posY, selmon->maxWText, selmon->maxHTab, 0, DefaultDepth(dpy, screen),
+		m->tabwin = XCreateWindow(dpy, root, posX, posY, selmon->maxWText, (selmon->maxHTab * m->nTabs), 0, DefaultDepth(dpy, screen),
 								  CopyFromParent, DefaultVisual(dpy, screen),
 								  CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa); /* create tabwin */
 
 		XDefineCursor(dpy, m->tabwin, cursor[CurNormal]->cursor);
 		XMapRaised(dpy, m->tabwin);
-
 	}
 
 	int y = 0;

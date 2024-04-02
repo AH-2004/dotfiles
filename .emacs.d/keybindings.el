@@ -23,8 +23,7 @@
 
 ;; Completions
 (bind-key* "C-SPC" 'completion-at-point)
-(bind-key* "C-SPC" 'lsp-bridge-popup-complete-menu)
-(bind-key* "C-S-SPC" 'eldoc-box-help-at-point)
+;; (bind-key* "C-SPC" 'lsp-bridge-popup-complete-menu)
 
 ;; Comments
 (bind-key* "C-/" 'comment)
@@ -33,7 +32,7 @@
 (bind-key "C-c C-/" 'comment-other c-mode-map)
 (bind-key "C-c C-/" 'comment-other c++-mode-map)
 
-;; Mark all
+;; Mark
 (bind-key* "C-a" 'mark-whole-buffer)
 
 ;; Copy/Paste/Cut
@@ -103,7 +102,7 @@
 (bind-key* "<escape>" 'keyboard-escape-quit)
 
 ;; Miscellaneous
-;; (bind-key* "C-x C-z" 'tst)
+(bind-key* "C-x C-z" 'tst)
 
 ;; Unbind from mode-map
 (local-unset-key (vector asm-comment-char))

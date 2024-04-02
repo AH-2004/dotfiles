@@ -23,7 +23,13 @@
 (defun comment-other ()
   (interactive)
   (if (current-line-empty-p)
-	  (progn (insert "/*\n  \n*/") (previous-line) (end-of-line))
+	  (progn
+		(c-indent-line)
+		(insert "/*\n\n*/")
+		(c-indent-line)
+		(previous-line)
+		(c-indent-line)
+		(end-of-line))
 	(progn (end-of-line) (insert " // "))))
 
 (defun align-comments (begin end)
@@ -171,4 +177,5 @@
 
 (defun tst ()
   (interactive)
-  (message "%s" "Test"))
+  (message "%s" "Test")
+  (c-indent-line))

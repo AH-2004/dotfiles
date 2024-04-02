@@ -3,6 +3,7 @@
 
 (add-hook 'prog-mode-hook
 		  (lambda ()
+			;; (tree-sitter-hl-mode)
 			(display-line-numbers-mode 1)))
 
 (add-hook 'text-mode-hook
@@ -17,7 +18,8 @@
 (add-hook 'dired-mode-hook
 		  (lambda ()
 			(auto-revert-mode)
-			(all-the-icons-dired-mode)))
+			(all-the-icons-dired-mode)
+			(dired-hide-details-mode)))
 
 (add-hook 'org-mode-hook
 		  (lambda ()
@@ -27,36 +29,10 @@
 		  (lambda ()
 			(eglot-inlay-hints-mode -1)))
 
-;; (add-hook 'emacs-lisp-mode-hook 'eglot-ensure)
-;; (add-hook 'c++-mode-hook 'eglot-ensure)
-;; (add-hook 'c-mode-hook 'eglot-ensure)
-;; (add-hook 'js-mode-hook 'eglot-ensure)
-;; (add-hook 'python-mode-hook 'eglot-ensure)
-
-(add-hook 'emacs-lisp-mode-hook
-		  (lambda ()
-			(lsp-bridge-mode)
-			(tree-sitter-hl-mode)))
-
-(add-hook 'c++-mode-hook
-		  (lambda ()
-			(lsp-bridge-mode)
-			(tree-sitter-hl-mode)))
-
-(add-hook 'c-mode-hook
-		  (lambda ()
-			(lsp-bridge-mode)
-			(tree-sitter-hl-mode)))
-
-(add-hook 'js-mode-hook
-		  (lambda ()
-			(lsp-bridge-mode)
-			(tree-sitter-hl-mode)))
-
-(add-hook 'python-mode-hook
-		  (lambda ()
-			(lsp-bridge-mode)
-			(tree-sitter-hl-mode)))
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'js-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
 
 (add-hook 'asm-mode-hook
 		  (lambda ()
