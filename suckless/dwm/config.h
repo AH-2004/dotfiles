@@ -38,15 +38,9 @@ static const int raiseonfocus = 1;
 static const int tagonswap = 0;
 static const int startwithgaps[] = { 1 }; // 1: gaps by default, can be customized per tag
 static const unsigned int gappx[] = { 12 }; // default gap in px, can be customized per tag
-
-// Alt Tab
-static const unsigned int tabModKey = 0x40;
-static const unsigned int tabCycleKey = 0x17;
-static const unsigned int tabPosY = 1; // 0: Bottom, 1: Center, 2: top
-static const unsigned int tabPosX = 1; // 0: Left, 1: Center, 2: Right
-static const unsigned int maxWText = 600;
-static const unsigned int maxHText = 25;
-static const unsigned int tabLeftPad = 5;
+static const unsigned int tabModKey = 64;
+static const unsigned int tabKey = 23;
+static const char *logfilename = "dwm.log";
 
 // Tagging
 static const char *tags[] = { "1", "2", "3", "4", "5", "6" };
@@ -60,7 +54,6 @@ static const Rule rules[] = {
 	{ "Plank", NULL, NULL, 0, 0, -1, 1 }
 };
 
-// Layouts
 static const float mfact = 0.55; // Factor of master area size
 static const float mfactmargin = 0.05; // Margin of master area size
 static const int nmaster = 1;// Number of clients in master area
@@ -128,7 +121,6 @@ static const Key keys[] = {
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
     { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },
     { Mod1Mask|ControlMask, XK_e, spawn, {.v = emacscmd} },
-    { Mod1Mask, XK_Tab, altTabStart, {0} },
     { MODKEY, XK_l, spawn, {.v = suspendcmd} },
     { MODKEY, XK_b, togglebar, {0} },
 	{ MODKEY, XK_w, toggleborder, {0} },
@@ -149,8 +141,10 @@ static const Key keys[] = {
     { MODKEY|ShiftMask, XK_space, togglefloating, {0} },
     { MODKEY|ShiftMask, XK_Prior, shiftview, {.i = +1} },
     { MODKEY|ShiftMask, XK_Next, shiftview, {.i = -1} },
-	{ MODKEY|ShiftMask, XK_Up,  tagmon, {.i = -1 } },
-	{ MODKEY|ShiftMask, XK_Down, tagmon, {.i = +1 } },
+	{ MODKEY|ShiftMask, XK_Up,  tagmon, {.i = -1} },
+	{ MODKEY|ShiftMask, XK_Down, tagmon, {.i = +1} },
+	{ MODKEY|ShiftMask, XK_q, quit, {0} },
+	{ Mod1Mask, XK_Tab, alttab, {0} },
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2)
     TAGKEYS(XK_4, 3) TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5)
 };
