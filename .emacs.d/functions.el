@@ -93,7 +93,7 @@
   (interactive)
    (if (eq display-line-numbers 'relative)
       (setq display-line-numbers t)
-    (setq display-line-numbers 'relative)))
+     (setq display-line-numbers 'relative)))
 
 ;; Insert current date
 (defun today ()
@@ -107,9 +107,26 @@
 		  "date +'%r'"))))
 
 ;; Terminal
+(defun st-remote ()
+  (setq dir
+		(split-string
+		 (substring
+		  default-directory 5)
+		 ":"))
+  (setq commandStr
+		(concat
+		 "st ssh "
+		 (nth 0 dir)
+		 " -t 'cd "
+		 (nth 1 dir)
+		 "; exec $SHELL'"))
+  (call-process-shell-command commandStr nil 0))
+
 (defun st ()
   (interactive)
-  (call-process-shell-command "st" nil 0))
+  (if (file-remote-p default-directory)
+	  (st-remote)
+	(call-process-shell-command "st" nil 0)))
 
 ;; playerctl
 (setq mode-line-playerctl

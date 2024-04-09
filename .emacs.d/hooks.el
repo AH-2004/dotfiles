@@ -25,11 +25,10 @@
 		  (lambda ()
 			(org-autolist-mode)))
 
-(add-hook 'eglot-managed-mode-hook
+(add-hook 'c++-mode-hook
 		  (lambda ()
-			(eglot-inlay-hints-mode -1)))
-
-(add-hook 'c++-mode-hook 'eglot-ensure)
+			(eglot-ensure)
+			(tree-sitter-hl-mode)))
 (add-hook 'c-mode-hook 'eglot-ensure)
 (add-hook 'js-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)

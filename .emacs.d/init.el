@@ -18,6 +18,7 @@
 (scroll-bar-mode -1)
 (tooltip-mode -1)
 (fringe-mode -1)
+(pixel-scroll-precision-mode)
 (setq-default use-dialog-box nil)
 (setq-default use-file-dialog nil)
 (setq-default frame-title-format '("Emacs " emacs-version))
@@ -27,10 +28,7 @@
 (setq-default auto-hscroll-mode nil)
 (setq-default org-image-actual-width (list 300))
 (setq-default text-scale-mode-step 1.1)
-(setq-default epg-pinentry-mode 'loopback)
 (setq-default switch-to-buffer-obey-display-actions t)
-;; (add-to-list 'display-buffer-alist '("*Help*" display-buffer-same-window))
-(defadvice split-window (after split-window-after activate) (other-window 1))
 
 ;; Other tweaks
 (add-to-list 'exec-path "~/.local/bin")
@@ -58,6 +56,11 @@
 (setq-default large-file-warning-threshold nil)
 (setq-default ediff-ignore-similar-regions t)
 (setq-default ediff-highlight-all-diffs nil)
+(defadvice split-window
+	(after split-window-after activate)
+  (other-window 1))
+(add-to-list 'org-link-frame-setup
+			 '(file . find-file))
 
 ;; Editing Tweaks
 (electric-pair-mode t)
@@ -85,13 +88,6 @@
                (regexp . "[=;]\\(\\s-*\\)")
                (mode   . '(c++-mode))
                (repeat . t)))
-;; Mail
-(setq-default user-mail-address "ahmedshuaib2004@gmail.com")
-(setq-default user-full-name "Ahmed Shuaib")
-(setq-default message-send-mail-function 'smtpmail-send-it)
-(setq-default smtpmail-smtp-server "smtp.gmail.com")
-(setq-default smtpmail-smtp-service 587)
-(setq-default smtpmail-stream-type 'starttls)
 
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/functions.el")
@@ -100,7 +96,7 @@
 
 ;; Theme
 (add-to-list 'default-frame-alist '(font . "IBM Plex Mono 10"))
-(load-theme 'base16-tomorrow-night t)
+(load-theme 'base16-black t)
 ;; (load-theme 'base16-ocean t)
 
 ;; Modeline

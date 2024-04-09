@@ -59,7 +59,6 @@
   (setq completion-at-point-functions
 		(list
 		 (cape-capf-super
-		  ;; #'cape-dabbrev
 		  #'cape-dict
 		  #'cape-keyword
 		  #'yasnippet-capf))))
@@ -70,7 +69,8 @@
   (setq kind-icon-use-icons nil)
   (setq kind-icon-blend-background nil)
   (setq kind-icon-default-face 'corfu-default)
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+  (add-to-list 'corfu-margin-formatters
+			   #'kind-icon-margin-formatter))
 
 (use-package lsp-mode
   :disabled t
@@ -92,7 +92,11 @@
 				 "clangd"
 				 "--header-insertion=never"
 				 "--all-scopes-completion=false"))
-  (add-to-list 'eglot-stay-out-of 'flymake))
+  (add-to-list 'eglot-stay-out-of 'flymake)
+  (setq eglot-ignored-server-capabilities
+		(list
+		 :inlayHintProvider
+		 :documentOnTypeFormattingProvider)))
 
 (use-package lsp-bridge
   :ensure nil
@@ -184,7 +188,7 @@
 (use-package markdown-mode)
 (use-package all-the-icons-dired)
 (use-package drag-stuff)
-(use-package good-scroll :init (good-scroll-mode))
+;; (use-package good-scroll :init (good-scroll-mode))
 (use-package lorem-ipsum)
 (use-package org-download)
 (use-package org-autolist)

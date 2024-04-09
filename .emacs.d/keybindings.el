@@ -100,6 +100,10 @@
 (bind-key* "M-<prior>" 'beginning-of-buffer)
 (bind-key* "M-<next>" 'end-of-buffer)
 (bind-key* "<escape>" 'keyboard-escape-quit)
+(bind-key* "C-<prior>" 'enlarge-window-horizontally)
+(bind-key* "C-S-<prior>" 'enlarge-window)
+(bind-key* "C-<next>" 'shrink-window-horizontally)
+(bind-key* "C-S-<next>" 'shrink-window)
 
 ;; Miscellaneous
 (bind-key* "C-x C-z" 'tst)
