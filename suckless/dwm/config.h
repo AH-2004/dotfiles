@@ -38,20 +38,20 @@ static const int raiseonfocus = 1;
 static const int tagonswap = 0;
 static const int startwithgaps[] = { 1 }; // 1: gaps by default, can be customized per tag
 static const unsigned int gappx[] = { 12 }; // default gap in px, can be customized per tag
-static const unsigned int tabModKey = 64;
-static const unsigned int tabKey = 23;
+static const unsigned int tabModKey = XK_Alt_L;
+static const unsigned int tabKey = XK_Tab;
 static const char *logfilename = "dwm.log";
 
 // Tagging
-static const char *tags[] = { "1", "2", "3", "4", "5", "6" };
+static char *tags[] = { "1", "2", "3", "4", "5", "6" };
 static const Rule rules[] = {
-	// { class, instance, title, tags mask, isfloating, monitor, unmanaged }
-	{ NULL, NULL, NULL, 0, 1, -1, 0 },
-	{ "Vivaldi-stable", NULL,  NULL, 0, 0, -1, 0 },
-	{ "Emacs", NULL, NULL, 0, 0, -1, 0 },
-	{ "Zathura", NULL, NULL, 0, 0, -1, 0 },
-	{ "Com.github.xournalpp.xournalpp", NULL, NULL, 0, 0, -1, 0 },
-	{ "Plank", NULL, NULL, 0, 0, -1, 1 }
+	// { class, instance, title, tags mask, isfloating, monitor, isfakefullscreen, unmanaged }
+	{ NULL, NULL, NULL, 0, 1, -1, 0, 0 },
+	{ "Vivaldi-stable", NULL,  NULL, 0, 0, -1, 1, 0 },
+	{ "Emacs", NULL, NULL, 0, 0, -1, 0, 0 },
+	{ "Zathura", NULL, NULL, 0, 0, -1, 0, 0 },
+	{ "Com.github.xournalpp.xournalpp", NULL, NULL, 0, 0, -1, 0, 0 },
+	{ "Plank", NULL, NULL, 0, 0, -1, 0, 1 }
 };
 
 static const float mfact = 0.55; // Factor of master area size
@@ -65,6 +65,7 @@ static const Layout layouts[] = {
 	// First index is default, NULL means floating
 	{ "Tile", tile },
 	{ "Float", NULL },
+	{ "Column", column },
 	{ "[M]", monocle }
 };
 
@@ -116,7 +117,7 @@ static const Key keys[] = {
 	{ 0, XF86XK_Favorites, spawn, {.v = customcmd} },
 	{ 0, XF86XK_Display, spawn, {.v = togglerotatecmd} },
 	{ 0, XF86XK_Tools, spawn, {.v = togglenightmodecmd} },
-	{ MODKEY, XF86XK_Tools, spawn, {.v = togglemidnightmodecmd} },
+	{ ShiftMask, XF86XK_Tools, spawn, {.v = togglemidnightmodecmd} },
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
     { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },
@@ -131,6 +132,8 @@ static const Key keys[] = {
     { MODKEY, XK_x, killclient, {0} },
     { MODKEY, XK_t, setlayout, {.v = &layouts[0]} },
     { MODKEY, XK_f, setlayout, {.v = &layouts[1]} },
+    { MODKEY, XK_c, setlayout, {.v = &layouts[2]} },
+    { MODKEY, XK_m, setlayout, {.v = &layouts[3]} },
     { MODKEY, XK_Up, focusmon, {.i = -1} },
     { MODKEY, XK_Down, focusmon, {.i = +1} },
     { MODKEY, XK_0, setgaps, {.i = GAP_RESET } },

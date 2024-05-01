@@ -115,7 +115,7 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
 	unsigned int tags;
-	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
+	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen, isfakefullscreen;
 	Client *next;
 	Client *snext;
 	Monitor *mon;
@@ -166,6 +166,7 @@ typedef struct {
 	unsigned int tags;
 	int isfloating;
 	int monitor;
+	int isfakefullscreen;
 	int unmanaged;
 } Rule;
 
@@ -189,6 +190,7 @@ static void cleanup(void);
 static void cleanupmon(Monitor *mon);
 static void clientmessage(XEvent *e);
 static void clearlog();
+static void column(Monitor *mon);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
@@ -288,6 +290,7 @@ static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
 static void swaptags(const Arg *arg);
 static void shiftview(const Arg *arg);
+static Client *sNextN(Client *c, int n);
 static void alttab(const Arg *arg);
 static void drawtab(Client *c);
 static void redrawtab(Client *c);
@@ -359,6 +362,7 @@ applyrules(Client *c)
 
 	/* rule matching */
 	c->isfloating = 0;
+	c->isfakefullscreen = 0;
 	c->tags = 0;
 	XGetClassHint(dpy, c->win, &ch);
 	class    = ch.res_class ? ch.res_class : broken;
@@ -371,6 +375,7 @@ applyrules(Client *c)
 		&& (!r->instance || strstr(instance, r->instance)))
 		{
 			c->isfloating = r->isfloating;
+			c->isfakefullscreen = r->isfakefullscreen;
 			c->tags |= r->tags;
 			unmanaged = r->unmanaged;
 			for (m = mons; m && m->num != r->monitor; m = m->next);
@@ -664,7 +669,8 @@ clientmessage(XEvent *e)
 		if (cme->data.l[1] == netatom[NetWMFullscreen]
 		|| cme->data.l[2] == netatom[NetWMFullscreen])
 			setfullscreen(c, (cme->data.l[0] == 1 /* _NET_WM_STATE_ADD    */
-				|| (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */ && !c->isfullscreen)));
+				|| (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */
+					&& (!c->isfullscreen || c->isfakefullscreen))));
 	} else if (cme->message_type == netatom[NetActiveWindow]) {
 		if (c != selmon->sel && !c->isurgent)
 			seturgent(c, 1);
@@ -676,6 +682,26 @@ clearlog()
 {
 	FILE *logfile = fopen(logfilename, "w");
 	fclose(logfile);
+}
+
+void
+column(Monitor *mon)
+{
+	unsigned int i, n, w, h, cx;
+	Client *c;
+
+	for (n = 0, c = nexttiled(mon->clients); c; c = nexttiled(c->next), n++);
+	if (n == 0)
+		return;
+
+	w = mon->ww/n;
+	h = mon->wh;
+	cx = mon->wx;
+		
+	for (i = 0, c = nexttiled(mon->clients); c; c = nexttiled(c->next), i++) {
+		resize(c, cx, mon->wy, w, h-(2*c->bw), 0);
+		cx += w;
+	};
 }
 
 void
@@ -711,11 +737,11 @@ configurenotify(XEvent *e)
 		sw = ev->width;
 		sh = ev->height;
 		if (updategeom() || dirty) {
-			drw_resize(drw, sw, bh);
+			drw_resize(drw, sw, sh);
 			updatebars();
 			for (m = mons; m; m = m->next) {
 				for (c = m->clients; c; c = c->next)
-					if (c->isfullscreen)
+					if (c->isfullscreen && !c->isfakefullscreen)
 						resizeclient(c, m->mx, m->my, m->mw, m->mh);
 				resizebarwin(m);
 			}
@@ -1375,7 +1401,8 @@ movemouse(const Arg *arg)
 	
 	if (!(c = selmon->sel))
 		return;
-	if (c->isfullscreen) /* no support moving fullscreen windows by mouse */
+	if (c->isfullscreen
+		&& !c->isfakefullscreen) /* no support moving fullscreen windows by mouse */
 		return;
 	restack(selmon);
 	ocx = c->x;
@@ -1584,7 +1611,8 @@ resizemouse(const Arg *arg)
 
 	if (!(c = selmon->sel))
 		return;
-	if (c->isfullscreen)
+	if (c->isfullscreen
+		&& !c->isfakefullscreen)
 		return;
 	restack(selmon);
 	ocx = c->x;
@@ -1638,7 +1666,7 @@ restack(Monitor *m)
 	XWindowChanges wc;
 
 	drawbar(m);
-	if (!m->sel)
+	if (!m->sel || m->sel->isfullscreen)
 		return;
 	if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
 		XRaiseWindow(dpy, m->sel->win);
@@ -1646,7 +1674,10 @@ restack(Monitor *m)
 		wc.stack_mode = Below;
 		wc.sibling = m->barwin;
 		for (c = m->stack; c; c = c->snext)
-			if (!c->isfloating && ISVISIBLE(c)) {
+			/*
+			 * if (!c->isfloating && ISVISIBLE(c)) {
+			 */
+			if (ISVISIBLE(c)) {
 				XConfigureWindow(dpy, c->win, CWSibling|CWStackMode, &wc);
 				wc.sibling = c->win;
 			}
@@ -1734,6 +1765,7 @@ setcurrentdesktop(void){
 }
 void setdesktopnames(void){
 	XTextProperty text;
+	
 	Xutf8TextListToTextProperty(dpy, tags, TAGSLENGTH, XUTF8StringStyle, &text);
 	XSetTextProperty(dpy, root, &text, netatom[NetDesktopNames]);
 }
@@ -1799,6 +1831,10 @@ setfullscreen(Client *c, int fullscreen)
 		XChangeProperty(dpy, c->win, netatom[NetWMState], XA_ATOM, 32,
 			PropModeReplace, (unsigned char*)&netatom[NetWMFullscreen], 1);
 		c->isfullscreen = 1;
+		if (c->isfakefullscreen) {
+			resizeclient(c, c->x, c->y, c->w, c->h);
+			return;
+		};
 		c->oldstate = c->isfloating;
 		c->oldbw = c->bw;
 		c->bw = 0;
@@ -1809,6 +1845,10 @@ setfullscreen(Client *c, int fullscreen)
 		XChangeProperty(dpy, c->win, netatom[NetWMState], XA_ATOM, 32,
 			PropModeReplace, (unsigned char*)0, 0);
 		c->isfullscreen = 0;
+		if (c->isfakefullscreen) {
+			resizeclient(c, c->x, c->y, c->w, c->h);
+			return;
+		};
 		c->isfloating = c->oldstate;
 		c->bw = c->oldbw;
 		c->x = c->oldx;
@@ -1993,7 +2033,8 @@ showhide(Client *c)
 	if (ISVISIBLE(c)) {
 		/* show clients top down */
 		XMoveWindow(dpy, c->win, c->x, c->y);
-		if ((!c->mon->lt[c->mon->sellt]->arrange || c->isfloating) && !c->isfullscreen)
+		if ((!c->mon->lt[c->mon->sellt]->arrange || c->isfloating) &&
+			(!c->isfullscreen || c->isfakefullscreen))
 			resize(c, c->x, c->y, c->w, c->h, 0);
 		showhide(c->snext);
 	} else {
@@ -2054,40 +2095,40 @@ tile(Monitor *m)
 	if (n == 0)
 		return;
 	if (m->pertag->drawwithgaps[m->pertag->curtag]) { /* draw with fullgaps logic */
-	        if (n > m->nmaster)
-	                mw = m->nmaster ? m->ww * m->mfact : 0;
-	        else
-	                mw = m->ww - m->pertag->gappx[m->pertag->curtag];
-	        for (i = 0, my = ty = m->pertag->gappx[m->pertag->curtag], c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
-	                if (i < m->nmaster) {
-	                        h = (m->wh - my) / (MIN(n, m->nmaster) - i) - m->pertag->gappx[m->pertag->curtag];
-	                        resize(c, m->wx + m->pertag->gappx[m->pertag->curtag], m->wy + my, mw - (2*c->bw) - m->pertag->gappx[m->pertag->curtag], h - (2*c->bw), 0);
-	                        if (my + HEIGHT(c) + m->pertag->gappx[m->pertag->curtag] < m->wh)
-	                                my += HEIGHT(c) + m->pertag->gappx[m->pertag->curtag];
-	                } else {
-	                        h = (m->wh - ty) / (n - i) - m->pertag->gappx[m->pertag->curtag];
-	                        resize(c, m->wx + mw + m->pertag->gappx[m->pertag->curtag], m->wy + ty, m->ww - mw - (2*c->bw) - 2*m->pertag->gappx[m->pertag->curtag], h - (2*c->bw), 0);
-	                        if (ty + HEIGHT(c) + m->pertag->gappx[m->pertag->curtag] < m->wh)
-	                                ty += HEIGHT(c) + m->pertag->gappx[m->pertag->curtag];
-	                }
+		if (n > m->nmaster)
+			mw = m->nmaster ? m->ww * m->mfact : 0;
+		else
+			mw = m->ww - m->pertag->gappx[m->pertag->curtag];
+		for (i = 0, my = ty = m->pertag->gappx[m->pertag->curtag], c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+			if (i < m->nmaster) {
+				h = (m->wh - my) / (MIN(n, m->nmaster) - i) - m->pertag->gappx[m->pertag->curtag];
+				resize(c, m->wx + m->pertag->gappx[m->pertag->curtag], m->wy + my, mw - (2*c->bw) - m->pertag->gappx[m->pertag->curtag], h - (2*c->bw), 0);
+				if (my + HEIGHT(c) + m->pertag->gappx[m->pertag->curtag] < m->wh)
+					my += HEIGHT(c) + m->pertag->gappx[m->pertag->curtag];
+			} else {
+				h = (m->wh - ty) / (n - i) - m->pertag->gappx[m->pertag->curtag];
+				resize(c, m->wx + mw + m->pertag->gappx[m->pertag->curtag], m->wy + ty, m->ww - mw - (2*c->bw) - 2*m->pertag->gappx[m->pertag->curtag], h - (2*c->bw), 0);
+				if (ty + HEIGHT(c) + m->pertag->gappx[m->pertag->curtag] < m->wh)
+					ty += HEIGHT(c) + m->pertag->gappx[m->pertag->curtag];
+			}
 	} else { /* draw with singularborders logic */
-	        if (n > m->nmaster)
-	                mw = m->nmaster ? m->ww * m->mfact : 0;
-	        else
-	                mw = m->ww;
-	        for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
-	                if (i < m->nmaster) {
-	                        h = (m->wh - my) / (MIN(n, m->nmaster) - i);
-	                        if (n == 1)
-	                                resize(c, m->wx - c->bw, m->wy, m->ww, m->wh, False);
-	                        else
-	                                resize(c, m->wx - c->bw, m->wy + my, mw - c->bw, h - c->bw, False);
-	                        my += HEIGHT(c) - c->bw;
-	                } else {
-	                        h = (m->wh - ty) / (n - i);
-	                        resize(c, m->wx + mw - c->bw, m->wy + ty, m->ww - mw, h - c->bw, False);
-	                        ty += HEIGHT(c) - c->bw;
-	                }
+		if (n > m->nmaster)
+			mw = m->nmaster ? m->ww * m->mfact : 0;
+		else
+			mw = m->ww;
+		for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+			if (i < m->nmaster) {
+				h = (m->wh - my) / (MIN(n, m->nmaster) - i);
+				if (n == 1)
+					resize(c, m->wx - c->bw, m->wy, m->ww, m->wh, False);
+				else
+					resize(c, m->wx - c->bw, m->wy + my, mw - c->bw, h - c->bw, False);
+				my += HEIGHT(c) - c->bw;
+			} else {
+				h = (m->wh - ty) / (n - i);
+				resize(c, m->wx + mw - c->bw, m->wy + ty, m->ww - mw, h - c->bw, False);
+				ty += HEIGHT(c) - c->bw;
+			}
 	}
 }
 
@@ -2131,7 +2172,8 @@ togglefloating(const Arg *arg)
 {
 	if (!selmon->sel)
 		return;
-	if (selmon->sel->isfullscreen)
+	if (selmon->sel->isfullscreen
+		&& selmon->sel->isfakefullscreen)
 		return;
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
 	if (selmon->sel->isfloating)
@@ -2822,14 +2864,25 @@ shiftview(const Arg *arg) {
 	view(&shifted);
 }
 
+Client *
+sNextN(Client *c, int n)
+{
+	if (c && ISVISIBLE(c))
+		n--;
+	while (c && n > 0) {
+		c = c->snext;
+		if (c && ISVISIBLE(c))
+			n--;
+	};
+	return c;
+}
+	
 void
 alttab(const Arg *arg) {
-	if (!selmon->stack ||
-		(selmon->stack &&
-		!selmon->stack->snext))
+	Client *sel = sNextN(selmon->stack, 2);
+	if (!sel)
 		return;
 	
-	Client *sel = selmon->stack->snext;
 	drawtab(sel);
 
 	int grab = -1, attempts = 100;
@@ -2846,13 +2899,17 @@ alttab(const Arg *arg) {
 		XNextEvent(dpy, &e);
 		if (e.type != KeyPress && e.type != KeyRelease)
 			continue;
-		if (e.type == KeyRelease && e.xkey.keycode == tabModKey)
+		KeySym sym = XKeycodeToKeysym(dpy, (KeyCode)e.xkey.keycode, 0);
+		if (e.type == KeyRelease && sym == tabModKey)
 			break;
-		if (e.type == KeyRelease || e.xkey.keycode != tabKey)
+		if (e.type == KeyRelease || sym != tabKey)
 			continue;
-		sel = sel->snext ? sel->snext : selmon->stack;
+		sel = sNextN(sel->snext, 1);
+		if (!sel)
+			sel = sNextN(selmon->stack, 1);
 		redrawtab(sel);
 	};
+	
 
 	focus(sel);
 	restack(selmon);
@@ -2868,21 +2925,27 @@ drawtab(Client *c)
 		.background_pixmap = ParentRelative
 	};
 
-	int w = (selmon->ww/3), h = 0;
-	int x = (selmon->ww/2)-(w/2), y = (selmon->wh/2);
+	int w = (selmon->mw/3), h = 0, th = drw->fonts->h + 4;
+	int x = (selmon->mw/2)-(w/2), y = (selmon->mh/2);
 	
 	Client *curr = selmon->stack;
 	while (curr) {
+		if (!ISVISIBLE(curr)) {
+			curr = curr->snext;
+			continue;
+		};
 		drw_setscheme(drw, scheme[SchemeNorm]);
 		if (curr == c)
 			drw_setscheme(drw, scheme[SchemeSel]);
-		drw_text(drw, 0, h, w, (bh+2), 2, curr->name, 0);
+		drw_text(drw, 0, h, w, th, 2, curr->name, 0);
 		curr = curr->snext;
-		h += (bh+2);
+		h += th;
 	};
-	
+
 	y -= (h/2);
-	selmon->tabwin = XCreateWindow(dpy, root, x, y, w, h, 0,
+	
+	selmon->tabwin = XCreateWindow(dpy, DefaultRootWindow(dpy),
+								   x, y, w, h, 0,
 								   DefaultDepth(dpy, screen),
 								   CopyFromParent,
 								   DefaultVisual(dpy, screen),
@@ -2898,18 +2961,26 @@ drawtab(Client *c)
 void
 redrawtab(Client *c)
 {
-	int w = (selmon->ww/3), h = 0;
+	int w = (selmon->mw/3), h = 0, th = drw->fonts->h + 4;
+	int x = (selmon->mw/2)-(w/2), y = (selmon->mh/2);
 	
 	Client *curr = selmon->stack;
 	while (curr) {
+		if (!ISVISIBLE(curr)) {
+			curr = curr->snext;
+			continue;
+		};
 		drw_setscheme(drw, scheme[SchemeNorm]);
 		if (curr == c)
 			drw_setscheme(drw, scheme[SchemeSel]);
-		drw_text(drw, 0, h, w, (bh+2), 2, curr->name, 0);
+		drw_text(drw, 0, h, w, th, 2, curr->name, 0);
 		curr = curr->snext;
-		h += (bh+2);
+		h += th;
 	};
 	
+	y -= (h/2);
+
+	XMoveWindow(dpy, selmon->tabwin, x, y);
 	XMapRaised(dpy, selmon->tabwin);
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_map(drw, selmon->tabwin, 0, 0, w, h);
