@@ -1666,21 +1666,19 @@ restack(Monitor *m)
 	XWindowChanges wc;
 
 	drawbar(m);
-	if (!m->sel || m->sel->isfullscreen)
+	if (!m->sel)
 		return;
 	if (m->sel->isfloating || !m->lt[m->sellt]->arrange)
 		XRaiseWindow(dpy, m->sel->win);
 	if (m->lt[m->sellt]->arrange) {
 		wc.stack_mode = Below;
-		wc.sibling = m->barwin;
-		for (c = m->stack; c; c = c->snext)
-			/*
-			 * if (!c->isfloating && ISVISIBLE(c)) {
-			 */
+		// wc.sibling = m->barwin;
+		for (c = m->stack; c; c = c->snext) {
 			if (ISVISIBLE(c)) {
 				XConfigureWindow(dpy, c->win, CWSibling|CWStackMode, &wc);
 				wc.sibling = c->win;
 			}
+		}
 	}
 	XSync(dpy, False);
 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
@@ -2909,7 +2907,6 @@ alttab(const Arg *arg) {
 			sel = sNextN(selmon->stack, 1);
 		redrawtab(sel);
 	};
-	
 
 	focus(sel);
 	restack(selmon);
