@@ -190,7 +190,7 @@ static void cleanup(void);
 static void cleanupmon(Monitor *mon);
 static void clientmessage(XEvent *e);
 static void clearlog();
-static void column(Monitor *mon);
+static void column(Monitor *m);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
@@ -685,22 +685,30 @@ clearlog()
 }
 
 void
-column(Monitor *mon)
+column(Monitor *m)
 {
-	unsigned int i, n, w, h, cx;
+	unsigned int i, n, w, h, cx, cy, gappx;
 	Client *c;
 
-	for (n = 0, c = nexttiled(mon->clients); c; c = nexttiled(c->next), n++);
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
 	if (n == 0)
 		return;
+	
+	if (m->pertag->drawwithgaps[m->pertag->curtag])
+		gappx = m->pertag->gappx[m->pertag->curtag];
+	else
+		gappx = 0;
 
-	w = mon->ww/n;
-	h = mon->wh;
-	cx = mon->wx;
-		
-	for (i = 0, c = nexttiled(mon->clients); c; c = nexttiled(c->next), i++) {
-		resize(c, cx, mon->wy, w, h-(2*c->bw), 0);
-		cx += w;
+	w = m->ww/n - (2*gappx);
+	h = m->wh - (2*gappx);
+	cx = m->wx + gappx;
+	cy = m->wy + gappx;
+	
+	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+		resize(c, cx, cy, w-(2*c->bw), h-(2*c->bw), 0);
+		cx += (w + gappx);
+		if (i == 0)
+			w += gappx;
 	};
 }
 
@@ -1221,7 +1229,14 @@ grabkeys(void)
 void
 incnmaster(const Arg *arg)
 {
-	selmon->nmaster = selmon->pertag->nmasters[selmon->pertag->curtag] = MAX(selmon->nmaster + arg->i, 0);
+	unsigned int n;
+	Client *c;
+	for (n = 0, c = nexttiled(selmon->clients); c; c = nexttiled(c->next), n++);
+	if (selmon->nmaster + arg->i < 0 ||
+		selmon->nmaster + arg->i > n)
+		return;
+	selmon->nmaster = selmon->nmaster + arg->i;
+	selmon->pertag->nmasters[selmon->pertag->curtag] = selmon->nmaster + arg->i;
 	arrange(selmon);
 }
 
