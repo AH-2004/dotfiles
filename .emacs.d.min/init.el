@@ -159,6 +159,10 @@
   (interactive)
   (text-scale-set 0))
 
+(defun org-src-block ()
+  (interactive)
+  (org-insert-structure-template "src"))
+
 (defun display-line-numbers-toggle ()
   (interactive)
   (cond ((eq display-line-numbers nil)
@@ -201,10 +205,13 @@
 (bind-key* "C-S-<prior>" 'enlarge-window)
 (bind-key* "C-<next>" 'shrink-window-horizontally)
 (bind-key* "C-S-<next>" 'shrink-window)
-(define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)
-(define-key isearch-mode-map (kbd "<backspace>") 'isearch-del-char)
-(define-key dired-mode-map (kbd "<deletechar>") 'dired-do-delete)
-(define-key dired-mode-map (kbd "<f2>") 'dired-do-rename)
+
+(bind-key  "C-f" 'isearch-repeat-forward isearch-mode-map)
+(bind-key "<backspace>" 'isearch-del-char isearch-mode-map)
+(bind-key  "<backtab>" 'org-src-block org-mode-map)
+(bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
+(bind-key "<f2>" 'dired-do-rename dired-mode-map)
+
 (unbind-key "<insert>")
 (unbind-key "<insertchar>")
 (unbind-key "S-<down-mouse-1>")
