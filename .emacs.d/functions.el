@@ -1,16 +1,10 @@
 (defun init ()
   (message (emacs-init-time))
   (find-file "~/.emacs.d/*notes*")
+  (if (get-buffer "*Compile-Log*")
+	  (kill-buffer "*Compile-Log*"))
   (setq default-directory "~/")
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
-
-;; Predicates
-(defun current-line-empty-p ()
-  (string-match-p
-   "\\`\\s-*$"
-   (buffer-substring
-	(line-beginning-position)
-	(line-end-position))))
 
 ;; Comment line or region
 (defun comment ()
@@ -19,18 +13,6 @@
   (comment-line 1)
   (previous-line 1)
   (jump-to-register 1))
-
-(defun comment-other ()
-  (interactive)
-  (if (current-line-empty-p)
-	  (progn
-		(c-indent-line)
-		(insert "/*\n\n*/")
-		(c-indent-line)
-		(previous-line)
-		(c-indent-line)
-		(end-of-line))
-	(progn (end-of-line) (insert " // "))))
 
 (defun align-comments (begin end)
   (interactive "r")
@@ -89,11 +71,14 @@
   (text-scale-set 0))
 
 ;; Toggle Line number type
-(defun display-line-numbers-relative ()
+(defun display-line-numbers-toggle ()
   (interactive)
-   (if (eq display-line-numbers 'relative)
-      (setq display-line-numbers t)
-     (setq display-line-numbers 'relative)))
+  (cond ((eq display-line-numbers nil)
+		 (setq display-line-numbers t))
+		((eq display-line-numbers t)
+		 (setq display-line-numbers 'relative))
+		((eq display-line-numbers 'relative)
+		 (setq display-line-numbers nil))))
 
 ;; Insert current date
 (defun today ()
@@ -163,9 +148,18 @@
   (universal-argument)
   (org-update-statistics-cookies t))
 
-(defun org-toggle-intermediate ()
+;; Org Checkbox WIP
+(defun org-checkbox-wip-p ()
   (interactive)
-  (org-toggle-checkbox))
+  (save-excursion
+    (beginning-of-line)
+    (re-search-forward "- \\[\\(-\\)\\]" (point-at-eol) t)))
+
+(defun org-toggle-checkbox-wip ()
+  (interactive)
+  (if (org-checkbox-wip-p)
+	  (save-excursion (replace-match "- [ ]"))
+	  (org-toggle-checkbox '(16))))
 
 ;; Org Download markup
 (defun org-download-annotate-custom (link)
@@ -191,6 +185,15 @@
 (defun alpha-reset ()
   (interactive)
   (set-frame-parameter nil 'alpha-background 100))
+
+;; Bookmarks
+(defun bookmarks ()
+  (interactive)
+  (find-file-read-only (concat user-emacs-directory "*bookmarks*"))
+  (advice-add 'org-open-at-point :after
+			  (lambda (&rest r)
+				(kill-buffer "*bookmarks*")))
+  )
 
 (defun tst ()
   (interactive)

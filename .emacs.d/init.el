@@ -30,7 +30,7 @@
 (setq-default text-scale-mode-step 1.1)
 (setq-default switch-to-buffer-obey-display-actions t)
 
-;; Other tweaks
+;; Other Tweaks
 (add-to-list 'exec-path "~/.local/bin")
 (setq-default custom-file "~/.emacs.d/custom.el")
 (setq-default custom-theme-directory "~/.emacs.d/themes/")
@@ -56,19 +56,20 @@
 (setq-default large-file-warning-threshold nil)
 (setq-default ediff-ignore-similar-regions t)
 (setq-default ediff-highlight-all-diffs nil)
+(setq-default use-package-statistics t)
 (defadvice split-window
 	(after split-window-after activate)
   (other-window 1))
 (add-to-list 'org-link-frame-setup
 			 '(file . find-file))
 
-;; Editing Tweaks
 (electric-pair-mode t)
 (global-auto-revert-mode t)
 (setq-default tab-width 4)
 (setq-default c-basic-offset tab-width)
 (setq-default python-indent-offset tab-width)
 (setq-default vhdl-basic-offset tab-width)
+(setq-default python-indent-offset tab-width)
 (setq-default org-indent-indentation-per-level tab-width)
 (setq-default org-edit-src-content-indentation tab-width)
 (setq-default org-startup-shrink-all-tables t)
@@ -80,6 +81,7 @@
 (setq-default backward-delete-char-untabify-method nil)
 (setq-default cua-keep-region-after-copy nil)
 (setq-default comment-style 'extra-line)
+(setq-default tab-always-indent 'complete)
 (put 'c-electric-paren 'delete-selection nil)
 (put 'c-electric-brace 'delete-selection nil)
 
@@ -99,6 +101,10 @@
 (load-theme 'base16-black t)
 ;; (load-theme 'base16-ocean t)
 
+;; Mail
+(setq-default user-mail-address "ahmedshuaib2004@gmail.com")
+(setq-default user-full-name "Ahmed Shuaib")
+
 ;; Modeline
 (setq-default mode-line-format
 	  (list
@@ -114,9 +120,9 @@
 	   mode-line-modes))
 
 ;; Aliases
-;; (defalias 'yes-or-no-p 'y-or-n-p)
+(defalias 'y-or-n-p 'yes-or-no-p)
 (defalias 'checkbox 'org-toggle-checkbox)
 (defalias 'save 'save-buffer)
 (defalias 'term 'st)
 (defalias 'wdired 'wdired-change-to-wdired-mode)
-(defalias 'mu 'mu4e-search-maildir)
+(defalias 'mu 'mu4e)

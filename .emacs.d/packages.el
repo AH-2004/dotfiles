@@ -1,9 +1,6 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(add-to-list 'load-path "~/.emacs.d/packages/lsp-bridge")
-(require 'lsp-bridge)
-
 ;; Icons
 (use-package all-the-icons
   :config
@@ -37,7 +34,10 @@
   (setq neo-hide-cursor t)
   (setq neo-mode-line-type 'none))
 
-;; Terminal
+;; Snippets
+(use-package yasnippet
+  :config
+  (yas-global-mode))
 
 ;; Completions
 (use-package corfu
@@ -50,18 +50,17 @@
   (setq corfu-min-width 50)
   (setq corfu-max-width corfu-min-width)
   (setq corfu-scroll-margin 4)
+  (setq corfu-quit-no-match t)
   :init
-  (global-corfu-mode)
+  ;; (global-corfu-mode)
   (corfu-history-mode))
 
-(use-package cape
-  :init
-  (setq completion-at-point-functions
-		(list
-		 (cape-capf-super
-		  #'cape-dict
-		  #'cape-keyword
-		  #'yasnippet-capf))))
+;; (use-package cape
+;;   :config
+;;   (setq-local completion-at-point-functions
+;; 			  (list (cape-capf-super
+;; 					 #'yasnippet-capf
+;; 					 #'cape-file))))
 
 (use-package kind-icon
   :after corfu
@@ -87,27 +86,30 @@
 (use-package eglot
   :config
   (setq eglot-autoshutdown t)
+  (setq eglot-report-progress nil)
   (add-to-list 'eglot-server-programs
 			   '((c++-mode c-mode)
 				 "clangd"
 				 "--header-insertion=never"
 				 "--all-scopes-completion=false"))
   (add-to-list 'eglot-stay-out-of 'flymake)
+  (advice-add  'eglot-completion-at-point
+			   :around #'cape-wrap-buster)
   (setq eglot-ignored-server-capabilities
 		(list
 		 :inlayHintProvider
 		 :documentOnTypeFormattingProvider)))
 
-(use-package lsp-bridge
-  :ensure nil
-  :disabled t
-  :config
-  (setq lsp-bridge-python-lsp-server "pylsp")
-  (setq lsp-bridge-enable-diagnostics nil)
-  (setq lsp-bridge-enable-inlay-hint nil)
-  (setq acm-enable-search-file-words nil)
-  (setq acm-backend-lsp-enable-auto-import nil)
-  (setq acm-enable-doc nil))
+;; (use-package lsp-bridge
+;;   :ensure nil
+;;   :disabled t
+;;   :config
+;;   (setq lsp-bridge-python-lsp-server "pylsp")
+;;   (setq lsp-bridge-enable-diagnostics nil)
+;;   (setq lsp-bridge-enable-inlay-hint nil)
+;;   (setq acm-enable-search-file-words nil)
+;;   (setq acm-backend-lsp-enable-auto-import nil)
+;;   (setq acm-enable-doc nil))
 
 (use-package eldoc
   :config
@@ -118,8 +120,15 @@
   :config
   (setq openwith-associations
 		'(("\\.pdf\\'" "zathura" (file))
+		  ("\\.epub\\'" "zathura" (file))
 		  ("\\.docx\\'" "libreoffice" (file))
 		  ("\\.pptx\\'" "libreoffice" (file))
+		  ("\\.drawio\\'" "drawio" (file))
+		  ("\\.mp4\\'" "mpv" (file))
+		  ("\\.mkv\\'" "mpv" (file))
+		  ("\\.svg\\'" "eog" (file))
+		  ("\\.png\\'" "eog" (file))
+		  ("\\.jpg\\'" "eog" (file))
 		  ("\\.xopp\\'" "xournalpp" (file))))
   :init
   (openwith-mode t))
@@ -140,7 +149,8 @@
 
 (use-package org-download
   :config
-  (setq org-download-annotate-function #'org-download-annotate-custom))
+  (setq org-download-annotate-function
+		#'org-download-annotate-custom))
 
 (use-package base16-theme
   :ensure nil
@@ -156,11 +166,6 @@
 		  (update-clause 0)
 		  ,@sqlind-default-indentation-offsets-alist)))
 
-;; Yasnippet
-(use-package yasnippet
-  :config
-  (yas-global-mode))
-
 ;; Mu4e
 (use-package mu4e
   :ensure nil
@@ -175,11 +180,29 @@
   (setq mu4e-refile-folder "All Mail")
   (setq mu4e-trash-folder "/Trash"))
 
+;; Nasm
+(use-package nasm-mode
+  :config
+  (add-to-list 'auto-mode-alist
+			   '("\\.asm\\'" . nasm-mode)))
+;; Web
+(use-package web-mode
+  :config
+  (add-to-list 'auto-mode-alist
+			   '("\\.html?\\'" . web-mode)))
+
+;; Multiple Cursors
+(use-package multiple-cursors
+  :config
+  (setq mc/always-run-for-all t))
+
 ;; Others
+(use-package texfrag)
+(use-package cape)
+(use-package tempel)
+(use-package yasnippet-capf)
 (use-package tree-sitter)
 (use-package tree-sitter-langs)
-(use-package yasnippet-snippets)
-(use-package yasnippet-capf)
 (use-package eldoc-box)
 (use-package format-all)
 (use-package lua-mode)
@@ -188,7 +211,6 @@
 (use-package markdown-mode)
 (use-package all-the-icons-dired)
 (use-package drag-stuff)
-;; (use-package good-scroll :init (good-scroll-mode))
 (use-package lorem-ipsum)
 (use-package org-download)
 (use-package org-autolist)

@@ -15,11 +15,17 @@
 (bind-key* "C-)" 'alpha-reset)
 
 ;; Toggle line numbers
-(bind-key* "C-S-g" 'display-line-numbers-mode)
+(bind-key* "C-S-g" 'display-line-numbers-toggle)
 
 ;; Move lines
 (bind-key* "C-S-<up>" 'drag-stuff-up)
 (bind-key* "C-S-<down>" 'drag-stuff-down)
+
+;; Multiple Cursors
+(bind-key* "M-<down>" 'mc/mark-next-like-this)
+(bind-key* "M-S-<up>" 'mc/unmark-next-like-this)
+(bind-key* "M-<up>" 'mc/mark-previous-like-this)
+(bind-key* "M-S-<down>" 'mc/unmark-previous-like-this)
 
 ;; Completions
 (bind-key* "C-SPC" 'completion-at-point)
@@ -27,13 +33,10 @@
 
 ;; Comments
 (bind-key* "C-/" 'comment)
-(bind-key "C-c /" 'comment-other c-mode-map)
-(bind-key "C-c /" 'comment-other c++-mode-map)
-(bind-key "C-c C-/" 'comment-other c-mode-map)
-(bind-key "C-c C-/" 'comment-other c++-mode-map)
 
 ;; Mark
 (bind-key* "C-a" 'mark-whole-buffer)
+(bind-key* "C-x SPC" 'set-mark-command)
 
 ;; Copy/Paste/Cut
 (bind-key* "C-c C-v" 'duplicate-line)
@@ -42,9 +45,7 @@
 (bind-key* "S-<delete>" 'delete-line)
 
 ;; Delete word
-(bind-key* "M-DEL" 'backward-delete-word)
 (bind-key* "C-<backspace>" 'backward-delete-word)
-(bind-key* "M-d" 'delete-word)
 (bind-key* "C-<delete>" 'delete-word)
 
 ;; Undo/Redo
@@ -64,22 +65,25 @@
 ;; Dired
 (bind-key* "C-n" 'dired-create-empty-file)
 (bind-key* "C-S-n" 'dired-create-directory)
-(bind-key* "C-d" 'dired-create-directory)
+(bind-key* "C-x C-d" 'dired-jump)
 (bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
 (bind-key "<f2>" 'dired-do-rename dired-mode-map)
 (bind-key "<mouse-2>" 'dired-find-file dired-mode-map)
 (bind-key "C-x C-s" 'wdired-finish-edit wdired-mode-map)
 
 ;; Org mode
-(bind-key "C-e" 'org-modern-mode org-mode-map)
 (bind-key "<backtab>" 'org-src-block org-mode-map)
+(bind-key "C-c C-w" 'org-toggle-checkbox-wip org-mode-map)
 
 ;; Terminal
 (bind-key* "C-x t" 'term)
 
 ;; Bookmarks
-(bind-key* "C-x v" 'bookmark-bmenu-list)
-(bind-key "<deletechar>" 'bookmark-delete bookmark-bmenu-mode-map)
+;; (bind-key* "C-x v" 'bookmark-bmenu-list)
+;; (bind-key* "C-x C-v" 'bookmark-bmenu-list)
+;; (bind-key "<deletechar>" 'bookmark-delete bookmark-bmenu-mode-map)
+(bind-key* "C-x v" 'bookmarks)
+(bind-key* "C-x C-v" 'bookmarks)
 
 ;; Ibuffer
 (bind-key "<deletechar>" 'ibuffer-do-delete ibuffer-mode-map)

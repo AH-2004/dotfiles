@@ -281,6 +281,9 @@ static void updatetitle(Client *c);
 static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
 static void view(const Arg *arg);
+static void winsetstate(Display *dpy, Window win, long state);
+static void winmap(Display *dpy, Client *c);
+static void winunmap(Display *dpy, Client *c);
 static Client *wintoclient(Window w);
 static Monitor *wintomon(Window w);
 static Client *wintosystrayicon(Window w);
@@ -2044,16 +2047,12 @@ showhide(Client *c)
 	if (!c)
 		return;
 	if (ISVISIBLE(c)) {
-		/* show clients top down */
-		XMoveWindow(dpy, c->win, c->x, c->y);
-		if ((!c->mon->lt[c->mon->sellt]->arrange || c->isfloating) &&
-			(!c->isfullscreen || c->isfakefullscreen))
-			resize(c, c->x, c->y, c->w, c->h, 0);
+		winmap(dpy, c);
 		showhide(c->snext);
 	} else {
 		/* hide clients bottom up */
 		showhide(c->snext);
-		XMoveWindow(dpy, c->win, WIDTH(c) * -2, c->y);
+		winunmap(dpy, c);
 	}
 }
 
@@ -2708,6 +2707,43 @@ view(const Arg *arg)
 	focus(NULL);
 	arrange(selmon);
 	updatecurrentdesktop();
+}
+
+void
+winsetstate(Display *dpy, Window win, long state)
+{
+	long data[] = { state, None };
+	XChangeProperty(dpy, win, wmatom[WMState], wmatom[WMState], 32,
+					PropModeReplace, (unsigned char*)data, 2);
+}
+
+void
+winmap(Display *dpy, Client *c)
+{
+	winsetstate(dpy, c->win, NormalState);
+	XMoveResizeWindow(dpy, c->win, c->x, c->y, c->w, c->h);
+	XSetInputFocus(dpy, c->win, RevertToPointerRoot, CurrentTime);
+	XMapWindow(dpy, c->win);
+}
+
+void
+winunmap(Display *dpy, Client *c)
+{
+	static XWindowAttributes ca, ra;
+
+	XGrabServer(dpy);
+	XGetWindowAttributes(dpy, root, &ra);
+	XGetWindowAttributes(dpy, c->win, &ca);
+
+	/* Prevent UnmapNotify events */
+	XSelectInput(dpy, root, ra.your_event_mask & ~SubstructureNotifyMask);
+	XSelectInput(dpy, c->win, ca.your_event_mask & ~StructureNotifyMask);
+
+	XUnmapWindow(dpy, c->win);
+	winsetstate(dpy, c->win, IconicState);
+	XSelectInput(dpy, root, ra.your_event_mask);
+	XSelectInput(dpy, c->win, ca.your_event_mask);
+	XUngrabServer(dpy);
 }
 
 Client *
