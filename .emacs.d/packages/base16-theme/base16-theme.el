@@ -195,7 +195,7 @@ return the actual color value.  Otherwise return the value unchanged."
      (highlight                                    :background base01)
      (link                                         :foreground base0D :underline t)
      (link-visited                                 :foreground base0E :underline t)
-     (minibuffer-prompt                            :foreground base0D)
+     (minibuffer-prompt                            :foreground base0C)
      (region                                       :background base02 :distant-foreground base05)
      (secondary-selection                          :background base03 :distant-foreground base05)
      (trailing-whitespace                          :foreground base0A :background base0C)

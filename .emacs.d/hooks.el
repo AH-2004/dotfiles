@@ -4,7 +4,7 @@
 
 (add-hook 'prog-mode-hook
 		  (lambda ()
-			;; (corfu-mode)
+			(corfu-mode)
 			(display-line-numbers-mode 1)))
 
 (add-hook 'text-mode-hook

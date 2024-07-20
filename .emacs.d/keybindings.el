@@ -111,6 +111,7 @@
 
 ;; Miscellaneous
 (bind-key* "C-x C-z" 'tst)
+(bind-key* "C-x C-z" 'kmacro-call-macro)
 
 ;; Unbind from mode-map
 (local-unset-key (vector asm-comment-char))
