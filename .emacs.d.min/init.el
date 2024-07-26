@@ -71,6 +71,9 @@
 (setq-default org-adapt-indentation t)
 (setq-default org-indent-mode-turns-on-hiding-stars nil)
 
+;; Custom variables
+(setq clear-line t)
+
 ;; Modeline
 (setq-default mode-line-format
 	  (list
@@ -80,6 +83,10 @@
 	   mode-line-modified
 	   mode-line-front-space
 	   "(%l,%c)"
+	   mode-line-front-space
+	   "("
+	   '(:eval (if clear-line "CL" "DL"))
+	   ")"
 	   mode-line-front-space
 	   "%I"
 	   mode-line-front-space
@@ -122,7 +129,13 @@
   (delete-region
    (line-beginning-position)
    (line-end-position))
-  (delete-backward-char 1))
+  (unless clear-line 
+	  (delete-backward-char 1)))
+
+(defun toggle-clear-line ()
+  (interactive)
+  (setq clear-line
+		(not clear-line)))
 
 (defun delete-word (arg)
   (interactive "p")
@@ -172,6 +185,12 @@
 		((eq display-line-numbers 'relative)
 		 (setq display-line-numbers nil))))
 
+(defun st ()
+  (interactive)
+  (if (file-remote-p default-directory)
+	  (st-remote)
+	(call-process-shell-command "st" nil 0)))
+
 ;; Keybindings
 (bind-key* "C-=" 'text-scale-increase)
 (bind-key* "C--" 'text-scale-decrease)
@@ -185,6 +204,7 @@
 (bind-key* "C-x SPC" 'set-mark-command)
 (bind-key* "C-c C-v" 'duplicate-line)
 (bind-key* "S-<delete>" 'delete-line)
+(bind-key* "C-S-<delete>" 'toggle-clear-line)
 (bind-key* "C-<backspace>" 'backward-delete-word)
 (bind-key* "C-<delete>" 'delete-word)
 (bind-key* "C-z" 'undo)
@@ -205,12 +225,15 @@
 (bind-key* "C-S-<prior>" 'enlarge-window)
 (bind-key* "C-<next>" 'shrink-window-horizontally)
 (bind-key* "C-S-<next>" 'shrink-window)
-
+(bind-key* "C-x t" 'st)
+(bind-key* "C-x C-t" 'st)
 (bind-key  "C-f" 'isearch-repeat-forward isearch-mode-map)
 (bind-key "<backspace>" 'isearch-del-char isearch-mode-map)
 (bind-key  "<backtab>" 'org-src-block org-mode-map)
 (bind-key "<deletechar>" 'dired-do-delete dired-mode-map)
 (bind-key "<f2>" 'dired-do-rename dired-mode-map)
+(bind-key "RET" 'vertico-exit-input vertico-map)
+(bind-key "M-RET" 'exit-minibuffer vertico-map)
 
 (unbind-key "<insert>")
 (unbind-key "<insertchar>")
