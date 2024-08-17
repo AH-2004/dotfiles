@@ -11,9 +11,9 @@ emacs_run() {
 }
 
 # Initalize projects
-init_c() { mkdir -p "./$1" && cp -r "$HOME/code/c/makefile_template"/* "./$1"; }
-init_cpp() { mkdir -p "./$1" && cp -r "$HOME/code/cpp/makefile_template"/* "./$1"; }
-init_asm() { mkdir -p "./$1" && cp -r "$HOME/code/assembly/makefile_template"/* "./$1"; }
+init_c() { mkdir -p "./$1" && cp -r "$HOME/code/c/_template"/* "./$1"; }
+init_cpp() { mkdir -p "./$1" && cp -r "$HOME/code/cpp/_template"/* "./$1"; }
+init_asm() { mkdir -p "./$1" && cp -r "$HOME/code/assembly/_template"/* "./$1"; }
 
 # Drawpad
 map_drawpad() {
