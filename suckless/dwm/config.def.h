@@ -51,8 +51,7 @@ static const Rule rules[] = {
 	{ "Emacs", NULL, NULL, 0, 0, -1, 0, 0 },
 	{ "Zathura", NULL, NULL, 0, 0, -1, 0, 0 },
 	{ "Com.github.xournalpp.xournalpp", NULL, NULL, 0, 0, -1, 0, 0 },
-	{ "Plank", NULL, NULL, 0, 0, -1, 0, 1 },
-	{ "YouTube Music", NULL, NULL, 0, 0, -1, 0, 0 }
+	{ "Plank", NULL, NULL, 0, 0, -1, 0, 1 }
 };
 
 static const float mfact = 0.55; // Factor of master area size
@@ -127,7 +126,7 @@ static const Key keys[] = {
     { MODKEY, XK_l, spawn, {.v = suspendcmd} },
     { MODKEY, XK_b, togglebar, {0} },
 	{ MODKEY, XK_w, toggleborder, {0} },
-    { MODKEY, XK_Left, setmfact, {.f = -0.05} },
+	{ MODKEY, XK_Left, setmfact, {.f = -0.05} },
     { MODKEY, XK_Right, setmfact, {.f = +0.05} },
     { MODKEY, XK_Return, zoom, {0} },
     { MODKEY, XK_space, zoom, {0} },
@@ -139,7 +138,7 @@ static const Key keys[] = {
     { MODKEY, XK_Up, focusmon, {.i = -1} },
     { MODKEY, XK_Down, focusmon, {.i = +1} },
     { MODKEY, XK_0, setgaps, {.i = GAP_RESET } },
-    { MODKEY, XK_minus, setgaps, {.i = -3} },
+	{ MODKEY, XK_minus, setgaps, {.i = -3} },
     { MODKEY, XK_equal, setgaps, {.i = +3} },
     { MODKEY|ShiftMask, XK_equal, incnmaster, {.i = +1} },
     { MODKEY|ShiftMask, XK_minus, incnmaster, {.i = -1} },
@@ -150,6 +149,12 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask, XK_Down, tagmon, {.i = +1} },
 	{ MODKEY|ShiftMask, XK_q, quit, {0} },
 	{ Mod1Mask, XK_Tab, alttab, {0} },
+    { MODKEY, XF86XK_AudioLowerVolume, setmfact, {.f = -0.05} },
+    { MODKEY, XF86XK_AudioRaiseVolume, setmfact, {.f = +0.05} },
+    { MODKEY|ShiftMask, XF86XK_AudioRaiseVolume, setgaps, {.i = -3} },
+    { MODKEY|ShiftMask, XF86XK_AudioLowerVolume, setgaps, {.i = +3} },
+	{ Mod1Mask, XF86XK_AudioRaiseVolume, spawn, {.v = medianextcmd} },
+    { Mod1Mask, XF86XK_AudioLowerVolume, spawn, {.v = mediapreviouscmd} },
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2)
     TAGKEYS(XK_4, 3) TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5)
     TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7) TAGKEYS(XK_9, 8)
