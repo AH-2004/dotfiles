@@ -51,7 +51,8 @@ static const Rule rules[] = {
 	{ "Emacs", NULL, NULL, 0, 0, -1, 0, 0 },
 	{ "Zathura", NULL, NULL, 0, 0, -1, 0, 0 },
 	{ "Com.github.xournalpp.xournalpp", NULL, NULL, 0, 0, -1, 0, 0 },
-	{ "Plank", NULL, NULL, 0, 0, -1, 0, 1 }
+	{ "Plank", NULL, NULL, 0, 0, -1, 0, 1 },
+	{ "YouTube Music", NULL, NULL, 0, 0, -1, 0, 0 }
 };
 
 static const float mfact = 0.55; // Factor of master area size
