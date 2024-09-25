@@ -22,7 +22,12 @@
 			(all-the-icons-dired-mode)
 			(dired-hide-details-mode)
 			(turn-on-visual-line-mode)
-			(adaptive-wrap-prefix-mode)))
+			(adaptive-wrap-prefix-mode)
+			(openwith-mode 1)))
+
+(add-hook 'find-file-hook
+		  (lambda ()
+			(openwith-mode 1)))
 
 ;; (add-hook 'eglot-managed-mode-hook
 ;; 		  (lambda ()
@@ -39,15 +44,18 @@
 (add-hook 'c++-mode-hook
 		  (lambda ()
 			(eglot-ensure)
-			(tree-sitter-hl-mode)))
+			;; (tree-sitter-hl-mode)
+			))
 
 (add-hook 'c-mode-hook
 		  (lambda ()
 			(eglot-ensure)
-			(tree-sitter-hl-mode)))
+			;; (tree-sitter-hl-mode)
+			))
 
 (add-hook 'js-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook 'java-mode-hook 'eglot-ensure)
 
 ;; (add-hook 'asm-mode-hook
 ;; 		  (lambda ()

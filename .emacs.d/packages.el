@@ -89,9 +89,15 @@
   (setq eglot-report-progress nil)
   (add-to-list 'eglot-server-programs
 			   '((c++-mode c-mode)
-				 "clangd"
-				 "--header-insertion=never"
-				 "--all-scopes-completion=false"))
+				  "clangd"
+				  "--header-insertion=never"
+				  "--all-scopes-completion=false"))
+
+  (add-to-list 'eglot-server-programs
+			   '(java-mode
+				 "jdtls"
+                 "--java-executable"
+				 "/usr/lib/jvm/java-22-openjdk/bin/java"))
   (add-to-list 'eglot-stay-out-of 'flymake)
   (advice-add  'eglot-completion-at-point
 			   :around #'cape-wrap-buster)
@@ -129,9 +135,7 @@
 		  ("\\.svg\\'" "eog" (file))
 		  ("\\.png\\'" "eog" (file))
 		  ("\\.jpg\\'" "eog" (file))
-		  ("\\.xopp\\'" "xournalpp" (file))))
-  :init
-  (openwith-mode t))
+		  ("\\.xopp\\'" "xournalpp" (file)))))
 
 (use-package emms
   :config
@@ -196,15 +200,31 @@
   :config
   (setq mc/always-run-for-all t))
 
+;; Formatter
+(use-package format-all
+  :config
+  (setq-default format-all-formatters
+				'(("TypeScript" (prettier "--use-tabs" "--tab-width" "4"))
+				  ("JavaScript" (prettier "--use-tabs" "--tab-width" "4"))
+				  ("HTML" (prettier "--use-tabs" "--tab-width" "4"))
+				  ("CSS" (prettier "--use-tabs" "--tab-width" "4"))
+				  ("TSX" (prettier "--use-tabs" "--tab-width" "4"))
+				  ("JSX" (prettier "--use-tabs" "--tab-width" "4")))))
+
+;; Treesitter
+(use-package typescript-ts-mode
+  :mode
+  (("\\.ts\\'" . typescript-ts-mode)
+   ("\\.tsx\\'" . tsx-ts-mode))) 
+
 ;; Others
 (use-package texfrag)
 (use-package cape)
 (use-package tempel)
 (use-package yasnippet-capf)
-(use-package tree-sitter)
-(use-package tree-sitter-langs)
+;; (use-package tree-sitter)
+;; (use-package tree-sitter-langs)
 (use-package eldoc-box)
-(use-package format-all)
 (use-package lua-mode)
 (use-package buffer-move)
 (use-package adaptive-wrap)

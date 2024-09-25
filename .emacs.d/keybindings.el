@@ -26,6 +26,7 @@
 (bind-key* "M-S-<up>" 'mc/unmark-next-like-this)
 (bind-key* "M-<up>" 'mc/mark-previous-like-this)
 (bind-key* "M-S-<down>" 'mc/unmark-previous-like-this)
+(bind-key* "M-<mouse-2>" 'mc/add-cursor-on-click)
 
 ;; Completions
 (bind-key* "C-SPC" 'completion-at-point)
