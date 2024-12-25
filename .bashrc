@@ -48,6 +48,7 @@ alias clip="xclip -selection clipboard -rmlastnl"
 alias xelatex="xelatex -interaction=nonstopmode"
 alias winreboot="sudo bootctl set-oneshot auto-windows && sudo reboot"
 alias lscall='ausyscall --dump | awk '\''{printf "%#x %s\n", $1, $2}'\'''
+alias zap='sudo zypper'
 
 # ADD TO PATH
 PATH=~/.local/bin:$PATH
