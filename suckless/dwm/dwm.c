@@ -246,6 +246,7 @@ static void setdesktopnames(void);
 static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
 static void setgaps(const Arg *arg);
+static void setimmersive(const Arg *arg);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setnumdesktops(void);
@@ -1895,6 +1896,18 @@ setgaps(const Arg *arg)
 	}
 	arrange(selmon);
 }
+
+/*
+ * void
+ * setimmersive(const Arg *arg)
+ * {
+ * 	setgaps(GAP_RESET);
+ * 	if (selmon->pertag->drawwithgaps[selmon->pertag->curtag])
+ * 		setgaps(GAP_TOGGLE);
+ * 	if (selmon->showbar) 
+ * 		togglebar();
+ * }
+ */
 
 void
 setlayout(const Arg *arg)
