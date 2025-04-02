@@ -259,6 +259,7 @@ static Monitor *systraytomon(Monitor *m);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
+static void tila(Monitor *m);
 static void togglebar(const Arg *arg);
 static void toggleborder(const Arg *arg);
 static void togglefloating(const Arg *arg);
@@ -1462,6 +1463,7 @@ movemouse(const Arg *arg)
 	XUngrabPointer(dpy, CurrentTime);
 	if ((m = recttomon(c->x, c->y, c->w, c->h)) != selmon) {
 		sendmon(c, m);
+		unfocus(selmon->sel, 0);
 		selmon = m;
 		focus(NULL);
 	}
@@ -2951,7 +2953,7 @@ drawtab(Client *c)
 	};
 
 	int w = (selmon->mw/3), h = 0, th = drw->fonts->h + 4;
-	int x = (selmon->mw/2)-(w/2), y = (selmon->mh/2);
+	int x = selmon->mx+(selmon->mw/2)-(w/2), y = selmon->my+(selmon->mh/2);
 	
 	Client *curr = selmon->stack;
 	while (curr) {
@@ -2987,7 +2989,7 @@ void
 redrawtab(Client *c)
 {
 	int w = (selmon->mw/3), h = 0, th = drw->fonts->h + 4;
-	int x = (selmon->mw/2)-(w/2), y = (selmon->mh/2);
+	int x = selmon->mx+(selmon->mw/2)-(w/2), y = selmon->my+(selmon->mh/2);
 	
 	Client *curr = selmon->stack;
 	while (curr) {
@@ -3004,7 +3006,7 @@ redrawtab(Client *c)
 	};
 	
 	y -= (h/2);
-
+	
 	XMoveWindow(dpy, selmon->tabwin, x, y);
 	XMapRaised(dpy, selmon->tabwin);
 	drw_setscheme(drw, scheme[SchemeNorm]);
