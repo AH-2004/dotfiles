@@ -19,7 +19,8 @@ static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=9" }
 static const char dmenufont[] = "IBM Plex Mono:size=9";
 
 // Colors
-static const char col_gray1[] = "#1d1f21";
+// static const char col_gray1[] = "#1d1f21";
+static const char col_gray1[] = "#080808";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
@@ -51,7 +52,8 @@ static const Rule rules[] = {
 	{ "Emacs", NULL, NULL, 0, 0, -1, 0, 0 },
 	{ "Zathura", NULL, NULL, 0, 0, -1, 0, 0 },
 	{ "Com.github.xournalpp.xournalpp", NULL, NULL, 0, 0, -1, 0, 0 },
-	{ "Plank", NULL, NULL, 0, 0, -1, 0, 1 }
+	{ "Plank", NULL, NULL, 0, 0, -1, 0, 1 },
+	{ "rocketleague.exe", NULL, NULL, 0, 0, 0, 0, 0 }
 };
 
 static const float mfact = 0.55; // Factor of master area size

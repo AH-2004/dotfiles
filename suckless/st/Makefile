@@ -6,6 +6,7 @@ include config.mk
 
 SRC = st.c x.c
 OBJ = $(SRC:.c=.o)
+CC = gcc
 
 all: options st
 

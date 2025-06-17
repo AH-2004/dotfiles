@@ -19,7 +19,8 @@ static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=9" }
 static const char dmenufont[] = "IBM Plex Mono:size=9";
 
 // Colors
-static const char col_gray1[] = "#1d1f21";
+// static const char col_gray1[] = "#1d1f21";
+static const char col_gray1[] = "#080808";
 static const char col_gray2[] = "#444444";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
@@ -140,6 +141,9 @@ static const Key keys[] = {
     { MODKEY, XK_0, setgaps, {.i = GAP_RESET } },
 	{ MODKEY, XK_minus, setgaps, {.i = -3} },
     { MODKEY, XK_equal, setgaps, {.i = +3} },
+	/*
+	 * { MODKEY|ShiftMask, setimmersive, {0} },
+	 */
     { MODKEY|ShiftMask, XK_equal, incnmaster, {.i = +1} },
     { MODKEY|ShiftMask, XK_minus, incnmaster, {.i = -1} },
     { MODKEY|ShiftMask, XK_space, togglefloating, {0} },
