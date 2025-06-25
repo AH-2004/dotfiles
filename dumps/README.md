@@ -1,5 +1,3 @@
-#+title: Dumps
-#+author: AH
+# Dumps
 
-* Dumps
 To dump all your "Temporary" garbage:
