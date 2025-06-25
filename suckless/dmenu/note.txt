@@ -1,0 +1,3 @@
+j4-dmenu-desktop is also needed:
+
+https://github.com/enkore/j4-dmenu-desktop
