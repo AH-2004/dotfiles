@@ -99,7 +99,7 @@ float alpha = 1;
 
 /* Terminal colors (16 first used in escape sequence) */
 /* Dark Terminal Colors */
-static const char *dark[] = {
+static char *dark[] = {
 	[0] = "#1d1f21",
 	[1] = "#cc6666",
 	[2] = "#b5bd68",
@@ -119,8 +119,29 @@ static const char *dark[] = {
  	[255] = 0,
 };
 
+/* Black Terminal Colors */
+static char *black[] = {
+	[0] = "#080808",
+	[1] = "#cc6666",
+	[2] = "#b5bd68",
+	[3] = "#f0c674",
+	[4] = "#81a2be",
+	[5] = "#b294bb",
+	[6] = "#8abeb7",
+	[7] = "#bbbbbb",
+	[8]  = "#969896",
+	[9]  = "#cc6666",
+	[10] = "#b5bd68",
+	[11] = "#f0c674",
+	[12] = "#81a2be",
+	[13] = "#b294bb",
+	[14] = "#8abeb7",
+	[15] = "#ffffff",
+ 	[255] = 0,
+};
+
 /* Light Terminal Colors */
-static const char *light[] = {
+static char *light[] = {
 	[0] = "#f7f7f7",
 	[1] = "#7c7c7c",
 	[2] = "#8e8e8e",
@@ -140,7 +161,7 @@ static const char *light[] = {
  	[255] = 0,
 };
 
-static const char **colorname = dark;
+static char **colorname = black;
 
 /*
  * foreground, background, cursor, reverse cursor

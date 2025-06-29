@@ -256,6 +256,7 @@ static char *opt_io    = NULL;
 static char *opt_line  = NULL;
 static char *opt_name  = NULL;
 static char *opt_title = NULL;
+static char *opt_style = NULL;
 
 static uint buttons; /* bit field of pressed buttons */
 
@@ -2142,6 +2143,9 @@ main(int argc, char *argv[])
 	case 'w':
 		opt_embed = EARGF(usage());
 		break;
+	case 's':
+		opt_style = EARGF(usage()); 
+		break;
 	case 'v':
 		die("%s " VERSION "\n", argv0);
 		break;
@@ -2155,6 +2159,15 @@ run:
 
 	if (!opt_title)
 		opt_title = (opt_line || !opt_cmd) ? "st" : opt_cmd[0];
+
+	if (opt_style) {
+		if (strcmp(opt_style, "dark") == 0)
+			colorname = dark;
+		else if (strcmp(opt_style, "black") == 0)
+			colorname = black;
+		else if (strcmp(opt_style, "light") == 0)
+			colorname = light;
+	};
 
 	setlocale(LC_CTYPE, "");
 	XSetLocaleModifiers("");
