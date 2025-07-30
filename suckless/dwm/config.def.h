@@ -103,6 +103,7 @@ static const char *togglemidnightmodecmd[] = { BASH_FUNCTIONS, "toggle_midnightm
 static const char *mediaplaypausecmd[] = { BASH_FUNCTIONS, "media_playpause", NULL };
 static const char *medianextcmd[] = { BASH_FUNCTIONS, "media_next", NULL };
 static const char *mediapreviouscmd[] = { BASH_FUNCTIONS, "media_previous", NULL };
+static const char *toggleblankcmd[] = { BASH_FUNCTIONS, "toggle_blank", NULL };
 static const char *customcmd[] = { SCRIPTS_PATH"/custom_key.sh", NULL };
 
 // Keys and Buttons
@@ -126,6 +127,7 @@ static const Key keys[] = {
     { Mod1Mask|ControlMask, XK_t, spawn, {.v = terminalcmd} },
     { Mod1Mask|ControlMask, XK_e, spawn, {.v = emacscmd} },
     { MODKEY, XK_l, spawn, {.v = suspendcmd} },
+    { MODKEY, XK_d, spawn, {.v = toggleblankcmd} },
     { MODKEY, XK_b, togglebar, {0} },
 	{ MODKEY, XK_w, toggleborder, {0} },
 	{ MODKEY, XK_Left, setmfact, {.f = -0.05} },
