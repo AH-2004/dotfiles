@@ -27,8 +27,12 @@
 (setq-default auto-window-vscroll nil)
 (setq-default auto-hscroll-mode nil)
 (setq-default org-image-actual-width (list 300))
+(setq-default org-startup-with-inline-images t)
+(setq-default org-startup-with-latex-preview t)
+(setq-default org-image-align "center")
 (setq-default text-scale-mode-step 1.1)
 (setq-default switch-to-buffer-obey-display-actions t)
+(setq-default dired-mouse-drag-files t)
 
 ;; Other Tweaks
 (add-to-list 'exec-path "~/.local/bin")
@@ -65,6 +69,7 @@
 
 (electric-pair-mode t)
 (global-auto-revert-mode t)
+(setq-default auto-revert-remote-files t)
 (setq-default tab-width 4)
 (setq-default c-basic-offset tab-width)
 (setq-default c-ts-mode-indent-offset tab-width)
@@ -72,6 +77,7 @@
 (setq-default python-indent-offset tab-width)
 (setq-default vhdl-basic-offset tab-width)
 (setq-default python-indent-offset tab-width)
+(setq-default js-indent-level tab-width)
 (setq-default org-indent-indentation-per-level tab-width)
 (setq-default org-edit-src-content-indentation tab-width)
 (setq-default org-startup-shrink-all-tables t)
@@ -107,6 +113,17 @@
 (setq-default user-mail-address "ahmedshuaib2004@gmail.com")
 (setq-default user-full-name "Ahmed Shuaib")
 
+(setq gnus-select-method
+ '(nnimap "gmail"
+          (nnimap-address "imap.gmail.com")
+          (nnimap-server-port 993)
+          (nnimap-stream ssl)
+          (nnimap-authinfo-file "~/.authinfo")))
+
+(setq gnus-thread-sort-functions
+      '(gnus-thread-sort-by-number
+        gnus-thread-sort-by-date))
+
 ;; Modeline
 (setq-default mode-line-format
 	  (list
@@ -135,6 +152,7 @@
 		(go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
 		(html "https://github.com/tree-sitter/tree-sitter-html")
 		(js . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+		(jsdoc . ("https://github.com/tree-sitter/tree-sitter-jsdoc" "master" "src"))
 		(json "https://github.com/tree-sitter/tree-sitter-json")
 		(lua "https://github.com/Azganoth/tree-sitter-lua")
 		(make "https://github.com/alemuller/tree-sitter-make")

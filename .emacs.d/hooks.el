@@ -1,4 +1,3 @@
-
 (add-hook 'server-after-make-frame-hook 'init)
 (add-hook 'after-init-hook 'init)
 
@@ -14,7 +13,13 @@
 			(setq display-line-numbers nil)
 			(set-fringe-mode 0)
 			(turn-on-visual-line-mode)
-			(adaptive-wrap-prefix-mode)))
+			;; (adaptive-wrap-prefix-mode)
+			))
+
+(add-hook 'after-save-hook
+		  (lambda ()
+			(if (derived-mode-p 'org-mode)
+			  (org-update))))
 
 (add-hook 'dired-mode-hook
 		  (lambda ()
@@ -22,12 +27,7 @@
 			(all-the-icons-dired-mode)
 			(dired-hide-details-mode)
 			(turn-on-visual-line-mode)
-			(adaptive-wrap-prefix-mode)
-			(openwith-mode 1)))
-
-(add-hook 'find-file-hook
-		  (lambda ()
-			(openwith-mode 1)))
+			(adaptive-wrap-prefix-mode)))
 
 ;; (add-hook 'eglot-managed-mode-hook
 ;; 		  (lambda ()
@@ -37,25 +37,23 @@
 ;; 							   #'yasnippet-capf
 ;; 							   #'cape-file)))))
 
+
 (add-hook 'org-mode-hook
 		  (lambda ()
-			(org-autolist-mode)))
+			(org-autolist-mode)
+			(org-indent-mode)))
 
-(add-hook 'c++-mode-hook
-		  (lambda ()
-			(eglot-ensure)
-			;; (tree-sitter-hl-mode)
-			))
-
-(add-hook 'c-mode-hook
-		  (lambda ()
-			(eglot-ensure)
-			;; (tree-sitter-hl-mode)
-			))
-
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
 (add-hook 'js-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
 (add-hook 'java-mode-hook 'eglot-ensure)
+
+(add-hook 'c-ts-mode-hook 'eglot-ensure)
+(add-hook 'c++-ts-mode-hook 'eglot-ensure)
+(add-hook 'js-ts-mode-hook 'eglot-ensure)
+(add-hook 'python-ts-mode-hook 'eglot-ensure)
+(add-hook 'java-ts-mode-hook 'eglot-ensure)
 
 ;; (add-hook 'asm-mode-hook
 ;; 		  (lambda ()

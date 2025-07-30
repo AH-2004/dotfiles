@@ -89,15 +89,15 @@
   (setq eglot-report-progress nil)
   (add-to-list 'eglot-server-programs
 			   '((c++-mode c-mode)
-				  "clangd"
-				  "--header-insertion=never"
-				  "--all-scopes-completion=false"))
+				 "clangd"
+				 "--header-insertion=never"
+				 "--all-scopes-completion=false"))
 
   (add-to-list 'eglot-server-programs
 			   '(java-mode
 				 "jdtls"
                  "--java-executable"
-				 "/usr/lib/jvm/java-22-openjdk/bin/java"))
+				 "/usr/lib/jvm/java-24-openjdk/bin/java"))
   (add-to-list 'eglot-stay-out-of 'flymake)
   (advice-add  'eglot-completion-at-point
 			   :around #'cape-wrap-buster)
@@ -123,6 +123,8 @@
 
 ;; Openwith
 (use-package openwith
+  :ensure nil
+  :load-path "packages/openwith-mode"
   :config
   (setq openwith-associations
 		'(("\\.pdf\\'" "zathura" (file))
@@ -135,7 +137,24 @@
 		  ("\\.svg\\'" "eog" (file))
 		  ("\\.png\\'" "eog" (file))
 		  ("\\.jpg\\'" "eog" (file))
-		  ("\\.xopp\\'" "xournalpp" (file)))))
+		  ("\\.xopp\\'" "xournalpp" (file))))
+  (openwith-mode))
+
+;; (use-package openwith
+;;   :config
+;;   (setq openwith-associations
+;; 		'(("\\.pdf\\'" "zathura" (file))
+;; 		  ("\\.epub\\'" "zathura" (file))
+;; 		  ("\\.docx\\'" "libreoffice" (file))
+;; 		  ("\\.pptx\\'" "libreoffice" (file))
+;; 		  ("\\.drawio\\'" "drawio" (file))
+;; 		  ("\\.mp4\\'" "mpv" (file))
+;; 		  ("\\.mkv\\'" "mpv" (file))
+;; 		  ("\\.svg\\'" "eog" (file))
+;; 		  ("\\.png\\'" "eog" (file))
+;; 		  ("\\.jpg\\'" "eog" (file))
+;; 		  ("\\.xopp\\'" "xournalpp" (file))))
+;;   (openwith-mode))
 
 (use-package emms
   :config
@@ -171,18 +190,18 @@
 		  ,@sqlind-default-indentation-offsets-alist)))
 
 ;; Mu4e
-(use-package mu4e
-  :ensure nil
-  :config
-  (setq mu4e-change-filenames-when-moving t)
-  (setq mu4e-compose-format-flowed t)
-  (setq mu4e-completing-read-function 'completing-read)
-  (setq mu4e-get-mail-command "mbsync -a")
-  (setq mu4e-maildir "~/.mail/gmail")
-  (setq mu4e-drafts-folder "/Drafts")
-  (setq mu4e-sent-folder "/Sent Mail")
-  (setq mu4e-refile-folder "All Mail")
-  (setq mu4e-trash-folder "/Trash"))
+;; (use-package mu4e
+;;   :ensure nil
+;;   :config
+;;   (setq mu4e-change-filenames-when-moving t)
+;;   (setq mu4e-compose-format-flowed t)
+;;   (setq mu4e-completing-read-function 'completing-read)
+;;   (setq mu4e-get-mail-command "mbsync -a")
+;;   (setq mu4e-maildir "~/.mail/gmail")
+;;   (setq mu4e-drafts-folder "/Drafts")
+;;   (setq mu4e-sent-folder "/Sent Mail")
+;;   (setq mu4e-refile-folder "All Mail")
+;;   (setq mu4e-trash-folder "/Trash"))
 
 ;; Nasm
 (use-package nasm-mode
@@ -194,6 +213,10 @@
   :config
   (add-to-list 'auto-mode-alist
 			   '("\\.html?\\'" . web-mode)))
+
+(use-package glsl-mode
+  :ensure nil
+  :load-path "packages/glsl-mode")
 
 ;; Multiple Cursors
 (use-package multiple-cursors
@@ -212,12 +235,19 @@
 				  ("JSX" (prettier "--use-tabs" "--tab-width" "4")))))
 
 ;; Treesitter
-(use-package typescript-ts-mode
-  :mode
-  (("\\.ts\\'" . typescript-ts-mode)
-   ("\\.tsx\\'" . tsx-ts-mode))) 
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+;; (use-package typescript-ts-mode
+;;   :mode
+;;   (("\\.ts\\'" . typescript-ts-mode)
+;;    ("\\.tsx\\'" . tsx-ts-mode))) 
 
 ;; Others
+;; (use-package glsl-mode)
 (use-package texfrag)
 (use-package cape)
 (use-package tempel)

@@ -1,8 +1,25 @@
 (defun init ()
   (message (emacs-init-time))
-  (find-file "~/.emacs.d/*notes*")
+
+  (setq-local connectable
+			  (string=
+			   (string-trim
+				(shell-command-to-string
+				 "ssh-keyscan AH-THINK >/dev/null 2>&1; echo $?")) "0"))
+
+  (if (and connectable (file-exists-p "/ssh:AH-THINK:.emacs.d/*notes*"))
+	  (progn
+		(find-file "/ssh:AH-THINK:.emacs.d/*notes*")
+		;; (copy-file "~/.emacs.d/*notes*" "~/.emacs.d/*notes*.backup" nil)
+		;; (copy-file "/ssh:AH-THINK:.emacs.d/*notes*" "~/.emacs.d/*notes*" t)
+		)
+	(progn
+	  (message "%s" "Unable to connect/access *notes* from AH-THINK")
+	  (find-file "~/.emacs.d/*notes*")))
+  
   (if (get-buffer "*Compile-Log*")
 	  (kill-buffer "*Compile-Log*"))
+  
   (setq default-directory "~/")
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
 
@@ -146,7 +163,8 @@
 (defun org-update ()
   (interactive)
   (universal-argument)
-  (org-update-statistics-cookies t))
+  (org-update-statistics-cookies t)
+  (org-redisplay-inline-images))
 
 ;; Org Checkbox WIP
 (defun org-checkbox-wip-p ()
@@ -192,10 +210,8 @@
   (find-file-read-only (concat user-emacs-directory "*bookmarks*"))
   (advice-add 'org-open-at-point :after
 			  (lambda (&rest r)
-				(kill-buffer "*bookmarks*")))
-  )
+				(kill-buffer "*bookmarks*"))))
 
 (defun tst ()
   (interactive)
-  (message "%s" "Test")
-  (c-indent-line))
+  (message "%s" "Test"))

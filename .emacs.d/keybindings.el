@@ -71,6 +71,7 @@
 (bind-key "<f2>" 'dired-do-rename dired-mode-map)
 (bind-key "<mouse-2>" 'dired-find-file dired-mode-map)
 (bind-key "C-x C-s" 'wdired-finish-edit wdired-mode-map)
+(bind-key "S-<return>" 'dired-up-directory dired-mode-map)
 
 ;; Org mode
 (bind-key "<backtab>" 'org-src-block org-mode-map)
