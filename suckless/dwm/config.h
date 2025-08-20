@@ -104,6 +104,7 @@ static const char *mediaplaypausecmd[] = { BASH_FUNCTIONS, "media_playpause", NU
 static const char *medianextcmd[] = { BASH_FUNCTIONS, "media_next", NULL };
 static const char *mediapreviouscmd[] = { BASH_FUNCTIONS, "media_previous", NULL };
 static const char *toggleblankcmd[] = { BASH_FUNCTIONS, "toggle_blank", NULL };
+static const char *togglescrollcmd[] = { BASH_FUNCTIONS, "toggle_scroll", NULL };
 static const char *customcmd[] = { SCRIPTS_PATH"/custom_key.sh", NULL };
 
 // Keys and Buttons
@@ -179,4 +180,11 @@ static const Button buttons[] = {
 	{ ClkClientWin, Mod1Mask, Button3, resizemouse, {0} },
 	{ ClkTagBar, 0, Button1, view, {0} },
 	{ ClkTagBar, MODKEY|ShiftMask, Button1, tag, {0} },
+	// Assigning Scroll toggling for Button11 on every possible clickable element
+	{ ClkTagBar, 0, Button11, spawn, { .v = togglescrollcmd } },
+	{ ClkLtSymbol, 0, Button11, spawn, { .v = togglescrollcmd } },
+	{ ClkStatusText, 0, Button11, spawn, { .v = togglescrollcmd } },
+	{ ClkWinTitle, 0, Button11, spawn, { .v = togglescrollcmd } },
+	{ ClkClientWin, 0, Button11, spawn, { .v = togglescrollcmd } },
+	{ ClkRootWin, 0, Button11, spawn, { .v = togglescrollcmd } },
 };
