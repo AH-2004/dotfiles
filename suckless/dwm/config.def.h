@@ -145,9 +145,7 @@ static const Key keys[] = {
     { MODKEY, XK_0, setgaps, {.i = GAP_RESET } },
 	{ MODKEY, XK_minus, setgaps, {.i = -3} },
     { MODKEY, XK_equal, setgaps, {.i = +3} },
-	/*
-	 * { MODKEY|ShiftMask, setimmersive, {0} },
-	 */
+	{ MODKEY, XK_i, toggleimmersive, {0} },
     { MODKEY|ShiftMask, XK_equal, incnmaster, {.i = +1} },
     { MODKEY|ShiftMask, XK_minus, incnmaster, {.i = -1} },
     { MODKEY|ShiftMask, XK_space, togglefloating, {0} },

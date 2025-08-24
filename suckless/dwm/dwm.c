@@ -250,7 +250,7 @@ static void setdesktopnames(void);
 static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
 static void setgaps(const Arg *arg);
-static void setimmersive(const Arg *arg);
+static void toggleimmersive(const Arg *arg);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setnumdesktops(void);
@@ -265,7 +265,9 @@ static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
 static void tila(Monitor *m);
 static void togglebar(const Arg *arg);
+static void setbar(const int i);
 static void toggleborder(const Arg *arg);
+static void setborder(const int i);
 static void togglefloating(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
@@ -1903,17 +1905,28 @@ setgaps(const Arg *arg)
 	arrange(selmon);
 }
 
-/*
- * void
- * setimmersive(const Arg *arg)
- * {
- * 	setgaps(GAP_RESET);
- * 	if (selmon->pertag->drawwithgaps[selmon->pertag->curtag])
- * 		setgaps(GAP_TOGGLE);
- * 	if (selmon->showbar) 
- * 		togglebar();
- * }
- */
+void
+toggleimmersive(const Arg *arg)
+{
+	if (!selmon->sel)
+		return;
+	if (!selmon->pertag->showbars[selmon->pertag->curtag] &&
+		(!selmon->pertag->drawwithgaps[selmon->pertag->curtag] ||
+		 selmon->pertag->gappx[selmon->pertag->curtag] == 0)) {
+		selmon->pertag->gappx[selmon->pertag->curtag] = 12;
+		arrange(selmon);
+		setbar(1);
+		setborder(1);
+		return;
+	};
+	if (selmon->pertag->gappx[selmon->pertag->curtag] != 0) {
+		selmon->pertag->gappx[selmon->pertag->curtag] = 0;
+		arrange(selmon);
+	};
+	if (selmon->pertag->showbars[selmon->pertag->curtag])
+		setbar(0);
+	setborder(0);
+}
 
 void
 setlayout(const Arg *arg)
@@ -2185,6 +2198,28 @@ togglebar(const Arg *arg)
 }
 
 void
+setbar(const int i)
+{
+	if (i != 0 && i != 1)
+		return;
+	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] = i;
+	updatebarpos(selmon);
+	resizebarwin(selmon);
+	if (showsystray) {
+		XWindowChanges wc;
+		if (!selmon->showbar)
+			wc.y = -bh;
+		else if (selmon->showbar) {
+			wc.y = 0;
+			if (!selmon->topbar)
+				wc.y = selmon->mh - bh;
+		}
+		XConfigureWindow(dpy, systray->win, CWY, &wc);
+	}
+	arrange(selmon);
+}
+
+void
 toggleborder(const Arg *arg)
 {
 	if (!selmon->sel)
@@ -2194,6 +2229,18 @@ toggleborder(const Arg *arg)
 		c->bw = 0;
 	else
 		c->bw = borderpx;
+	resizeclient(c, c->x, c->y, (c->w+1), (c->h+1));
+	resizeclient(c, c->x, c->y, c->w, c->h);
+	arrange(selmon);
+}
+
+void
+setborder(const int i)
+{
+	if (!selmon->sel || (i != 0 && i != 1))
+		return;
+	Client *c = selmon->sel;
+	c->bw = borderpx * i;
 	resizeclient(c, c->x, c->y, (c->w+1), (c->h+1));
 	resizeclient(c, c->x, c->y, c->w, c->h);
 	arrange(selmon);
