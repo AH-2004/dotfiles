@@ -1908,12 +1908,16 @@ setgaps(const Arg *arg)
 void
 toggleimmersive(const Arg *arg)
 {
-	if (!selmon->sel)
+	if (!selmon->sel) {
+		selmon->pertag->gappx[selmon->pertag->curtag] = gappx[0];
+		arrange(selmon);
+		setbar(1);
 		return;
+	};
 	if (!selmon->pertag->showbars[selmon->pertag->curtag] &&
 		(!selmon->pertag->drawwithgaps[selmon->pertag->curtag] ||
 		 selmon->pertag->gappx[selmon->pertag->curtag] == 0)) {
-		selmon->pertag->gappx[selmon->pertag->curtag] = 12;
+		selmon->pertag->gappx[selmon->pertag->curtag] = gappx[0];
 		arrange(selmon);
 		setbar(1);
 		setborder(1);
