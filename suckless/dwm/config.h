@@ -13,6 +13,7 @@ static const unsigned int systrayonleft = 0;
 static const unsigned int systrayspacing = 6;
 static const unsigned int systrayiconsize = 14;
 static const int systraypinningfailfirst = 1; // 1: First monitor, 0: Last Monitor
+static const char *selmonsymbol = "*"; 
 
 // Fonts
 static const char *fonts[] = { "IBM Plex Mono:size=9", "Material Icons:size=9" };
@@ -144,7 +145,6 @@ static const Key keys[] = {
     { MODKEY, XK_f, setlayout, {.v = &layouts[1]} },
     { MODKEY, XK_c, setlayout, {.v = &layouts[2]} },
     { MODKEY, XK_r, setlayout, {.v = &layouts[3]} },
-    { MODKEY, XK_m, setlayout, {.v = &layouts[4]} },
     { MODKEY, XK_Up, focusmon, {.i = -1} },
     { MODKEY, XK_Down, focusmon, {.i = +1} },
     { MODKEY, XK_0, setgaps, {.i = GAP_RESET } },
