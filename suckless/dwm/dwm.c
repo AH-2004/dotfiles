@@ -992,7 +992,7 @@ drawbar(Monitor *m)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 	
-	if (m->sel)
+	if (m == selmon)
 		x = drw_text(drw, x, 0, TEXTW(selmonsymbol), bh, 0, selmonsymbol, 0);
 
 	drw_setscheme(drw, scheme[SchemeNorm]);
