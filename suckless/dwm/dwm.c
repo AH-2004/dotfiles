@@ -195,6 +195,7 @@ static void cleanupmon(Monitor *mon);
 static void clientmessage(XEvent *e);
 static void clearlog();
 static void column(Monitor *m);
+static void row(Monitor *m);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
@@ -721,6 +722,34 @@ column(Monitor *m)
 }
 
 void
+row(Monitor *m)
+{
+	unsigned int i, n, w, h, cx, cy, gappx;
+	Client *c;
+	
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if (n == 0)
+		return;
+		
+	if (m->pertag->drawwithgaps[m->pertag->curtag])
+		gappx = m->pertag->gappx[m->pertag->curtag];
+	else
+		gappx = 0;
+	
+	w = m->ww - (2*gappx);
+	h = m->wh/n - (2*gappx);
+	cx = m->wx + gappx;
+	cy = m->wy + gappx;
+
+	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+		resize(c, cx, cy, w-(2*c->bw), h-(2*c->bw), 0);
+		cy += (h + gappx);
+		if (i == 0)
+			h += gappx;
+	};
+}
+
+void
 configure(Client *c)
 {
 	XConfigureEvent ce;
@@ -759,6 +788,10 @@ configurenotify(XEvent *e)
 				for (c = m->clients; c; c = c->next)
 					if (c->isfullscreen && !c->isfakefullscreen)
 						resizeclient(c, m->mx, m->my, m->mw, m->mh);
+				if (dirty) {
+					Arg arg = { .v = (m->mh > m->mw) ? &layouts[3] : 0 };
+					setlayout(&arg);
+				};
 				resizebarwin(m);
 			}
 			focus(NULL);

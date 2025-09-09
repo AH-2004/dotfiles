@@ -68,6 +68,7 @@ static const Layout layouts[] = {
 	{ "Tile", tile },
 	{ "Float", NULL },
 	{ "Column", column },
+	{ "Row", row },
 	{ "[M]", monocle }
 };
 
@@ -142,7 +143,8 @@ static const Key keys[] = {
     { MODKEY, XK_t, setlayout, {.v = &layouts[0]} },
     { MODKEY, XK_f, setlayout, {.v = &layouts[1]} },
     { MODKEY, XK_c, setlayout, {.v = &layouts[2]} },
-    { MODKEY, XK_m, setlayout, {.v = &layouts[3]} },
+    { MODKEY, XK_r, setlayout, {.v = &layouts[3]} },
+    { MODKEY, XK_m, setlayout, {.v = &layouts[4]} },
     { MODKEY, XK_Up, focusmon, {.i = -1} },
     { MODKEY, XK_Down, focusmon, {.i = +1} },
     { MODKEY, XK_0, setgaps, {.i = GAP_RESET } },
