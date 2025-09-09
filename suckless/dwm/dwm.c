@@ -1240,11 +1240,13 @@ incnmaster(const Arg *arg)
 	unsigned int n;
 	Client *c;
 	for (n = 0, c = nexttiled(selmon->clients); c; c = nexttiled(c->next), n++);
-	if (selmon->nmaster + arg->i < 0 ||
-		selmon->nmaster + arg->i > n)
+
+	if ((selmon->nmaster + arg->i) < 1 ||
+		(selmon->nmaster + arg->i) > n)
 		return;
+
 	selmon->nmaster = selmon->nmaster + arg->i;
-	selmon->pertag->nmasters[selmon->pertag->curtag] = selmon->nmaster + arg->i;
+	selmon->pertag->nmasters[selmon->pertag->curtag] = selmon->nmaster;
 	arrange(selmon);
 }
 
