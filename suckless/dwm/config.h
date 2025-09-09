@@ -105,6 +105,7 @@ static const char *medianextcmd[] = { BASH_FUNCTIONS, "media_next", NULL };
 static const char *mediapreviouscmd[] = { BASH_FUNCTIONS, "media_previous", NULL };
 static const char *toggleblankcmd[] = { BASH_FUNCTIONS, "toggle_blank", NULL };
 static const char *togglescrollcmd[] = { BASH_FUNCTIONS, "toggle_scroll", NULL };
+static const char *rotationcmd[] = { SCRIPTS_PATH"/rotation.sh", NULL };
 static const char *customcmd[] = { SCRIPTS_PATH"/custom_key.sh", NULL };
 
 // Keys and Buttons
@@ -122,6 +123,8 @@ static const Key keys[] = {
 	{ 0, XF86XK_Favorites, spawn, {.v = customcmd} },
 	{ 0, XF86XK_Display, spawn, {.v = togglerotatecmd} },
 	{ 0, XF86XK_Tools, spawn, {.v = togglenightmodecmd} },
+	{ 0, XF86XK_RotateWindows, spawn, {.v = rotationcmd} },
+	{ 0, XF86XK_ScreenSaver, spawn, {.v = suspendcmd} },
 	{ ShiftMask, XF86XK_Tools, spawn, {.v = togglemidnightmodecmd} },
     { Mod1Mask, XK_space, spawn, {.v = dmenucmd} },
     { Mod1Mask|ShiftMask, XK_space, spawn, {.v = clipmenucmd} },
